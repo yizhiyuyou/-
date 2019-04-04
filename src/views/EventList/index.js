@@ -38,10 +38,10 @@ export default (props) => {
   const handleDelete = useCallback(async (id) => {
     const res = await deleteEventById({ id })
 
-    if (res.code === 'success') {
-      notification.success({ duration: 2, message: res.msg || '删除成功' })
+    if (res.code === 0) {
+      notification.success({ duration: 2, message: '删除成功' })
 
-      searchForm(state => ({ ...state }))
+      setSearchForm(state => ({ ...state }))
     } else {
       notification.error({ duration: 2, message: res.msg || '删除失败' })
     }

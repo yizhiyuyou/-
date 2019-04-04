@@ -37,7 +37,7 @@ function SearchForm ({ form, onSubmit }) {
       </Form.Item>
       <Form.Item label="状态">
         {getFieldDecorator('state', { initialValue: '' })(
-          <Select placeholder="请选择状态" style={{ width: 140 }}>
+          <Select placeholder="请选择状态" style={{ width: 140 }} allowClear>
             {
               STATUS.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
@@ -46,7 +46,7 @@ function SearchForm ({ form, onSubmit }) {
       </Form.Item>
       <Form.Item label="类型">
         {getFieldDecorator('type', { initialValue: '' })(
-          <Select placeholder="请选择类型" style={{ width: 140 }}>
+          <Select placeholder="请选择类型" style={{ width: 140 }} allowClear>
             {
               TYPE.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
