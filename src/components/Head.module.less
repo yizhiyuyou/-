@@ -1,0 +1,38 @@
+@import '../assets/static/style/common';
+
+.the-head {
+  height: 55px;
+  padding-left: 18px;
+  padding-right: 32px;
+  border-bottom: 1px solid @ec-color-line-main;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .head-right {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .vertical-line {
+      display: inline-block;
+      width: 2px;
+      background: @ec-color-text-less;
+      height: 20px;
+      margin-right: 20px;
+      margin-left: 25px;
+    }
+
+    .user-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 14px;
+      .pointer;
+    }
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+}

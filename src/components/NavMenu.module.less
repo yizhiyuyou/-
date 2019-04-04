@@ -1,0 +1,52 @@
+@font-color: #b4b3b3;
+@background-color: #272d32;
+@active-background-color: #1c2024;
+
+.menu-container {
+  background-color: @background-color;
+
+  :global {
+    .ant-menu-item {
+      background-color: @background-color;
+      font-size: 16px;
+      margin: 0 !important;
+      font-weight: bold;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    .ant-menu-item.ant-menu-item-selected {
+      border-right: 4px solid #ec703a !important;
+    }
+
+    .ant-menu-submenu {
+      .ant-menu-submenu-title {
+        color: @font-color;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .ant-menu-item {
+        padding-left: 116px !important;
+        font-weight: none;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+
+    .ant-menu-submenu-open {
+      color: @font-color;
+    }
+
+    .ant-menu-item-selected, .ant-menu-item-active {
+      background-color: @active-background-color !important;
+    }
+  }
+
+  .img-icon {
+    margin-left: 30px;
+    margin-right: 40px;
+    width: 22px;
+    height: 22px;
+  }
+}

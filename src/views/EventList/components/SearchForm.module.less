@@ -1,0 +1,49 @@
+.form-container {
+  padding: 18px 0;
+  border-bottom: 1px solid #e0e0e0;
+
+  :global {
+    .ant-form-item {
+      &:not(:last-child) {
+        margin-right: 50px;
+      }
+
+      &:first-child {
+        margin-left: 30px;
+      }
+
+      .ant-input {
+        height: 36px;
+        padding: 0 11px;
+        border-radius: 2px;
+      }
+
+      .ant-select-selection {
+        border-radius: 2px;
+        height: 36px;
+        border-bottom-width: 1px;
+
+        .ant-select-selection__rendered {
+          line-height: 34px;
+          height: 34px;
+        }
+      }
+
+      .ant-btn {
+        height: 36px;
+        border-radius: 2px;
+        padding: 0 22px;
+      }
+    }
+
+    .ant-form-item-label {
+      margin-right: 5px;
+
+      label {
+        font-size: 15px;
+      }
+    }
+
+
+  }
+}

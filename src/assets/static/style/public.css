@@ -1,0 +1,31 @@
+/*
+* @Author: 王媛媛
+* @Date:   2019-03-06 14:08:01
+* @Last Modified by:   YOYO
+* @Last Modified time: 2019-03-06 14:26:31
+*/
+.right{
+  float: right;
+}
+.left{
+  float: left;
+}
+.text-over{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.clear::after{
+  content: '';
+  clear: both;
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+.flex{
+  display: flex;
+}
+.flex-1{
+  flex: 1
+}

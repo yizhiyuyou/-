@@ -1,0 +1,35 @@
+.home-layout {
+  display: flex;
+
+  .layout-left {
+    flex-shrink: 0;
+    width: 278px;
+    min-height: 100vh;
+    background-color: #272d32;
+
+    .header-title {
+      height: 54px;
+      line-height: 54px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 10px;
+      font-size: 22px;
+      color: #fff;
+      text-align: center;
+  
+      img {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .layout-right {
+    flex-grow: 1;
+    flex-shrink: 0;
+    min-width: 1200px;
+    max-width: calc(~"100% - 278px");
+    background-color: #eff0f5;
+  }
+}

@@ -1,0 +1,76 @@
+/* 样式设计规范定义 */
+/* 公共颜色 */
+/* 配色-主色 */
+@ec-color-primary: #3890f2;
+/* 搭配色-表否定意 */
+@ec-color-warning: #ff7426;
+/* 背景色-主要区域 */
+@ec-color-bg-main: #eff0f5;
+/* 背景色-表头 */
+@ec-color-bg-header: #f7f7f9;
+/* 分隔线色-主要线条 */
+@ec-color-line-main: #e0e0e0;
+/* 文本色-重要 */
+@ec-color-text-main: #333333;
+/* 文本色-次要 */
+@ec-color-text-less: #666666;
+/* 文本色-标注 */
+@ec-color-text-label: #999999;
+
+/* 文本字体大小 */
+/* 表单、弹窗字段 */
+@ec-font-size-main: 15px;
+/* 按钮文字、次要信息 */
+@ec-font-size-common: 14px;
+/* 导航栏文字 */
+@ec-font-size-less: 16px;
+
+/* 常用按钮 */
+.ec-button-primary {
+  width: 77px;
+  height: 36px;
+  background: @ec-color-primary;
+  border-radius: 3px;
+  padding-top: 10px;
+  >span {
+    margin-top: -10px;
+  }
+  &:hover {
+    background: #66B1FF;
+  }
+}
+
+/* 大弹窗 */
+.ec-dialog-large {
+  width: 960px !important;
+  height: 640px;
+
+  .el-dialog__header {
+    padding: 10px 20px;
+  }
+
+  .el-dialog__headerbtn {
+    top: 14px;
+  }
+}
+
+/* 小弹窗 */
+.ec-dialog-small {
+  width: 640px !important;
+  height: 480px;
+
+  .el-dialog__header {
+    padding: 10px 20px;
+
+    .el-dialog__headerbtn {
+      top: 14px;
+    }
+  }
+}
+
+/* 文本超出长度显示省略号 */
+.ec-text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
