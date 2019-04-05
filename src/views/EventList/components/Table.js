@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Table, Popconfirm } from 'antd'
+import { Table } from 'antd'
 
 import Button from '../../../components/Button'
 
@@ -67,9 +67,7 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
                 >
                   查看详情
                 </Button>
-                <Popconfirm title="是否删除该事件记录?" onConfirm={() => onDelete(id)}>
-                  <Button type="danger">删除</Button>
-                </Popconfirm>
+                <Button onClick={() => onDelete(id)} type="danger">删除</Button>
               </span>
             )
           }}

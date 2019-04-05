@@ -31,13 +31,13 @@ function SearchForm ({ form, onSubmit }) {
   return (
     <Form className={styles['form-container']} onSubmit={handleSubmit} layout="inline">
       <Form.Item label="上报时间">
-        {getFieldDecorator('timePicker', { initialValue: [] })(
+        {getFieldDecorator('timePicker')(
           <DatePicker.RangePicker showTime />
         )}
       </Form.Item>
       <Form.Item label="状态">
-        {getFieldDecorator('state', { initialValue: '' })(
-          <Select placeholder="请选择状态" style={{ width: 140 }} allowClear>
+        {getFieldDecorator('state')(
+          <Select allowClear placeholder="请选择状态" style={{ width: 140 }} >
             {
               STATUS.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
@@ -45,8 +45,8 @@ function SearchForm ({ form, onSubmit }) {
         )}
       </Form.Item>
       <Form.Item label="类型">
-        {getFieldDecorator('type', { initialValue: '' })(
-          <Select placeholder="请选择类型" style={{ width: 140 }} allowClear>
+        {getFieldDecorator('type')(
+          <Select allowClear placeholder="请选择类型" style={{ width: 140 }}>
             {
               TYPE.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
