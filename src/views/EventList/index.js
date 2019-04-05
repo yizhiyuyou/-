@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 
 import { notification } from 'antd'
+
+import { useFetch } from '@/utils/use'
 
 import WrappedSearchForm from './components/SearchForm'
 import Table from './components/Table'
@@ -25,9 +27,13 @@ export default (props) => {
     total: 0,
   })
 
-  const [list, setList] = useState([])
+  const params = useMemo(() => {
+    const { current: pageIndex, pageSize } = pagination
 
-  const [loading, setLoading] = useState(false)
+    return { ...searchForm, pageIndex, pageSize }
+  }, [searchForm, pagination.current])
+
+  const { data: list, isLoading, res } = useFetch(getEventList, params, [])
 
   const handleSubmit = useCallback((searchData) => {
     setSearchForm(searchData)
@@ -47,52 +53,24 @@ export default (props) => {
     }
   }, [])
 
-  const getParams = useCallback(() => {
-    const { current: pageIndex, pageSize } = pagination
-
-    return { ...searchForm, pageIndex, pageSize }
-  }, [searchForm, pagination.current])
-
   useEffect(() => {
-    let didCancel = false
+    if (res.code === 0) {
+      // // 纠正分页信息（增加或者减少）
+      // if (params.pageIndex !== res.pageIndex
+      //   || Math.floor(pagination.total / pagination.pageSize) !== res.pageCount) {
+      //   setPagination(state => ({
+      //     ...state,
+      //     total: res.total,
+      //     current: res.pageIndex,
+      //   }))
+      // }
 
-    async function getListData () {
-      setLoading(true)
-
-      const params = getParams()
-  
-      const res = await getEventList(params)
-
-      if (didCancel) { return }
-
-      if (res.code === 0) {
-        setList(res.list)
-  
-        // 纠正分页信息（增加或者减少）
-        // if (params.pageIndex !== res.pageIndex
-        //   || Math.floor(pagination.total / pagination.pageSize) !== res.pageCount) {
-        //   setPagination(state => ({
-        //     ...state,
-        //     total: res.total,
-        //     current: res.pageIndex,
-        //   }))
-        // }
-
-        setPagination(state => ({
-          ...state,
-          total: res.total,
-        }))
-      }
-
-      setLoading(false)
+      setPagination(state => ({
+        ...state,
+        total: res.total,
+      }))
     }
-
-    getListData()
-
-    return () => {
-      didCancel = true
-    }
-  }, [getParams])
+  })
 
   const pagin =
     Math.floor(pagination.total / pagination.pageSize) ? pagination : false
@@ -106,7 +84,7 @@ export default (props) => {
         onChange={setPagination}
         pagination={pagin}
         dataSource={list}
-        loading={loading}
+        loading={isLoading}
         rowKey="id"
       />
     </div>
