@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 
 import { notification } from 'antd'
 
@@ -33,7 +33,24 @@ export default (props) => {
     return { ...searchForm, pageIndex, pageSize }
   }, [searchForm, pagination.current])
 
-  const { data: list, isLoading, res } = useFetch(getEventList, params, [])
+  const { data: list, isLoading } = useFetch(getEventList, params, [], res => {
+    if (res.code === 0) {
+      // // 纠正分页信息（增加或者减少）
+      // if (params.pageIndex !== res.pageIndex
+      //   || Math.floor(pagination.total / pagination.pageSize) !== res.pageCount) {
+      //   setPagination(state => ({
+      //     ...state,
+      //     total: res.total,
+      //     current: res.pageIndex,
+      //   }))
+      // }
+
+      setPagination(state => ({
+        ...state,
+        total: res.total,
+      }))
+    }
+  })
 
   const handleSubmit = useCallback((searchData) => {
     setSearchForm(searchData)
@@ -52,25 +69,6 @@ export default (props) => {
       notification.error({ duration: 2, message: res.msg || '删除失败' })
     }
   }, [])
-
-  useEffect(() => {
-    if (res.code === 0) {
-      // // 纠正分页信息（增加或者减少）
-      // if (params.pageIndex !== res.pageIndex
-      //   || Math.floor(pagination.total / pagination.pageSize) !== res.pageCount) {
-      //   setPagination(state => ({
-      //     ...state,
-      //     total: res.total,
-      //     current: res.pageIndex,
-      //   }))
-      // }
-
-      setPagination(state => ({
-        ...state,
-        total: res.total,
-      }))
-    }
-  })
 
   const pagin =
     Math.floor(pagination.total / pagination.pageSize) ? pagination : false

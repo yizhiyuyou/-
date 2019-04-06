@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from 'react'
+import { useReducer, useEffect } from 'react'
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
@@ -7,6 +7,16 @@ const dataFetchReducer = (state, action) => {
         ...state,
         isLoading: true,
         isError: false,
+        res: {
+          code: -1,
+          msg: '',
+          list: [],
+          pageIndex: 0,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0,
+          data: {},
+        },
       }
     case 'FETCH_SUCCESS':
       return {
@@ -19,26 +29,14 @@ const dataFetchReducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        isError: action.payload,
+        ...action.payload,
       }
     default:
       throw new Error()
   }
 }
 
-// 用于校验该请求是否为列表请求
-function useIsListFetch (params, initialData) {
-  const [isList] = useState(() => {
-    return Array.isArray(initialData)
-      && params
-      && params.hasOwnProperty('pageIndex')
-      && params.hasOwnProperty('pageSize')
-  })
-
-  return isList
-}
-
-export function useFetch (fetchFn, params, initialData) {
+export function useFetch (fetchFn, params, initialData, cb) {
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
@@ -63,17 +61,25 @@ export function useFetch (fetchFn, params, initialData) {
 
       try {
         const res = await fetchFn(params)
+        
+        // 组件销毁后，不进行任何操作
+        if (didCancel) { return }
 
         if (res.code === 0) {
           dispatch({ type: 'FETCH_SUCCESS', payload: {
-            data: res.data || res.list,
+            data: res.list || res.data,
             res,
           }})
         } else {
-          dispatch({ type: 'FETCH_FAILURE', payload: res.msg || '我错了' })
+          dispatch({ type: 'FETCH_FAILURE', payload: {
+            isError: true,
+            res,
+          }})
         }
       } catch (error) {
-        dispatch({ type: 'FETCH_FAILURE', payload: error || '我错了' })
+        dispatch({ type: 'FETCH_FAILURE', payload: {
+          isError: true,
+        }})
       }
     }
 
@@ -84,18 +90,19 @@ export function useFetch (fetchFn, params, initialData) {
     }
   }, [params])
 
-  return state
-}
-
-export function useFetchList (fetchFn, params) {
-  const fetchData = useFetch(fetchFn, params, {
-    list: [],
-    pageIndex: 0,
-    pageSize: 0,
-    pageCount: 0,
-  })
-
+  // 提供正常 cb 调用方式
   useEffect(() => {
+    const { res, res: { code } } = state
 
-  }, fetchData)
+    if (cb && typeof cb === 'function' && code !== -1) {
+      return cb(res)
+    }
+  }, [state.res])
+
+  // 提供 useCb cb 调用方式
+  // function useCb (cb) {
+  //   useEffect(() => cb(state.res), [state.res])
+  // }
+
+  return state
 }
