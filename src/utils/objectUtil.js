@@ -167,3 +167,7 @@ export function pipe (...fns) {
   return (...args) =>
     fns.reduce((result, fn, index) => index ? fn(result) : fn(...result), args)
 }
+
+export function isUndefinedOrNull (value) {
+  return value === null || value === undefined
+}

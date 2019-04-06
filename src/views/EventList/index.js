@@ -58,9 +58,7 @@ export default (props) => {
     setPagination(state => ({ ...state, current: 1 }))
   }, [])
 
-  const handleDelete = useCallback(async (id) => {
-    const res = await deleteEventById({ id })
-
+  const { setParams: handleDelete } = useFetch(deleteEventById, null, null, res => {
     if (res.code === 'success') {
       notification.success({ duration: 2, message: res.msg || '删除成功' })
 
@@ -68,7 +66,7 @@ export default (props) => {
     } else {
       notification.error({ duration: 2, message: res.msg || '删除失败' })
     }
-  }, [])
+  })
 
   const pagin =
     Math.floor(pagination.total / pagination.pageSize) ? pagination : false

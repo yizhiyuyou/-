@@ -1,4 +1,6 @@
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useState } from 'react'
+
+import { isUndefinedOrNull } from '@/utils/objectUtil'
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
@@ -37,6 +39,8 @@ const dataFetchReducer = (state, action) => {
 }
 
 export function useFetch (fetchFn, params, initialData, cb) {
+  const [innerParams, setParams] = useState(null)
+
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
@@ -51,16 +55,21 @@ export function useFetch (fetchFn, params, initialData, cb) {
       total: 0,
       data: {},
     },
+    setParams,
   })
 
   useEffect(() => {
+    if (isUndefinedOrNull(innerParams) && isUndefinedOrNull(params)) {
+      return
+    }
+
     let didCancel = false
 
     const fetchData = async () => {
       dispatch({ type: 'FETCH_INIT' })
 
       try {
-        const res = await fetchFn(params)
+        const res = await fetchFn(isUndefinedOrNull(innerParams) ? params : innerParams)
         
         // 组件销毁后，不进行任何操作
         if (didCancel) { return }
@@ -88,7 +97,7 @@ export function useFetch (fetchFn, params, initialData, cb) {
     return () => {
       didCancel = true
     }
-  }, [params])
+  }, [innerParams, params])
 
   // 提供正常 cb 调用方式
   useEffect(() => {

@@ -67,7 +67,7 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
                 >
                   查看详情
                 </Button>
-                <Button onClick={() => onDelete(id)} type="danger">删除</Button>
+                <Button onClick={() => onDelete({ id })} type="danger">删除</Button>
               </span>
             )
           }}
