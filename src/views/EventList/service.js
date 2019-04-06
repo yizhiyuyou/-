@@ -26,5 +26,8 @@ export async function getEventList (params) {
 
 // 删除
 export async function deleteEventById (params) {
-  return request.post('/rest/event/eventinfo/delete', params)
+  const filterParams = { ids: JSON.stringify([params.id]) }
+  console.log(123123, params, filterParams)
+
+  return request.post('/rest/event/eventinfo/delete', filterParams)
 }

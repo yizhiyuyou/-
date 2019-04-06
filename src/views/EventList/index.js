@@ -59,7 +59,7 @@ export default (props) => {
   }, [])
 
   const { setParams: handleDelete } = useFetch(deleteEventById, null, null, res => {
-    if (res.code === 'success') {
+    if (res.code === 0) {
       notification.success({ duration: 2, message: res.msg || '删除成功' })
 
       setSearchForm(state => ({ ...state }))
