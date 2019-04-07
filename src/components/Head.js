@@ -2,8 +2,10 @@ import React, { useContext, useCallback, useMemo, useRef } from 'react'
 
 import { Badge, Menu, Dropdown, Icon, notification } from 'antd'
 
+import { useFetch } from '@/utils/use'
+
 import { pageLogout } from '@/services'
-import { Context } from '../utils/userInfoContext'
+import { Context } from '@/utils/userInfoContext'
 
 import styles from './Head.module.less'
 
@@ -19,18 +21,19 @@ function MenuComponent ({ handleClick }) {
 
 export default () => {
   const { globalData: { userInfo }, setGlobalData } = useContext(Context)
+
+  const { setParams: logout } = useFetch(pageLogout, res => {
+    if (res.code === 0) {
+      notification.success({ duration: 2, message: '注销成功' })
+
+      setGlobalData({ userInfo: {}, loaded: false })
+    } else {
+      notification.warning({ duration: 2, message: res.msg || '注销失败' })
+    }
+  })
+
   const fnsRef = useRef({
-    async logout () {
-      const res = await pageLogout()
-
-      if (res.code === 0) {
-        notification.success({ duration: 2, message: '注销成功' })
-
-        setGlobalData({ userInfo: {}, loaded: false })
-      } else {
-        notification.warning({ duration: 2, message: res.msg || '注销失败' })
-      }
-    },
+    logout () { logout({}) },
   })
 
   const handleClick = useCallback(({ key }) => {

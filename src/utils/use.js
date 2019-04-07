@@ -108,10 +108,5 @@ export function useFetch (fetchFn, cb, initialData, params) {
     }
   }, [state.res])
 
-  // 提供 useCb cb 调用方式
-  // function useCb (cb) {
-  //   useEffect(() => cb(state.res), [state.res])
-  // }
-
   return state
 }
