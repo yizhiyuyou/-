@@ -38,7 +38,7 @@ const dataFetchReducer = (state, action) => {
   }
 }
 
-export function useFetch (fetchFn, params, initialData, cb) {
+export function useFetch (fetchFn, cb, initialData, params) {
   const [innerParams, setParams] = useState(null)
 
   const [state, dispatch] = useReducer(dataFetchReducer, {

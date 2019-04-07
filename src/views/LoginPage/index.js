@@ -1,9 +1,12 @@
 import React, { useContext, useCallback, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd'
 
+import { useFetch } from '@/utils/use'
+
 import { pageLogin } from '@/services'
-import { Context } from '../../utils/userInfoContext'
+import { Context } from '@/utils/userInfoContext'
 
 import styles from './styles.module.less'
 
@@ -18,21 +21,21 @@ export const Login = ({ history, form }) => {
   // 快速登陆
   // setGlobalData({ userInfo: { username: '系统管理员' }, loaded: true })
 
-  const handleSubmit = useCallback((e) => {
+  const { setParams } = useFetch(pageLogin, res => {
+    if (res.code === 0) {
+      notification.success({ duration: 2, message: '登录成功' })
+
+      setGlobalData({ userInfo: { username: res.data.realname }, loaded: true })
+    } else {
+      notification.warning({ duration: 2, message: res.msg || '登录失败' })
+    }
+  })
+
+  const handleSubmit = useCallback(e => {
     e.preventDefault()
 
-    form.validateFields(async (err, values) => {
-      if (!err) {
-        const res = await pageLogin(values)
-
-        if (res.code === 0) {
-          notification.success({ duration: 2, message: '登录成功' })
-
-          setGlobalData({ userInfo: { username: res.data.realname }, loaded: true })
-        } else {
-          notification.warning({ duration: 2, message: res.msg || '登录失败' })
-        }
-      }
+    form.validateFields((err, values) => {
+      if (!err) { setParams(values) }
     })
   }, [])
 

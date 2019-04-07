@@ -33,7 +33,7 @@ export default (props) => {
     return { ...searchForm, pageIndex, pageSize }
   }, [searchForm, pagination.current])
 
-  const { data: list, isLoading } = useFetch(getEventList, params, [], res => {
+  const { data: list, isLoading } = useFetch(getEventList, res => {
     if (res.code === 0) {
       // // 纠正分页信息（增加或者减少）
       // if (params.pageIndex !== res.pageIndex
@@ -50,7 +50,7 @@ export default (props) => {
         total: res.total,
       }))
     }
-  })
+  }, [], params)
 
   const handleSubmit = useCallback((searchData) => {
     setSearchForm(searchData)
@@ -58,7 +58,7 @@ export default (props) => {
     setPagination(state => ({ ...state, current: 1 }))
   }, [])
 
-  const { setParams: handleDelete } = useFetch(deleteEventById, null, null, res => {
+  const { setParams: handleDelete } = useFetch(deleteEventById, res => {
     if (res.code === 0) {
       notification.success({ duration: 2, message: res.msg || '删除成功' })
 
