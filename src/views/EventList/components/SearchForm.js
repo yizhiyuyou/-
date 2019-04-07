@@ -2,22 +2,11 @@ import React, { useCallback } from 'react'
 
 import { Form, DatePicker, Button, Select } from 'antd'
 
+import { STATUS, TYPE } from '../const'
+
 import styles from './SearchForm.module.less'
 
 const { Option } = Select
-
-const STATUS = [
-  { text: '待处理', value: '1' },
-  { text: '处置中', value: '2' },
-  { text: '待验收', value: '3' },
-  { text: '已结束', value: '4' },
-]
-
-const TYPE = [
-  { text: '保洁', value: '1' },
-  { text: '维修', value: '2' },
-  { text: '其他', value: '3' },
-]
 
 function SearchForm ({ form, onSubmit }) {
   const { getFieldDecorator, getFieldsValue } = form

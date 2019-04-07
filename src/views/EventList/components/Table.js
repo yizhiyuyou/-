@@ -2,7 +2,9 @@ import React, { useCallback } from 'react'
 
 import { Table, Popconfirm } from 'antd'
 
-import Button from '../../../components/Button'
+import Button from '@/components/Button'
+
+import { TYPE, STATUS_MAPPING_INFO } from '../const'
 
 import styles from './Table.module.less'
 
@@ -13,7 +15,7 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
   const handleChange = useCallback((pagination) => {
     typeof onChange === 'function' && onChange(pagination)
   }, [onChange])
-  console.log(123123, { ...rest })
+
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
@@ -25,9 +27,13 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
         />
         <Column
           title="事件类型"
-          dataIndex="eventType"
           key="eventType"
           align="center"
+          render={({ eventType }) => {
+            const findObj = TYPE.find(({ value }) => value === eventType)
+
+            return findObj ? findObj.text : eventType
+          }}
         />
         <Column
           title="创建人"
@@ -43,9 +49,17 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
         />
         <Column
           title="当前状态"
-          dataIndex="state"
           key="state"
           align="center"
+          render={({ state }) => {
+            const has = STATUS_MAPPING_INFO.has(state)
+
+            if (has) {
+              const { color, name } = STATUS_MAPPING_INFO.get(state)
+
+              return <span style={{color}}>{name}</span>
+            }
+          }}
         />
         <Column
           title="上报时间"
