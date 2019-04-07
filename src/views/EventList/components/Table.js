@@ -13,7 +13,7 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
   const handleChange = useCallback((pagination) => {
     typeof onChange === 'function' && onChange(pagination)
   }, [onChange])
-
+  console.log(123123, { ...rest })
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
@@ -25,8 +25,8 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
         />
         <Column
           title="事件类型"
-          dataIndex="eventTypeName"
-          key="eventTypeName"
+          dataIndex="eventType"
+          key="eventType"
           align="center"
         />
         <Column
@@ -37,14 +37,14 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
         />
         <Column
           title="当前操作人"
-          dataIndex="monitor"
-          key="monitor"
+          dataIndex="handler"
+          key="handler"
           align="center"
         />
         <Column
           title="当前状态"
-          dataIndex="status"
-          key="status"
+          dataIndex="state"
+          key="state"
           align="center"
         />
         <Column

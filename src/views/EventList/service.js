@@ -21,13 +21,34 @@ export async function getEventList (params) {
       return value ? { ...prev, [key]: value } : prev
     }, {})
 
-  return request.get('/rest/event/eventinfo/list', filterParams)
+  const res = await request.get('/rest/event/eventinfo/list', filterParams)
+
+  if (res.code === 0) {
+    res.list = res.list.map(({
+      id,
+      eventNum,
+      eventType,
+      creator,
+      state,
+      createTime,
+      recentProcess: { handler }
+    }) => ({
+      id,
+      eventNum,
+      eventType,
+      creator,
+      state,
+      createTime,
+      handler,
+    }))
+  }
+
+  return res
 }
 
 // 删除
 export async function deleteEventById (params) {
   const filterParams = { ids: JSON.stringify([params.id]) }
-  console.log(123123, params, filterParams)
 
   return request.post('/rest/event/eventinfo/delete', filterParams)
 }
