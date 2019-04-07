@@ -1,6 +1,6 @@
 import React, { useContext, useCallback, useMemo, useRef } from 'react'
 
-import { Badge, Menu, Dropdown, Icon, notification } from 'antd'
+import { Badge, Menu, Dropdown, Icon, message } from 'antd'
 
 import { useFetch } from '@/utils/use'
 
@@ -24,11 +24,11 @@ export default () => {
 
   const { setParams: logout } = useFetch(pageLogout, res => {
     if (res.code === 0) {
-      notification.success({ duration: 2, message: '注销成功' })
+      message.success('注销成功', 2)
 
       setGlobalData({ userInfo: {}, loaded: false })
     } else {
-      notification.warning({ duration: 2, message: res.msg || '注销失败' })
+      message.warning(res.msg || '注销失败', 2)
     }
   })
 

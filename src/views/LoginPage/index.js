@@ -1,7 +1,7 @@
 import React, { useContext, useCallback, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Form, Icon, Input, Button, Checkbox, notification } from 'antd'
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
 
 import { useFetch } from '@/utils/use'
 
@@ -21,13 +21,13 @@ export const Login = ({ history, form }) => {
   // 快速登陆
   // setGlobalData({ userInfo: { username: '系统管理员' }, loaded: true })
 
-  const { setParams } = useFetch(pageLogin, res => {
+  const { setParams, isLoading } = useFetch(pageLogin, res => {
     if (res.code === 0) {
-      notification.success({ duration: 2, message: '登录成功' })
+      message.success('登录成功', 2)
 
       setGlobalData({ userInfo: { username: res.data.realname }, loaded: true })
     } else {
-      notification.warning({ duration: 2, message: res.msg || '登录失败' })
+      message.warning(res.msg || '登录失败', 2)
     }
   })
 
@@ -75,7 +75,7 @@ export const Login = ({ history, form }) => {
               })(
                 <Checkbox>记住密码</Checkbox>
               )}
-              <Button type="primary" htmlType="submit" className={styles['login-form-button']}>
+              <Button loading={isLoading} type="primary" htmlType="submit" className={styles['login-form-button']}>
                 登录
               </Button>
             </Form.Item>
