@@ -35,19 +35,18 @@ export default (props) => {
 
   const { data: list, isLoading } = useFetch(getEventList, res => {
     if (res.code === 0) {
-      // // 纠正分页信息（增加或者减少）
-      // if (params.pageIndex !== res.pageIndex
-      //   || Math.floor(pagination.total / pagination.pageSize) !== res.pageCount) {
-      //   setPagination(state => ({
-      //     ...state,
-      //     total: res.total,
-      //     current: res.pageIndex,
-      //   }))
-      // }
+      // 纠正分页信息（增加修改total或者减少修改current）
+      const { total, pageCount } = res
+
+      const pagination = { total, current: params.pageIndex }
+
+      if (params.pageIndex > pageCount) {
+        Object.assign(pagination, { current: pageCount })
+      }
 
       setPagination(state => ({
         ...state,
-        total: res.total,
+        ...pagination,
       }))
     }
   }, [], params)
