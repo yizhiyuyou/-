@@ -95,11 +95,11 @@ export default () => {
         }/>
         <Suspense fallback={ <PageLoading /> }>
           <Route exact path="/login" component={ LoginPage }/>
-          <Route exact path="/403" component={ NoPermission }/>
-          <Route exact path="/" render={() => (
+        </Suspense>
+        <Route exact path="/403" component={ NoPermission }/>
+        <Route exact path="/" render={() => (
             <Redirect to="/home" />
           )}/>
-        </Suspense>
         <Route path="*" component={ NoFind }/>
       </Switch>
     </Router>
