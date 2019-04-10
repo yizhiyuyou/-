@@ -1,6 +1,7 @@
 import React from 'react'
 
-export default () => {
+export default (props) => {
+  console.log('EnergyDetail', props)
   return (
     <div>
       能耗分析

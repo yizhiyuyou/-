@@ -5,7 +5,7 @@ import { Context } from '../utils/userInfoContext'
 
 export default (props) => {
   const { globalData: { loaded } } = useContext(Context)
-
+  console.log('Authorized', props)
   return (
     <React.Fragment>
       {loaded ? props.children : <Redirect to="/login"/>}

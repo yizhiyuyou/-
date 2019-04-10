@@ -4,6 +4,8 @@ import { Table, Popconfirm } from 'antd'
 
 import Button from '@/components/Button'
 
+import history from '@/utils/history'
+
 import { TYPE, STATUS_MAPPING_INFO } from '../const'
 
 import styles from './Table.module.less'
@@ -75,7 +77,15 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
             return (
               <span>
                 <Button
-                  onClick={() => window.open(`/#/detail/event/${id}`, '_blank')}
+                  // onClick={() => window.open(`/#/detail/event/${id}`, '_blank')}
+                  onClick={() => history.push({
+                    pathname: `/detail/event/${id}`,
+                    search: '?a=1&b=2',
+                    state: {
+                      h: 1,
+                      c: 2,
+                    },
+                  })}
                   type="primary"
                   className={styles['m-r-35']}
                 >
