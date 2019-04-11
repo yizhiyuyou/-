@@ -1,4 +1,11 @@
-const { override, fixBabelImports, addLessLoader, addWebpackAlias } = require('customize-cra')
+const {
+  override,
+  fixBabelImports,
+  addLessLoader,
+  addWebpackAlias,
+  disableEsLint,
+  addDecoratorsLegacy,
+} = require('customize-cra')
 const path = require('path')
 
 module.exports = {
@@ -12,7 +19,10 @@ module.exports = {
       javascriptEnabled: true,
     }),
     addWebpackAlias({
-      ["@"]: path.resolve(__dirname, "src")
+      ["@"]: path.resolve(__dirname, "src"),
+      ["mobx"]: path.resolve(__dirname, "/node_modules/mobx/lib/mobx.es6.js"),
     }),
+    addDecoratorsLegacy(),
+    disableEsLint(),
   ),
 }
