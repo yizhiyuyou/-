@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { Context } from '../utils/userInfoContext'
+import { StoreContext } from '@/stores'
 
-export default (props) => {
-  const { globalData: { loaded } } = useContext(Context)
-  console.log('Authorized', props)
+export const Authorized = (props) => {
+  const store = useContext(StoreContext)
+
   return (
     <React.Fragment>
-      {loaded ? props.children : <Redirect to="/login"/>}
+      {store.rootStore.loaded ? props.children : <Redirect to="/login"/>}
     </React.Fragment>
   )
 }
+
+export default Authorized

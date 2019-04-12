@@ -5,7 +5,8 @@ import { Badge, Menu, Dropdown, Icon, message } from 'antd'
 import { useFetch } from '@/utils/use'
 
 import { pageLogout } from '@/services'
-import { Context } from '@/utils/userInfoContext'
+
+import { StoreContext } from '@/stores'
 
 import styles from './Head.module.less'
 
@@ -19,14 +20,14 @@ function MenuComponent ({ handleClick }) {
   )
 }
 
-export default () => {
-  const { globalData: { userInfo }, setGlobalData } = useContext(Context)
+export const Head = (props) => {
+  const store = useContext(StoreContext)
 
   const { setParams: logout } = useFetch(pageLogout, res => {
     if (res.code === 0) {
       message.success('注销成功', 2)
 
-      setGlobalData({ userInfo: {}, loaded: false })
+      store.rootStore.setUser({ username: "", loaded: false })
     } else {
       message.warning(res.msg || '注销失败', 2)
     }
@@ -54,9 +55,11 @@ export default () => {
         <span className={styles['vertical-line']}></span>
         <img src="/static/img/layout/user.png" className={styles['user-icon']} alt="头像"/>
         <Dropdown overlay={WithMenu} className={styles['the-dropdown']}>
-          <div className={styles.pointer}>{userInfo.username}<Icon type="down" /></div>
+          <div className={styles.pointer}>{store.rootStore.username}<Icon type="down" /></div>
         </Dropdown>
       </div>
     </div>
   )
 }
+
+export default Head

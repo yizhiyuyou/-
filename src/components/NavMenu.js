@@ -7,7 +7,7 @@ import styles from './NavMenu.module.less'
 
 const { SubMenu, Item } = Menu
 
-export const NavMenu = ({ history, location, match }) => {
+export const NavMenu = ({ history, location }) => {
   const handleClick = useCallback(({ key }) => {
     if (/\^.*\$/.test(key)) {
       const url = /\^(.*)\$/.exec(key)[1]

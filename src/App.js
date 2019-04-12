@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { configure } from 'mobx'
+
 import { LocaleProvider } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 
@@ -10,7 +12,11 @@ import RouterCofig from './router'
 import { Context } from './utils/userInfoContext'
 import './App.css'
 
+import { StoreContext, stores } from '@/stores'
+
 moment.locale('zh-cn')
+
+configure({ enforceActions: 'observed' })
 
 const GlobalInfoProvider = (props) => {
   const [globalData, setGlobalData] = useState({ loaded: false, userInfo: {} })
@@ -26,8 +32,10 @@ const GlobalInfoProvider = (props) => {
 
 export default () => {
   return (
-    <GlobalInfoProvider>
-      <RouterCofig />
-    </GlobalInfoProvider>
+    <StoreContext.Provider value={stores}>
+      <GlobalInfoProvider>
+        <RouterCofig />
+      </GlobalInfoProvider>
+    </StoreContext.Provider>
   )
 }

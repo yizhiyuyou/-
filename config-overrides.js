@@ -20,7 +20,6 @@ module.exports = {
     }),
     addWebpackAlias({
       ["@"]: path.resolve(__dirname, "src"),
-      ["mobx"]: path.resolve(__dirname, "/node_modules/mobx/lib/mobx.es6.js"),
     }),
     addDecoratorsLegacy(),
     disableEsLint(),
