@@ -13,7 +13,7 @@ import Axios from 'axios'
 import qs from 'qs'
 import { message } from 'antd'
 
-// import store from '@/store'
+import { stores } from '@/stores'
 import history from './history'
 import { getPropVal, compose } from './objectUtil'
 import { restData, pages } from '@/config'
@@ -73,9 +73,7 @@ function sessionTimeout (res) {
   // 如果不是去往登录页或公开页，则执行跳转
   if (getPropVal(res, sessionTimeoutMsgPath) === sessionTimeoutMsg) {
     if (!history.location.pathname.startsWith(loginPagePath)) {
-      // store.dispatch('clearInfo')
-
-      history.push(loginPagePath)
+      stores.rootStore.clearUser()
     }
   }
 

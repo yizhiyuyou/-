@@ -11,8 +11,20 @@ class RootStore {
 
   @action
   setUser (user) {
-    console.log(123123, user)
     Object.assign(this, user)
+  }
+
+  @action
+  clearUser () {
+    Object.assign(this, {
+      id: '',
+      post: '',
+      mobile: '',
+      realname: '',
+      username: '',
+      roles: [],
+      loaded: false,
+    })
   }
 
   @action

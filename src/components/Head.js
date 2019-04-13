@@ -1,5 +1,7 @@
 import React, { useContext, useCallback, useMemo, useRef } from 'react'
 
+import { useObserver } from 'mobx-react-lite'
+
 import { Badge, Menu, Dropdown, Icon, message } from 'antd'
 
 import { useFetch } from '@/utils/use'
@@ -20,7 +22,7 @@ function MenuComponent ({ handleClick }) {
   )
 }
 
-export const Head = (props) => {
+export const Head = () => {
   const store = useContext(StoreContext)
 
   const { setParams: logout } = useFetch(pageLogout, res => {
@@ -45,7 +47,7 @@ export const Head = (props) => {
 
   const WithMenu = useMemo(() => <MenuComponent handleClick={handleClick} />, [])
 
-  return (
+  return useObserver(() =>
     <div className={styles['the-head']}>
       <div>首页</div>
       <div className={styles['head-right']}>
