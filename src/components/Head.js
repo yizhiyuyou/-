@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useMemo, useRef } from 'react'
+import React, { useContext, useCallback, useRef } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
@@ -7,16 +7,6 @@ import { Badge, Menu, Dropdown, Icon } from 'antd'
 import { StoreContext } from '@/stores'
 
 import styles from './Head.module.less'
-
-function MenuComponent ({ handleClick }) {
-  return (
-    <Menu onClick={handleClick} selectable={false}>
-      <Menu.Item key="logout">注销</Menu.Item>
-      <Menu.Item key="updatePassword">修改密码</Menu.Item>
-      <Menu.Item key="userInfo">个人信息</Menu.Item>
-    </Menu>
-  )
-}
 
 export const Head = () => {
   const store = useContext(StoreContext)
@@ -31,7 +21,13 @@ export const Head = () => {
     fn && fn()
   }, [])
 
-  const WithMenu = useMemo(() => <MenuComponent handleClick={handleClick} />, [])
+  const WithMenu = (
+    <Menu onClick={handleClick}>
+      <Menu.Item key="logout">注销</Menu.Item>
+      <Menu.Item key="updatePassword">修改密码</Menu.Item>
+      <Menu.Item key="userInfo">个人信息</Menu.Item>
+    </Menu>
+  )
 
   return useObserver(() =>
     <div className={styles['the-head']}>
