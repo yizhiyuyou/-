@@ -2,11 +2,7 @@ import React, { useContext, useCallback, useMemo, useRef } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
-import { Badge, Menu, Dropdown, Icon, message } from 'antd'
-
-import { useFetch } from '@/utils/use'
-
-import { pageLogout } from '@/services'
+import { Badge, Menu, Dropdown, Icon } from 'antd'
 
 import { StoreContext } from '@/stores'
 
@@ -25,18 +21,8 @@ function MenuComponent ({ handleClick }) {
 export const Head = () => {
   const store = useContext(StoreContext)
 
-  const { setParams: logout } = useFetch(pageLogout, res => {
-    if (res.code === 0) {
-      message.success('注销成功', 2)
-
-      store.rootStore.setUser({ username: "", loaded: false })
-    } else {
-      message.warning(res.msg || '注销失败', 2)
-    }
-  })
-
   const fnsRef = useRef({
-    logout () { logout({}) },
+    logout: store.rootStore.pageLogout,
   })
 
   const handleClick = useCallback(({ key }) => {

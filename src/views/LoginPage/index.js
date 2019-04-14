@@ -2,11 +2,9 @@ import React, { useContext, useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useObserver } from 'mobx-react-lite'
 
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
+import { Form, Icon, Input, Button, Checkbox } from 'antd'
 
 import { useFetch } from '@/utils/use'
-
-import { pageLogin } from '@/services'
 
 import { StoreContext } from '@/stores'
 
@@ -15,15 +13,7 @@ import styles from './styles.module.less'
 export const Login = ({ form }) => {
   const store = useContext(StoreContext)
 
-  const { setParams, isLoading } = useFetch(pageLogin, res => {
-    if (res.code === 0) {
-      message.success('登录成功', 2)
-
-      store.rootStore.setUser({ username: res.data.realname, loaded: true })
-    } else {
-      message.warning(res.msg || '登录失败', 2)
-    }
-  })
+  const { setParams, isLoading } = useFetch(store.rootStore.pageLogin)
 
   const handleSubmit = useCallback(e => {
     e.preventDefault()
