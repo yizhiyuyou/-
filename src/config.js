@@ -18,9 +18,6 @@ export const restData = {
   // 字典的接口地址
   dictUrl: '/rest/sys/dict/list',
 
-  // 是否需要同步字典
-  dictSyncEnabled: true,
-
   // 返回数据中用户对象配置的路径
   authUserPath: 'data',
 

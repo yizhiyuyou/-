@@ -20,3 +20,8 @@ export function pageLogin (params) {
 export function pageLogout () {
   return request.post(restData.logoutUrl)
 }
+
+// 获取字典数据
+export function getDicData () {
+  return request.get(restData.dictUrl)
+}
