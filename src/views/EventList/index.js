@@ -1,17 +1,21 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useContext } from 'react'
+
+import { useObserver } from 'mobx-react-lite'
 
 import { notification } from 'antd'
 
 import { useFetch } from '@/utils/use'
 
+import { StoreContext } from '@/stores'
+
 import WrappedSearchForm from './components/SearchForm'
 import Table from './components/Table'
-
-import { getEventList, deleteEventById } from './service'
 
 import styles from './index.module.less'
 
 export default (props) => {
+  const store = useContext(StoreContext)
+
   const [searchForm, setSearchForm] = useState({
     timePicker: [],
     type: '',
@@ -33,7 +37,7 @@ export default (props) => {
     return { ...searchForm, pageIndex, pageSize }
   }, [searchForm, pagination.current])
 
-  const { data: list, isLoading } = useFetch(getEventList, res => {
+  const { isLoading } = useFetch(store.eventListStore.getEventList, res => {
     if (res.code === 0) {
       // 纠正分页信息（增加修改total或者减少修改current）
       const { total, pageCount } = res
@@ -57,9 +61,9 @@ export default (props) => {
     setPagination(state => ({ ...state, current: 1 }))
   }, [])
 
-  const { setParams: handleDelete } = useFetch(deleteEventById, res => {
+  const { setParams: handleDelete } = useFetch(store.eventListStore.deleteEventById, res => {
     if (res.code === 0) {
-      notification.success({ duration: 2, message: res.msg || '删除成功' })
+      notification.success({ duration: 2, message: '删除成功' })
 
       setSearchForm(state => ({ ...state }))
     } else {
@@ -70,7 +74,7 @@ export default (props) => {
   const pagin =
     Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
-  return (
+  return useObserver(() =>
     <div className={styles['event-list']}>
       <WrappedSearchForm onSubmit={handleSubmit} />
       <div className={styles.title}>事件管理列表</div>
@@ -78,7 +82,7 @@ export default (props) => {
         onDelete={handleDelete}
         onChange={setPagination}
         pagination={pagin}
-        dataSource={list}
+        dataSource={store.eventListStore.list}
         loading={isLoading}
         rowKey="id"
       />
