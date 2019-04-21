@@ -5,7 +5,7 @@ export async function getEventList (params) {
   const filterParams = Object.entries(params)
     .reduce((prev, [key, value]) => {
       if (key === 'timePicker') {
-        if (value.length) {
+        if (value && value.length) {
           const [start, end] = value
 
           return {

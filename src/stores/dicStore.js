@@ -1,52 +1,47 @@
-import { observable, action, computed } from 'mobx'
-
+import { observable, action, runInAction } from 'mobx'
+// computed
 import { getDicData } from '@/services'
 
-class DicStore {
-  @observable eventType = []
+function getDicFn () {
+  const map = new Map()
 
-  @computed
-  get eventTypeDic () {
-    const { eventType } = this
+  return async function (type, isUpload) {
+    const dic = map.get(type)
 
-    return Array.isArray(eventType) ? eventType : []
-  }
+    // Promise 处理同时加载相同的字典
+    if (dic && dic.then) {
+      await dic
 
-  @action.bound
-  async sendGetDicReq (params) {
-    // 调用获取字典接口
-    const res = await getDicData(params)
-
-    const { code } = res
-
-    // 成功则修改字典
-    if (code === 0) {
-      const data = res.list.map(({ name, value, parentName, typeId }) =>
-        ({ value, text: name, parentName, typeId }))
-
-      this[params.type] = data
-
-      return data
+      map.delete(type)
+      
+      return this[type]
     }
-  }
-
-  @action.bound
-  getDictionaryByType (type, isUpload) {
-    const { [type]: dic = [] } = this
 
     // 如果已经获取且不需要强制请求，则从数据中取
     if (Array.isArray(dic) && dic.length && !isUpload) { return dic }
 
-    // Promise 处理同时加载相同的字典
-    if (dic && dic.then) { return dic }
+    const fetchPro = getDicData({ type })
+    
+    map.set(type, fetchPro)
 
-    const fetchPro = this.sendGetDicReq({ type })
+    const res = await fetchPro
 
-    this[type] = fetchPro
+    if (res.code === 0) {
+      runInAction(() => {
+        this[type] = res.data
+      })
+    }
 
-    // 否则发送请求从后端获取
-    return fetchPro
+    return this[type]
   }
+}
+
+class DicStore {
+  @observable eventType = []
+  @observable eventState = []
+
+  @action
+  getDictionaryByType = getDicFn()
 }
 
 export default new DicStore()

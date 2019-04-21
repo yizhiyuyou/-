@@ -6,8 +6,6 @@ import Button from '@/components/Button'
 
 import history from '@/utils/history'
 
-import { TYPE, STATUS_MAPPING_INFO } from '../const'
-
 import styles from './Table.module.less'
 
 const { Column } = Table
@@ -29,13 +27,9 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
         />
         <Column
           title="事件类型"
-          key="eventType"
+          dataIndex="eventTypeText"
+          key="eventTypeText"
           align="center"
-          render={({ eventType }) => {
-            const findObj = TYPE.find(({ value }) => value === eventType)
-
-            return findObj ? findObj.text : eventType
-          }}
         />
         <Column
           title="创建人"
@@ -53,15 +47,7 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
           title="当前状态"
           key="state"
           align="center"
-          render={({ state }) => {
-            const has = STATUS_MAPPING_INFO.has(state)
-
-            if (has) {
-              const { color, name } = STATUS_MAPPING_INFO.get(state)
-
-              return <span style={{color}}>{name}</span>
-            }
-          }}
+          render={({ color, stateText }) => <span style={{color}}>{stateText}</span>}
         />
         <Column
           title="上报时间"

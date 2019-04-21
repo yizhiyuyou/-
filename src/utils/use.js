@@ -70,7 +70,7 @@ export function useFetch (fetchFn, cb, initialData, params) {
 
       try {
         const res = await fetchFn(isUndefinedOrNull(innerParams) ? params : innerParams)
-        
+
         // 组件销毁后，不进行任何操作
         if (didCancel) { return }
 

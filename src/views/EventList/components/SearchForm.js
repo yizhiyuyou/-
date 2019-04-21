@@ -1,14 +1,17 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
+
+import { useObserver } from 'mobx-react-lite'
 
 import { Form, DatePicker, Button, Select } from 'antd'
 
-import { STATUS, TYPE } from '../const'
+import { StoreContext } from '@/stores'
 
 import styles from './SearchForm.module.less'
 
 const { Option } = Select
 
 function SearchForm ({ form, onSubmit }) {
+  const store = useContext(StoreContext)
   const { getFieldDecorator, getFieldsValue } = form
 
   const handleSubmit = useCallback((e) => {
@@ -17,7 +20,7 @@ function SearchForm ({ form, onSubmit }) {
     onSubmit(getFieldsValue())
   }, [])
 
-  return (
+  return useObserver(() =>
     <Form className={styles['form-container']} onSubmit={handleSubmit} layout="inline">
       <Form.Item label="上报时间">
         {getFieldDecorator('timePicker')(
@@ -28,7 +31,7 @@ function SearchForm ({ form, onSubmit }) {
         {getFieldDecorator('state')(
           <Select allowClear placeholder="请选择状态" style={{ width: 140 }} >
             {
-              STATUS.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
+              store.dicStore.eventState.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
           </Select>
         )}
@@ -37,7 +40,7 @@ function SearchForm ({ form, onSubmit }) {
         {getFieldDecorator('type')(
           <Select allowClear placeholder="请选择类型" style={{ width: 140 }}>
             {
-              TYPE.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
+              store.dicStore.eventType.map(({ text, value }) => <Option key={value} value={value}>{text}</Option>)
             }
           </Select>
         )}

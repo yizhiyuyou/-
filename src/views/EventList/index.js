@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useContext } from 'react'
+import React, { useState, useCallback, useMemo, useContext, useEffect } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
@@ -71,6 +71,12 @@ export default (props) => {
     }
   })
 
+  useEffect(() => {
+    store.dicStore.getDictionaryByType('eventType')
+
+    store.dicStore.getDictionaryByType('eventState')
+  }, [])
+
   const pagin =
     Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
@@ -82,7 +88,7 @@ export default (props) => {
         onDelete={handleDelete}
         onChange={setPagination}
         pagination={pagin}
-        dataSource={store.eventListStore.list}
+        dataSource={store.eventListStore.listCtd}
         loading={isLoading}
         rowKey="id"
       />
