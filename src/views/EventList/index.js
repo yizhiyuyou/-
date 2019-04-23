@@ -13,7 +13,7 @@ import Table from './components/Table'
 
 import styles from './index.module.less'
 
-export default (props) => {
+export default () => {
   const store = useContext(StoreContext)
 
   const [searchForm, setSearchForm] = useState({
