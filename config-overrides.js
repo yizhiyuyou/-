@@ -3,6 +3,8 @@ const {
   fixBabelImports,
   addLessLoader,
   addWebpackAlias,
+  disableEsLint,
+  useEslintRc,
   addDecoratorsLegacy,
 } = require('customize-cra')
 const path = require('path')
@@ -20,6 +22,8 @@ module.exports = {
     addWebpackAlias({
       ["@"]: path.resolve(__dirname, "src"),
     }),
+    disableEsLint(),
     addDecoratorsLegacy(),
+    useEslintRc(),
   ),
 }
