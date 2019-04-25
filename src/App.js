@@ -18,12 +18,10 @@ moment.locale('zh-cn')
 
 configure({ enforceActions: 'observed' })
 
-const GlobalProvider = (props) => {
+const GlobalProvider = props => {
   return (
     <LocaleProvider locale={zh_CN}>
-      <StoreContext.Provider value={stores}>
-        { props.children }
-      </StoreContext.Provider>
+      <StoreContext.Provider value={stores}>{props.children}</StoreContext.Provider>
     </LocaleProvider>
   )
 }

@@ -1,32 +1,36 @@
 const proxy = require('http-proxy-middleware')
 
-module.exports = function (app) {
-  app.use(proxy('/rest', {
-    target: 'https://fuwuqu.trial.hndfsj.net',
-    // target: 'http://192.168.10.123:8848/zhfwq',
-    changeOrigin: true,
-    onProxyRes: cookiePathRewriter,
-    pathRewrite: {
-      '^/rest': '/rest'
-    }
-  }))
+module.exports = function(app) {
+  app.use(
+    proxy('/rest', {
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: 'http://192.168.10.123:8848/zhfwq',
+      changeOrigin: true,
+      onProxyRes: cookiePathRewriter,
+      pathRewrite: {
+        '^/rest': '/rest',
+      },
+    })
+  )
 
-  app.use(proxy('/resource', {
-    target: 'https://fuwuqu.trial.hndfsj.net',
-    // target: 'http://192.168.10.123:8848/zhfwq',
-    changeOrigin: true,
-    onProxyRes: cookiePathRewriter,
-    pathRewrite: {
-      '^/resource': '/resource'
-    }
-  }))
+  app.use(
+    proxy('/resource', {
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: 'http://192.168.10.123:8848/zhfwq',
+      changeOrigin: true,
+      onProxyRes: cookiePathRewriter,
+      pathRewrite: {
+        '^/resource': '/resource',
+      },
+    })
+  )
 }
 
 /**
  * Cookie Path Rewrite Helper
  * how to use: onProxyRes: cookiePathRewriter (in proxyTable items.)
  */
-function cookiePathRewriter (proxyRes, req, res) {
+function cookiePathRewriter(proxyRes, req, res) {
   // judge if "set-cookie" is included in the response header
   let cookies = proxyRes.headers['set-cookie']
   if (!cookies || cookies.length === 0) {

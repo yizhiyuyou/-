@@ -33,9 +33,19 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
+  },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.0",
     "cross-env": "^5.2.0",
-    "less-loader": "^4.1.0"
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^2.1.0",
+    "less-loader": "^4.1.0",
+    "prettier": "^1.17.0"
   }
 }

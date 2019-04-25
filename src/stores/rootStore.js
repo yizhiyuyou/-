@@ -16,17 +16,17 @@ class RootStore {
   @observable loaded = false
 
   @action
-  setUser (user) {
+  setUser(user) {
     Object.assign(this, user)
   }
 
   @action
-  setLoaded (loaded) {
+  setLoaded(loaded) {
     this.loaded = loaded
   }
 
   @action
-  clearUser () {
+  clearUser() {
     Object.assign(this, {
       id: '',
       post: '',
@@ -38,14 +38,14 @@ class RootStore {
   }
 
   @action.bound
-  async pageLogout () {
+  async pageLogout() {
     const { code, msg } = await pageLogout()
 
     if (code === 0) {
       message.success('注销成功,请重新登陆', 2)
 
       // 不知道为什么就是想让你看一下我的登录效果600
-      await ((time) => new Promise(resolve => void setTimeout(resolve, time)))(800)
+      await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
 
       this.clearUser()
 
@@ -58,7 +58,7 @@ class RootStore {
   }
 
   @action.bound
-  async pageLogin (params) {
+  async pageLogin(params) {
     const res = await pageLogin(params)
 
     const { code, msg } = this.injectUser(res)
@@ -67,21 +67,21 @@ class RootStore {
       message.success('登陆成功正在为你跳转', 2)
 
       // 不知道为什么就是想让你看一下我的登录效果600
-      await ((time) => new Promise(resolve => void setTimeout(resolve, time)))(800)
+      await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
 
       this.setLoaded(true)
     } else {
       message.warning(msg || '登录失败，请重新登录', 2)
 
       // 不知道为什么就是想让你看一下我的登录效果600
-      await ((time) => new Promise(resolve => void setTimeout(resolve, time)))(800)
+      await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
     }
 
     return { code, msg }
   }
 
   @action
-  injectUser (res) {
+  injectUser(res) {
     if (res.code === 0) {
       const info = injectUser(res)
 
@@ -89,9 +89,7 @@ class RootStore {
         this.setUser(info.user)
       }
 
-      return info
-        ? { code: 'success' }
-        : { code: 'error', msg: '用户信息注入失败' }
+      return info ? { code: 'success' } : { code: 'error', msg: '用户信息注入失败' }
     }
 
     return {
@@ -102,4 +100,3 @@ class RootStore {
 }
 
 export default new RootStore()
-

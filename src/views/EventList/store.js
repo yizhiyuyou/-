@@ -9,7 +9,7 @@ import { STATUS_MAPPING_INFO } from './const'
 class EventListStore {
   @observable list = []
 
-  @computed get listCtd () {
+  @computed get listCtd() {
     return this.list.map(({ state, eventType, ...rest }) => {
       const findObjType = dicStore.eventType.find(({ value }) => value === eventType)
       const findObjState = dicStore.eventState.find(({ value }) => value === state)
@@ -25,7 +25,7 @@ class EventListStore {
   }
 
   @action.bound
-  getEventList = flow(function* (params) {
+  getEventList = flow(function*(params) {
     const res = yield getEventList(params)
 
     if (res.code === 0) {
@@ -36,10 +36,9 @@ class EventListStore {
   })
 
   @action
-  deleteEventById (params) {
+  deleteEventById(params) {
     return deleteEventById(params)
   }
 }
 
 export default new EventListStore()
-

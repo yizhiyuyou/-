@@ -7,12 +7,14 @@ import { getPropVal } from '@/utils/objectUtil'
  * @return {boolean | Object}       如果不成功返回 false
  *                                  否则返回通过响应拿到的用户数据
  */
-function injectUser (res) {
+function injectUser(res) {
   try {
     const info = getRoleConfiguration(res)
 
     // 如果不合法就返回就结束注入用户信息
-    if (!info) { return false }
+    if (!info) {
+      return false
+    }
 
     const user = getUserInfo(info)
 
@@ -33,7 +35,7 @@ function injectUser (res) {
  * @param  {Object}           res   响应对象
  * @return {boolean | Object}       如果不成功返回 false，否则返回通过响应拿到的用户数据
  */
-function getRoleConfiguration (info) {
+function getRoleConfiguration(info) {
   let user
 
   if (getPropVal(info, restData.authUserPath + '.rolesString')) {
@@ -50,15 +52,8 @@ function getRoleConfiguration (info) {
 }
 
 // 整理并获得 用户信息
-function getUserInfo (info) {
-  const {
-    id,
-    post,
-    mobile,
-    realname,
-    username,
-    roles,
-  } = info
+function getUserInfo(info) {
+  const { id, post, mobile, realname, username, roles } = info
 
   return {
     id,

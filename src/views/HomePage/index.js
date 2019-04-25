@@ -8,14 +8,10 @@ export default class HelloWord extends React.Component {
       { name: '小绿' },
       { name: '小紫' },
       { name: '小黑' },
-    ]
+    ],
   }
 
-  render () {
-    return (
-      <ul>
-        1212
-      </ul>
-    )
+  render() {
+    return <ul>1212</ul>
   }
 }

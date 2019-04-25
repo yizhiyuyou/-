@@ -38,7 +38,7 @@ const dataFetchReducer = (state, action) => {
   }
 }
 
-export function useFetch (fetchFn, cb, initialData, params) {
+export function useFetch(fetchFn, cb, initialData, params) {
   const [innerParams, setParams] = useState(null)
 
   const [state, dispatch] = useReducer(dataFetchReducer, {
@@ -72,23 +72,34 @@ export function useFetch (fetchFn, cb, initialData, params) {
         const res = await fetchFn(isUndefinedOrNull(innerParams) ? params : innerParams)
 
         // 组件销毁后，不进行任何操作
-        if (didCancel) { return }
+        if (didCancel) {
+          return
+        }
 
         if (res.code === 0) {
-          dispatch({ type: 'FETCH_SUCCESS', payload: {
-            data: res.list || res.data,
-            res,
-          }})
+          dispatch({
+            type: 'FETCH_SUCCESS',
+            payload: {
+              data: res.list || res.data,
+              res,
+            },
+          })
         } else {
-          dispatch({ type: 'FETCH_FAILURE', payload: {
-            isError: true,
-            res,
-          }})
+          dispatch({
+            type: 'FETCH_FAILURE',
+            payload: {
+              isError: true,
+              res,
+            },
+          })
         }
       } catch (error) {
-        dispatch({ type: 'FETCH_FAILURE', payload: {
-          isError: true,
-        }})
+        dispatch({
+          type: 'FETCH_FAILURE',
+          payload: {
+            isError: true,
+          },
+        })
       }
     }
 
@@ -101,7 +112,10 @@ export function useFetch (fetchFn, cb, initialData, params) {
 
   // 提供正常 cb 调用方式
   useEffect(() => {
-    const { res, res: { code } } = state
+    const {
+      res,
+      res: { code },
+    } = state
 
     if (cb && typeof cb === 'function' && code !== -1) {
       return cb(res)

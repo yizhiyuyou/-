@@ -37,25 +37,30 @@ export default () => {
     return { ...searchForm, pageIndex, pageSize }
   }, [searchForm, pagination.current])
 
-  const { isLoading } = useFetch(store.eventListStore.getEventList, res => {
-    if (res.code === 0) {
-      // 纠正分页信息（增加修改total或者减少修改current）
-      const { total, pageCount } = res
+  const { isLoading } = useFetch(
+    store.eventListStore.getEventList,
+    res => {
+      if (res.code === 0) {
+        // 纠正分页信息（增加修改total或者减少修改current）
+        const { total, pageCount } = res
 
-      const pagination = { total, current: params.pageIndex }
+        const pagination = { total, current: params.pageIndex }
 
-      if (params.pageIndex > pageCount) {
-        Object.assign(pagination, { current: pageCount })
+        if (params.pageIndex > pageCount) {
+          Object.assign(pagination, { current: pageCount })
+        }
+
+        setPagination(state => ({
+          ...state,
+          ...pagination,
+        }))
       }
+    },
+    [],
+    params
+  )
 
-      setPagination(state => ({
-        ...state,
-        ...pagination,
-      }))
-    }
-  }, [], params)
-
-  const handleSubmit = useCallback((searchData) => {
+  const handleSubmit = useCallback(searchData => {
     setSearchForm(searchData)
 
     setPagination(state => ({ ...state, current: 1 }))
@@ -77,10 +82,9 @@ export default () => {
     store.dicStore.getDictionaryByType('eventState')
   }, [])
 
-  const pagin =
-    Math.floor(pagination.total / pagination.pageSize) ? pagination : false
+  const pagin = Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
-  return useObserver(() =>
+  return useObserver(() => (
     <div className={styles['event-list']}>
       <WrappedSearchForm onSubmit={handleSubmit} />
       <div className={styles.title}>事件管理列表</div>
@@ -93,5 +97,5 @@ export default () => {
         rowKey="id"
       />
     </div>
-  )
+  ))
 }

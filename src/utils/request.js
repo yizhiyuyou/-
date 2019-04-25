@@ -38,7 +38,7 @@ const loginPagePath = pages.login.path
  * @param     {Objet}   res        响应数据
  * @return    {Object}             整理后的数据
  */
-function resFormat (res) {
+function resFormat(res) {
   const { code, msg, respBody, respList, page } = res.data
 
   const temp = { code, msg }
@@ -68,7 +68,7 @@ function resFormat (res) {
  * @param  {Object}                   响应
  * @return {Object}                   响应数据或者是错误对象
  */
-function sessionTimeout (res) {
+function sessionTimeout(res) {
   // 会话超时情况下，跳转至登录页并携带来时页面地址
   // 如果不是去往登录页或公开页，则执行跳转
   if (getPropVal(res, sessionTimeoutMsgPath) === sessionTimeoutMsg) {
@@ -84,7 +84,7 @@ function sessionTimeout (res) {
  * @description                       统一的错误处理
  * @param  {Error}                    错误对象
  */
-function catchError (e) {
+function catchError(e) {
   message.warning(waringMsg, 1.5)
 
   return Promise.reject(new Error(waringMsg))
@@ -93,10 +93,10 @@ function catchError (e) {
 // 相应处理（compose 从右往左执行）
 const resProcess = compose(
   sessionTimeout,
-  resFormat,
+  resFormat
 )
 
-export function get (url, data, config) {
+export function get(url, data, config) {
   // 组装配置
   const conf = {
     ...config,
@@ -108,10 +108,10 @@ export function get (url, data, config) {
   return request(conf)
 }
 
-export function post (url, data, config) {
+export function post(url, data, config) {
   // 组装配置
   const conf = {
-    transformRequest (data) {
+    transformRequest(data) {
       return qs.stringify(data)
     },
     ...config,
@@ -123,7 +123,7 @@ export function post (url, data, config) {
   return request(conf)
 }
 
-async function request (config) {
+async function request(config) {
   try {
     // 发起网络请求
     const res = await Axios.request(config)

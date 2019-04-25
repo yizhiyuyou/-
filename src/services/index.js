@@ -4,11 +4,8 @@ import request from '@/utils/request'
 import { restData } from '@/config'
 
 // 用于页面登录
-export function pageLogin (params) {
-  const {
-    username,
-    password,
-  } = params
+export function pageLogin(params) {
+  const { username, password } = params
 
   return request.post(restData.checkLoginUrl, {
     username,
@@ -17,12 +14,12 @@ export function pageLogin (params) {
 }
 
 // 用于页面注销
-export function pageLogout () {
+export function pageLogout() {
   return request.post(restData.logoutUrl)
 }
 
 // 获取字典数据
-export async function getDicData ({ type }) {
+export async function getDicData({ type }) {
   const res = await request.get(restData.dictUrl)
 
   if (res.code === 0) {

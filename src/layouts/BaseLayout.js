@@ -17,10 +17,8 @@ export default ({ children }) => {
       </div>
       <div className={styles['layout-right']}>
         <Head />
-        { children }
+        {children}
       </div>
     </div>
   )
 }
-
-

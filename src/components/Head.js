@@ -29,21 +29,29 @@ export const Head = () => {
     </Menu>
   )
 
-  return useObserver(() =>
+  return useObserver(() => (
     <div className={styles['the-head']}>
       <div>首页</div>
       <div className={styles['head-right']}>
         <Badge count={0} overflowCount={99}>
-          <img src="/static/img/layout/info.png" alt="信息" title="信息" className={styles.pointer} />
+          <img
+            src="/static/img/layout/info.png"
+            alt="信息"
+            title="信息"
+            className={styles.pointer}
+          />
         </Badge>
-        <span className={styles['vertical-line']}></span>
-        <img src="/static/img/layout/user.png" className={styles['user-icon']} alt="头像"/>
+        <span className={styles['vertical-line']} />
+        <img src="/static/img/layout/user.png" className={styles['user-icon']} alt="头像" />
         <Dropdown overlay={WithMenu} className={styles['the-dropdown']}>
-          <div className={styles.pointer}>{store.rootStore.username}<Icon type="down" /></div>
+          <div className={styles.pointer}>
+            {store.rootStore.username}
+            <Icon type="down" />
+          </div>
         </Dropdown>
       </div>
     </div>
-  )
+  ))
 }
 
 export default Head

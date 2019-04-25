@@ -3,7 +3,7 @@ import { Spin } from 'antd'
 
 export const Loading = props => (
   <div style={{ paddingTop: 100, textAlign: 'center' }}>
-    <Spin { ...props } />
+    <Spin {...props} />
   </div>
 )
 
@@ -20,10 +20,10 @@ export default props => {
     return () => clearTimeout(timer)
   })
 
-  return <Loading { ...rest } tip={tip} />
+  return <Loading {...rest} tip={tip} />
 }
 
-export function WaitingComponent (Component, fallback) {
+export function WaitingComponent(Component, fallback) {
   return props => (
     <Suspense fallback={fallback || <Spin size="large" />}>
       <Component {...props} />

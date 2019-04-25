@@ -3,13 +3,13 @@ import React from 'react'
 import styles from './Button.module.less'
 
 export default ({ type, children, className, ...rest }) => {
-  const cn = type === 'primary'
-    ? styles['text-button_primary']
-    : styles['text-button_danger']
+  const cn = type === 'primary' ? styles['text-button_primary'] : styles['text-button_danger']
 
   return (
     <span className={className}>
-      <span className={cn} {...rest}>{children}</span>
+      <span className={cn} {...rest}>
+        {children}
+      </span>
     </span>
   )
 }

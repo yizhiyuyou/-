@@ -13,7 +13,7 @@
  * @param [string] path 描述对象属性的路径
  * @return 目标属性值 (找不到时返回 undefined)
  */
-export function getPropVal (obj, path) {
+export function getPropVal(obj, path) {
   const val = path.split('.').reduce((m, n) => {
     return m && m[n]
   }, obj)
@@ -26,7 +26,7 @@ export function getPropVal (obj, path) {
  * @param  {Date}                     日期
  * @return {Promise}                  格式化后的日期字符串
  */
-export function formatDateTime (date, format) {
+export function formatDateTime(date, format) {
   const mapping = {
     // 年
     'y+': date.getFullYear(),
@@ -45,10 +45,14 @@ export function formatDateTime (date, format) {
   new RegExp('(y+)').test(format) &&
     (format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length)))
 
-  Object.entries(mapping)
-    .forEach(([key, val]) => new RegExp(`(${key})`).test(format) &&
-      (format =
-        format.replace(RegExp.$1, RegExp.$1.length === 1 ? `${val}` : `${val}`.padStart(RegExp.$1.length, '0'))))
+  Object.entries(mapping).forEach(
+    ([key, val]) =>
+      new RegExp(`(${key})`).test(format) &&
+      (format = format.replace(
+        RegExp.$1,
+        RegExp.$1.length === 1 ? `${val}` : `${val}`.padStart(RegExp.$1.length, '0')
+      ))
+  )
 
   return format
 }
@@ -60,10 +64,10 @@ export function formatDateTime (date, format) {
  * @param  {boolean}                  是否执行第一次
  * @return {undefined}                无返回值
  */
-export function debounce (fn, delay = 600, runFirstFn = true) {
+export function debounce(fn, delay = 600, runFirstFn = true) {
   let timer = null
 
-  return function (...rest) {
+  return function(...rest) {
     // 清除定时器
     clearTimeout(timer)
 
@@ -85,11 +89,11 @@ export function debounce (fn, delay = 600, runFirstFn = true) {
  * @param  {boolean}                  是否执行第一次
  * @return {undefined}                无返回值
  */
-export function throttle (fn, delay = 600, runFirstFn = true) {
+export function throttle(fn, delay = 600, runFirstFn = true) {
   let timer = null
   let timerStart
 
-  return function (...rest) {
+  return function(...rest) {
     const timeCurr = +new Date()
 
     clearTimeout(timer)
@@ -118,7 +122,7 @@ export function throttle (fn, delay = 600, runFirstFn = true) {
  * @param         [Function]    需要进行缓存的函数
  * @return        [Function]    可以进行缓存的函数
  */
-export function memory (fn) {
+export function memory(fn) {
   let cache = new Map()
 
   return (...rest) => {
@@ -135,7 +139,7 @@ export function memory (fn) {
       data.count++
       rest[1](data.list)
     } else {
-      fn(...rest).then((list) => {
+      fn(...rest).then(list => {
         cache.set(rest[0], { count: 1, list })
         rest[1](list)
       })
@@ -148,13 +152,15 @@ export function memory (fn) {
  * @param  {Function}                 需要执行的函数
  * @return {any}                      函数执行的结果
  */
-export function compose (...fns) {
+export function compose(...fns) {
   return (...args) => {
     const len = fns.length
 
     // len - index === 1 来判断是否是第一个需要执行的函数
-    return fns.reduceRight((result, fn, index) =>
-      len - index === 1 ? fn(...result) : fn(result), args)
+    return fns.reduceRight(
+      (result, fn, index) => (len - index === 1 ? fn(...result) : fn(result)),
+      args
+    )
   }
 }
 
@@ -163,11 +169,10 @@ export function compose (...fns) {
  * @param  {Function}                 需要执行的函数
  * @return {any}                      函数执行的结果
  */
-export function pipe (...fns) {
-  return (...args) =>
-    fns.reduce((result, fn, index) => index ? fn(result) : fn(...result), args)
+export function pipe(...fns) {
+  return (...args) => fns.reduce((result, fn, index) => (index ? fn(result) : fn(...result)), args)
 }
 
-export function isUndefinedOrNull (value) {
+export function isUndefinedOrNull(value) {
   return value === null || value === undefined
 }
