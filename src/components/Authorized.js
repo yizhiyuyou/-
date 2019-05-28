@@ -14,16 +14,18 @@ export const Authorized = props => {
   const store = useContext(StoreContext)
 
   return useObserver(() => {
-    if (store.rootStore.loginStatus === USER_STATUS.get('已登录').status) {
+    const { loginStatus, appLogin } = store.rootStore
+
+    if (loginStatus === USER_STATUS.get('已登录').status) {
       return props.children
     }
 
-    if (store.rootStore.loginStatus === USER_STATUS.get('已注销').status) {
+    if (loginStatus === USER_STATUS.get('已注销').status) {
       return <Redirect to="/login" />
     }
 
-    if (store.rootStore.loginStatus === USER_STATUS.get('未登录').status) {
-      store.rootStore.appLogin()
+    if (loginStatus === USER_STATUS.get('未登录').status) {
+      appLogin()
     }
 
     return <PageLoading />

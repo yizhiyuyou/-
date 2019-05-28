@@ -15,8 +15,11 @@ import { message } from 'antd'
 
 import { stores } from '@/stores'
 import history from './history'
+
 import { getPropVal, compose } from './objectUtil'
 import { restData, pages } from '@/config'
+
+import { USER_STATUS } from '@/const'
 
 // 网络请求超时时长
 const timeout = restData.timeout
@@ -25,10 +28,10 @@ const timeout = restData.timeout
 const waringMsg = restData.waringMsg
 
 // 会话过期消息取值路径
-const sessionTimeoutMsgPath = restData.sessionTimeoutMsgPath
+const sessionTimeoutCodePath = restData.sessionTimeoutCodePath
 
 // 会话过期判定消息
-const sessionTimeoutMsg = restData.sessionTimeoutMsg
+const sessionTimeoutCode = restData.sessionTimeoutCode
 
 // 登录页地址
 const loginPagePath = pages.login.path
@@ -71,9 +74,11 @@ function resFormat(res) {
 function sessionTimeout(res) {
   // 会话超时情况下，跳转至登录页并携带来时页面地址
   // 如果不是去往登录页或公开页，则执行跳转
-  if (getPropVal(res, sessionTimeoutMsgPath) === sessionTimeoutMsg) {
+  if (getPropVal(res, sessionTimeoutCodePath) === sessionTimeoutCode) {
     if (!history.location.pathname.startsWith(loginPagePath)) {
       stores.rootStore.clearUser()
+
+      stores.rootStore.setLoginStatus(USER_STATUS.get('已注销').status)
     }
   }
 

@@ -30,12 +30,14 @@ export const Login = ({ form }) => {
   const { getFieldDecorator } = form
 
   return useObserver(() => {
-    if (store.rootStore.loginStatus === USER_STATUS.get('已登录').status) {
+    const { loginStatus, appLogin } = store.rootStore
+
+    if (loginStatus === USER_STATUS.get('已登录').status) {
       return <Redirect to="/home" />
     }
 
-    if (store.rootStore.loginStatus === USER_STATUS.get('未登录').status) {
-      store.rootStore.appLogin()
+    if (loginStatus === USER_STATUS.get('未登录').status) {
+      appLogin()
     }
 
     return (

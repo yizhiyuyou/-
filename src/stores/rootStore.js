@@ -6,8 +6,6 @@ import { pageLogin, pageLogout, appSessionLogin } from '@/services'
 
 import injectUser from '@/utils/injectUser'
 
-import history from '@/utils/history'
-
 import { USER_STATUS } from '@/const'
 
 class RootStore {
@@ -77,7 +75,7 @@ class RootStore {
 
       this.setLoginStatus(USER_STATUS.get('已登录').status)
     } else {
-      this.setLoginStatus(USER_STATUS.get('未登录').status)
+      this.setLoginStatus(USER_STATUS.get('已注销').status)
 
       message.warning(msg || '登录失败，请重新登录', 2)
 
@@ -99,11 +97,7 @@ class RootStore {
     if (code === 'success') {
       this.setLoginStatus(USER_STATUS.get('已登录').status)
     } else {
-      message.warning(msg || '用户信息注入失败', 2)
-
-      history.replace('/login')
-
-      this.setLoginStatus(USER_STATUS.get('未登录').status)
+      this.setLoginStatus(USER_STATUS.get('已注销').status)
     }
 
     return { code, msg }

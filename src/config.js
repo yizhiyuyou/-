@@ -22,11 +22,11 @@ export const restData = {
   authUserPath: 'data',
 
   // 返回数据中会话超时信息路径
-  sessionTimeoutMsgPath: 'code',
+  sessionTimeoutCodePath: 'code',
 
   // 服务端返回的用户会话超时判定信息
   // sessionTimeoutMsg: 'hndfsj_app_session_timeout',
-  sessionTimeoutMsg: 401,
+  sessionTimeoutCode: 401,
 
   // 网络请求异常的统一提示信息
   waringMsg: '数据服务通信异常',
