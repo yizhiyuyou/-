@@ -1,18 +1,33 @@
 import React, { useContext } from 'react'
+
 import { Redirect } from 'react-router-dom'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { StoreContext } from '@/stores'
 
+import PageLoading from '@/components/PageLoading'
+
+import { USER_STATUS } from '@/const'
+
 export const Authorized = props => {
   const store = useContext(StoreContext)
 
-  return useObserver(() => (
-    <React.Fragment>
-      {store.rootStore.loaded ? props.children : <Redirect to="/login" />}
-    </React.Fragment>
-  ))
+  return useObserver(() => {
+    if (store.rootStore.loginStatus === USER_STATUS.get('已登录').status) {
+      return props.children
+    }
+
+    if (store.rootStore.loginStatus === USER_STATUS.get('已注销').status) {
+      return <Redirect to="/login" />
+    }
+
+    if (store.rootStore.loginStatus === USER_STATUS.get('未登录').status) {
+      store.rootStore.appLogin()
+    }
+
+    return <PageLoading />
+  })
 }
 
 export default Authorized

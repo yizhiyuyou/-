@@ -2,9 +2,13 @@ import { observable, action } from 'mobx'
 
 import { message } from 'antd'
 
-import { pageLogin, pageLogout } from '@/services'
+import { pageLogin, pageLogout, appSessionLogin } from '@/services'
 
 import injectUser from '@/utils/injectUser'
+
+import history from '@/utils/history'
+
+import { USER_STATUS } from '@/const'
 
 class RootStore {
   @observable id = ''
@@ -13,7 +17,7 @@ class RootStore {
   @observable realname = ''
   @observable username = ''
   @observable roles = []
-  @observable loaded = false
+  @observable loginStatus = USER_STATUS.get('未登录').status
 
   @action
   setUser(user) {
@@ -21,8 +25,8 @@ class RootStore {
   }
 
   @action
-  setLoaded(loaded) {
-    this.loaded = loaded
+  setLoginStatus(loginStatus) {
+    this.loginStatus = loginStatus
   }
 
   @action
@@ -44,12 +48,12 @@ class RootStore {
     if (code === 0) {
       message.success('注销成功,请重新登陆', 2)
 
-      // 不知道为什么就是想让你看一下我的登录效果600
-      await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
+      // 不知道为什么就是想让你看一下我的注销效果600
+      await (time => new Promise(resolve => void setTimeout(resolve, time)))(600)
 
       this.clearUser()
 
-      this.setLoaded(false)
+      this.setLoginStatus(USER_STATUS.get('已注销').status)
     } else {
       message.warning(msg || '注销失败，请重新注销', 2)
     }
@@ -59,6 +63,8 @@ class RootStore {
 
   @action.bound
   async pageLogin(params) {
+    this.setLoginStatus(USER_STATUS.get('登陆中').status)
+
     const res = await pageLogin(params)
 
     const { code, msg } = this.injectUser(res)
@@ -69,12 +75,35 @@ class RootStore {
       // 不知道为什么就是想让你看一下我的登录效果600
       await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
 
-      this.setLoaded(true)
+      this.setLoginStatus(USER_STATUS.get('已登录').status)
     } else {
+      this.setLoginStatus(USER_STATUS.get('未登录').status)
+
       message.warning(msg || '登录失败，请重新登录', 2)
 
       // 不知道为什么就是想让你看一下我的登录效果600
       await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
+    }
+
+    return { code, msg }
+  }
+
+  @action.bound
+  async appLogin() {
+    this.setLoginStatus(USER_STATUS.get('登陆中').status)
+
+    const res = await appSessionLogin()
+
+    const { code, msg } = this.injectUser(res)
+
+    if (code === 'success') {
+      this.setLoginStatus(USER_STATUS.get('已登录').status)
+    } else {
+      message.warning(msg || '用户信息注入失败', 2)
+
+      history.replace('/login')
+
+      this.setLoginStatus(USER_STATUS.get('未登录').status)
     }
 
     return { code, msg }

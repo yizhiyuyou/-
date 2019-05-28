@@ -28,3 +28,8 @@ export async function getDicData({ type }) {
 
   return res
 }
+
+// session登录
+export function appSessionLogin() {
+  return request.get(restData.checkUserInfoUrl)
+}
