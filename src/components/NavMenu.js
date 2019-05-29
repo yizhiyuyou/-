@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
@@ -8,6 +8,8 @@ import styles from './NavMenu.module.less'
 const { SubMenu, Item } = Menu
 
 export const NavMenu = ({ history, location }) => {
+  const [openKeys, setOpenKeys] = useState([])
+
   const handleClick = useCallback(({ key }) => {
     if (/\^.*\$/.test(key)) {
       const url = /\^(.*)\$/.exec(key)[1]
@@ -18,10 +20,17 @@ export const NavMenu = ({ history, location }) => {
     }
   }, [])
 
+  const handleOpenChange = useCallback(openKeys => {
+    setOpenKeys(openKeys.length > 1 ? openKeys.slice(-1) : openKeys)
+  })
+
+  // defaultSelectedKeys={[location.pathname]}
+
   return (
     <Menu
       onClick={handleClick}
-      defaultSelectedKeys={[location.pathname]}
+      openKeys={openKeys}
+      onOpenChange={handleOpenChange}
       mode="inline"
       theme="dark"
       className={styles['menu-container']}

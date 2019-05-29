@@ -16,6 +16,7 @@ class RootStore {
   @observable username = ''
   @observable roles = []
   @observable loginStatus = USER_STATUS.get('未登录').status
+  @observable timestamp = `${Date.now()}`
 
   @action
   setUser(user) {
@@ -25,6 +26,11 @@ class RootStore {
   @action
   setLoginStatus(loginStatus) {
     this.loginStatus = loginStatus
+  }
+
+  @action
+  setTimestamp(timestamp) {
+    this.timestamp = timestamp
   }
 
   @action
@@ -51,6 +57,8 @@ class RootStore {
 
       this.clearUser()
 
+      this.setTimestamp(`${Date.now()}`)
+
       this.setLoginStatus(USER_STATUS.get('已注销').status)
     } else {
       message.warning(msg || '注销失败，请重新注销', 2)
@@ -74,6 +82,8 @@ class RootStore {
       await (time => new Promise(resolve => void setTimeout(resolve, time)))(800)
 
       this.setLoginStatus(USER_STATUS.get('已登录').status)
+
+      this.setTimestamp(`${Date.now()}`)
     } else {
       this.setLoginStatus(USER_STATUS.get('已注销').status)
 
@@ -96,6 +106,8 @@ class RootStore {
 
     if (code === 'success') {
       this.setLoginStatus(USER_STATUS.get('已登录').status)
+
+      this.setTimestamp(`${Date.now()}`)
     } else {
       this.setLoginStatus(USER_STATUS.get('已注销').status)
     }

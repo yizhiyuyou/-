@@ -78,6 +78,8 @@ function sessionTimeout(res) {
     if (!history.location.pathname.startsWith(loginPagePath)) {
       stores.rootStore.clearUser()
 
+      stores.rootStore.setTimestamp(`${Date.now()}`)
+
       stores.rootStore.setLoginStatus(USER_STATUS.get('已注销').status)
     }
   }
