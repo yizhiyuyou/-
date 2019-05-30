@@ -8,6 +8,8 @@ import pathToRegexp from 'path-to-regexp'
 
 import { flatConfig } from '@/router/config'
 
+import { pages } from '@/config'
+
 function useBreadcrumb(pathname) {
   return useMemo(() => {
     const reg = pathToRegexp(pathname)
@@ -18,7 +20,15 @@ function useBreadcrumb(pathname) {
       return null
     }
 
-    const BreadcrumbItmes = findObj[1].map(([path, config], index, self) => {
+    // 处理非首页内容添加首页
+    const arr = reg.test(`${pages.home.path}/`)
+      ? [...findObj[1]]
+      : [
+          ...[flatConfig.find(([path]) => pathToRegexp(path).test(`${pages.home.path}/`))[1][0]],
+          ...findObj[1],
+        ]
+
+    const BreadcrumbItmes = arr.map(([path, config], index, self) => {
       const { name } = config.meta
 
       return (

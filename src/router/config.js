@@ -40,12 +40,12 @@ import NoFind from '@/components/NoFind'
 
 const routes = [
   {
-    path: '/home',
+    path: pages.home.path,
     component: BaseLayout,
     meta: { hideInMenu: true },
     children: [
       {
-        path: '/home/',
+        path: `${pages.home.path}/`,
         exact: true,
         component: HomePage,
         meta: {
