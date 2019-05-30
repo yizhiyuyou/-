@@ -14,7 +14,24 @@ function useBreadcrumb(pathname) {
   return useMemo(() => {
     const reg = pathToRegexp(pathname)
 
-    const findObj = [...flatConfig].reverse().find(([path]) => reg.test(path))
+    const findObj = flatConfig.find(([path], index, self) => {
+      const match = reg.test(path)
+
+      if (!match) {
+        return false
+      }
+      // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+      // /a 按着顺序会先匹配到/a，会造成缺失显示默认下层内容
+      if (index === self.length - 1) {
+        return true
+      }
+
+      if (reg.test(self[index + 1][0])) {
+        return false
+      }
+
+      return true
+    })
 
     if (!findObj) {
       return null
@@ -24,7 +41,7 @@ function useBreadcrumb(pathname) {
     const arr = reg.test(`${pages.home.path}/`)
       ? [...findObj[1]]
       : [
-          ...[flatConfig.find(([path]) => pathToRegexp(path).test(`${pages.home.path}/`))[1][0]],
+          ...[flatConfig.find(([path]) => pathToRegexp(path).test(`${pages.home.path}/`))[1][0]], // 首页配置信息
           ...findObj[1],
         ]
 

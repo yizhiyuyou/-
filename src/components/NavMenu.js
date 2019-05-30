@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
@@ -81,7 +81,24 @@ function useMenu(pathname) {
   useEffect(() => {
     const reg = pathToRegexp(pathname)
 
-    const findObj = [...flatConfig].reverse().find(([path]) => reg.test(path))
+    const findObj = flatConfig.find(([path], index, self) => {
+      const match = reg.test(path)
+
+      if (!match) {
+        return false
+      }
+      // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+      // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
+      if (index === self.length - 1) {
+        return true
+      }
+
+      if (reg.test(self[index + 1][0])) {
+        return false
+      }
+
+      return true
+    })
 
     if (!findObj) {
       setMenuProp({
