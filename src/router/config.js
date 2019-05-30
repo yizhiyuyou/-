@@ -1,6 +1,11 @@
 import { pages } from '@/config'
 
-import { initRoutesMeta, getNavMenuConfig, downToUpReduceMetaAuthority } from '@/utils/router'
+import {
+  initRoutesMeta,
+  getNavMenuConfig,
+  downToUpReduceMetaAuthority,
+  getFlatData,
+} from '@/utils/router'
 
 import BaseLayout from '../layouts/BaseLayout'
 
@@ -40,7 +45,7 @@ const routes = [
     meta: { hideInMenu: true },
     children: [
       {
-        path: '/home',
+        path: '/home/',
         exact: true,
         component: HomePage,
         meta: {
@@ -337,7 +342,7 @@ const routes = [
   {
     path: '/',
     exact: true,
-    redirect: '/home',
+    redirect: '/home/',
     meta: {
       hideInMenu: true,
     },
@@ -356,4 +361,6 @@ const reduceRoute = downToUpReduceMetaAuthority(initRoutesMeta(routes))
 
 export const navMenuConfig = getNavMenuConfig(reduceRoute, 'path')
 
+export const flatConfig = getFlatData(navMenuConfig)
+console.log(222, flatConfig)
 export default reduceRoute

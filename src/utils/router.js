@@ -279,9 +279,24 @@ export function downToUpReduceMetaAuthority(routes) {
   }
 }
 
+// 获取打平的配置，主要用于 navMenu 刷新初始化，和面包屑展示
+export function getFlatData(config, before = []) {
+  return config.reduce((prev, item) => {
+    const { children } = item
+    const line = [item.path, [...before, [item.path, item]]]
+
+    if (!children) {
+      return [...prev, line]
+    }
+
+    return [...prev, line, ...getFlatData(children, [...before, [item.path, item]])]
+  }, [])
+}
+
 export default {
   initRoutesMeta,
   getNavMenuConfig,
+  getFlatData,
   addNotFindAndNotPermission,
   downToUpReduceMetaAuthority,
 }

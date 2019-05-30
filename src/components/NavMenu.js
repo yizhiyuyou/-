@@ -3,7 +3,9 @@ import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
 
-import { navMenuConfig } from '@/router/config'
+import pathToRegexp from 'path-to-regexp'
+
+import { navMenuConfig, flatConfig } from '@/router/config'
 
 import styles from './NavMenu.module.less'
 
@@ -29,6 +31,7 @@ function getNavMenuByUserRole(navMenuConfig) {
   }, [])
 }
 
+// 根据用户能够访问的导航配置，获取 jsx
 function getNavMenuByConfig(config) {
   return config.reduce((prev, item) => {
     if (!item.children) {
@@ -68,12 +71,44 @@ function getNavMenuByConfig(config) {
   }, [])
 }
 
+// 获得默认打开内容
+function getDefaultOpen(location) {
+  const reg = pathToRegexp(location.pathname)
+
+  const findObj = flatConfig.find(([path]) => reg.test(path))
+
+  if (!findObj) {
+    return {
+      openKeys: [],
+      defaultSelectedKeys: [],
+    }
+  }
+
+  const select = findObj[1]
+
+  if (select.length === 1) {
+    return {
+      openKeys: [],
+      defaultSelectedKeys: [findObj[0]],
+    }
+  }
+
+  return {
+    openKeys: select.reduce((prev, [path], index, self) => {
+      return self.length - 1 !== index ? [...prev, path] : [...prev]
+    }, []),
+    defaultSelectedKeys: [findObj[0]],
+  }
+}
+
 export const NavMenu = ({ history, location }) => {
   const [config] = useState(() => {
     return getNavMenuByUserRole(navMenuConfig)
   })
 
-  const [openKeys, setOpenKeys] = useState([])
+  const [menuProp, setMenuProp] = useState(() => {
+    return getDefaultOpen(location)
+  })
 
   const handleClick = useCallback(({ key }) => {
     if (/\^.*\$/.test(key)) {
@@ -86,89 +121,24 @@ export const NavMenu = ({ history, location }) => {
   }, [])
 
   const handleOpenChange = useCallback(openKeys => {
-    setOpenKeys(openKeys.length > 1 ? openKeys.slice(-1) : openKeys)
-  })
+    setMenuProp(state => {
+      return {
+        ...state,
+        openKeys: openKeys.length > 1 ? openKeys.slice(-1) : openKeys,
+      }
+    })
+  }, [])
 
-  // defaultSelectedKeys={[location.pathname]}
-  console.log(1, config)
   return (
     <Menu
       onClick={handleClick}
-      openKeys={openKeys}
       onOpenChange={handleOpenChange}
       mode="inline"
       theme="dark"
       className={styles['menu-container']}
+      {...menuProp}
     >
       {getNavMenuByConfig(config)}
-      {/* <Item key="/home">
-        <img src="/static/img/layout/home.png" alt="首页图标" className={styles['img-icon']} />
-        <span>首页</span>
-      </Item>
-      <SubMenu
-        key="sub1"
-        title={
-          <span>
-            <img
-              src="/static/img/layout/eventMana.png"
-              alt="事件管理图标"
-              className={styles['img-icon']}
-            />
-            <span>事件管理</span>
-          </span>
-        }
-      >
-        <Item key="/eventMana">事件列表</Item>
-        <Item key="/eventMana/myTask">我的待办</Item>
-      </SubMenu>
-      <SubMenu
-        key="sub2"
-        title={
-          <span>
-            <img
-              src="/static/img/layout/infoMana.png"
-              alt="信息管理图标"
-              className={styles['img-icon']}
-            />
-            <span>信息管理</span>
-          </span>
-        }
-      >
-        <Item key="/infoMana">通知公告</Item>
-        <Item key="/infoMana/setNotice">查询及信息发布</Item>
-      </SubMenu>
-      <Item key="/uniteMonitor">
-        <img
-          src="/static/img/layout/uniteMonitor.png"
-          alt="统一监控图标"
-          className={styles['img-icon']}
-        />
-        <span>统一监控</span>
-      </Item>
-      <SubMenu
-        key="sub3"
-        title={
-          <span>
-            <img
-              src="/static/img/layout/eventMana.png"
-              alt="信息管理图标"
-              className={styles['img-icon']}
-            />
-            <span>能耗管理</span>
-          </span>
-        }
-      >
-        <Item key="/energyAnalysis">能耗分析</Item>
-        <Item key="/energyAnalysis/energyDetail">能耗明细</Item>
-      </SubMenu>
-      <Item key="^https://www.baidu.com$">
-        <img
-          src="/static/img/layout/realTimePositioning.png"
-          alt="实时定位图标"
-          className={styles['img-icon']}
-        />
-        <span>实时定位</span>
-      </Item> */}
     </Menu>
   )
 }
