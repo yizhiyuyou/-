@@ -46,10 +46,10 @@ export function addNotFindAndNotPermission(routes, notPermissionComponent, notFi
  * @param  {Array}         routes   路由
  * @return {Array}                  导航栏配置
  */
-export function getNavMenuConfig(routes) {
+export function getNavMenuConfig(routes, prop = 'name') {
   return routes.reduce((prevAll, route) => {
     const {
-      name = '',
+      [prop]: val = '',
       meta: { hideInMenu = false, hideChildrenInMenu = false } = {},
       children = [],
     } = route
@@ -57,24 +57,24 @@ export function getNavMenuConfig(routes) {
     // 隐藏自身 显示子代
     if (hideInMenu && !hideChildrenInMenu) {
       if (children.length) {
-        return [...prevAll, ...getNavMenuConfig(children)]
+        return [...prevAll, ...getNavMenuConfig(children, prop)]
       }
     } else if (!hideInMenu && hideChildrenInMenu) {
       // 显示自身 隐藏子代
-      return [...prevAll, { name, meta: { ...route.meta } }]
+      return [...prevAll, { [prop]: val, meta: { ...route.meta } }]
     } else if (!hideInMenu && !hideChildrenInMenu) {
       // 显示自身 显示子代
       if (children.length) {
         return [
           ...prevAll,
           {
-            name,
+            [prop]: val,
             meta: { ...route.meta },
-            children: getNavMenuConfig(children),
+            children: getNavMenuConfig(children, prop),
           },
         ]
       } else {
-        return [...prevAll, { name, meta: { ...route.meta } }]
+        return [...prevAll, { [prop]: val, meta: { ...route.meta } }]
       }
     }
 
@@ -142,7 +142,7 @@ function hasPermission(authority) {
 
       // 过滤掉元素不是数组的，配置的角色和当前用户所具有的角色没有一个匹配的，配置不规范的
       const filterAuthority = authority.filter(
-        item => Array.isArray(item) && roles.find(({ id }) => id === item[0]) && item.length === 2
+        item => Array.isArray(item) && roles.find(id => id === item[0]) && item.length === 2
       )
 
       // 根据用户是否传入自定义查询函数，找搜索是否有权限

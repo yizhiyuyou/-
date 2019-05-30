@@ -53,15 +53,15 @@ function getRoleConfiguration(info) {
 
 // 整理并获得 用户信息
 function getUserInfo(info) {
-  const { id, post, mobile, realname, username, roles } = info
+  const { userId, post, mobile, realname, username, rolesString } = info
 
   return {
-    id,
+    id: userId,
     post,
     mobile,
     realname,
     username,
-    roles,
+    roles: rolesString,
   }
 }
 

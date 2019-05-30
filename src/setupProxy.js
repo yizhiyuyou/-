@@ -3,8 +3,8 @@ const proxy = require('http-proxy-middleware')
 module.exports = function(app) {
   app.use(
     proxy('/rest', {
-      // target: 'https://fuwuqu.trial.hndfsj.net',
-      target: 'http://192.168.10.120:8848/zhfwq',
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: 'http://192.168.10.120:8848/zhfwq',
       changeOrigin: true,
       onProxyRes: cookiePathRewriter,
       pathRewrite: {
@@ -15,8 +15,8 @@ module.exports = function(app) {
 
   app.use(
     proxy('/resource', {
-      // target: 'https://fuwuqu.trial.hndfsj.net',
-      target: 'http://192.168.10.120:8848/zhfwq',
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: 'http://192.168.10.120:8848/zhfwq',
       changeOrigin: true,
       onProxyRes: cookiePathRewriter,
       pathRewrite: {

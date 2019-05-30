@@ -3,11 +3,76 @@ import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
 
+import { navMenuConfig } from '@/router/config'
+
 import styles from './NavMenu.module.less'
 
 const { SubMenu, Item } = Menu
 
+// 获取该用户能够显示的导航栏
+function getNavMenuByUserRole(navMenuConfig) {
+  return navMenuConfig.reduce((prev, item) => {
+    // 外层没权限直接不显示
+    if (!item.meta.hasRoute()) {
+      return prev
+    }
+
+    if (item.children) {
+      const navMenu = getNavMenuByUserRole(item.children)
+
+      const newItem = Object.assign({ ...item }, navMenu.length ? { children: navMenu } : {})
+
+      return [...prev, newItem]
+    }
+
+    return [...prev, item]
+  }, [])
+}
+
+function getNavMenuByConfig(config) {
+  return config.reduce((prev, item) => {
+    if (!item.children) {
+      return [
+        ...prev,
+        <Item key={item.meta.path || item.path}>
+          {item.meta.icon && (
+            <img
+              src={`/static/img/layout/${item.meta.icon}.png`}
+              alt={item.meta.name}
+              className={styles['img-icon']}
+            />
+          )}
+          <span>{item.meta.name}</span>
+        </Item>,
+      ]
+    }
+
+    return [
+      ...prev,
+      <SubMenu
+        key={item.path}
+        title={
+          <span>
+            <img
+              src={`/static/img/layout/${item.meta.icon}.png`}
+              alt={item.meta.name}
+              className={styles['img-icon']}
+            />
+            <span>{item.meta.name}</span>
+          </span>
+        }
+      >
+        {getNavMenuByConfig(item.children)}
+      </SubMenu>,
+    ]
+  }, [])
+}
+
 export const NavMenu = ({ history, location }) => {
+  const [config] = useState(() => {
+    return getNavMenuByUserRole(navMenuConfig)
+  })
+
   const [openKeys, setOpenKeys] = useState([])
 
   const handleClick = useCallback(({ key }) => {
@@ -25,7 +90,7 @@ export const NavMenu = ({ history, location }) => {
   })
 
   // defaultSelectedKeys={[location.pathname]}
-
+  console.log(1, config)
   return (
     <Menu
       onClick={handleClick}
@@ -35,7 +100,8 @@ export const NavMenu = ({ history, location }) => {
       theme="dark"
       className={styles['menu-container']}
     >
-      <Item key="/home">
+      {getNavMenuByConfig(config)}
+      {/* <Item key="/home">
         <img src="/static/img/layout/home.png" alt="首页图标" className={styles['img-icon']} />
         <span>首页</span>
       </Item>
@@ -102,7 +168,7 @@ export const NavMenu = ({ history, location }) => {
           className={styles['img-icon']}
         />
         <span>实时定位</span>
-      </Item>
+      </Item> */}
     </Menu>
   )
 }
