@@ -6,6 +6,8 @@ import { Badge, Menu, Dropdown, Icon } from 'antd'
 
 import { StoreContext } from '@/stores'
 
+import Breadcrumb from './Breadcrumb'
+
 import styles from './Head.module.less'
 
 export const Head = () => {
@@ -31,7 +33,9 @@ export const Head = () => {
 
   return useObserver(() => (
     <div className={styles['the-head']}>
-      <div>首页</div>
+      <div>
+        <Breadcrumb />
+      </div>
       <div className={styles['head-right']}>
         <Badge count={0} overflowCount={99}>
           <img

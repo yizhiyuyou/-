@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
@@ -71,34 +71,47 @@ function getNavMenuByConfig(config) {
   }, [])
 }
 
-// 获得默认打开内容
-function getDefaultOpen(location) {
-  const reg = pathToRegexp(location.pathname)
+// 设置 menu 显示内容
+function useMenu(pathname) {
+  const [menuProp, setMenuProp] = useState({
+    openKeys: [],
+    defaultSelectedKeys: [],
+  })
 
-  const findObj = flatConfig.find(([path]) => reg.test(path))
+  useEffect(() => {
+    const reg = pathToRegexp(pathname)
 
-  if (!findObj) {
-    return {
-      openKeys: [],
-      defaultSelectedKeys: [],
+    const findObj = [...flatConfig].reverse().find(([path]) => reg.test(path))
+
+    if (!findObj) {
+      setMenuProp({
+        openKeys: [],
+        selectedKeys: [],
+      })
+
+      return
     }
-  }
 
-  const select = findObj[1]
+    const select = findObj[1]
 
-  if (select.length === 1) {
-    return {
-      openKeys: [],
-      defaultSelectedKeys: [findObj[0]],
+    if (select.length === 1) {
+      setMenuProp({
+        openKeys: [],
+        selectedKeys: [findObj[0]],
+      })
+
+      return
     }
-  }
 
-  return {
-    openKeys: select.reduce((prev, [path], index, self) => {
-      return self.length - 1 !== index ? [...prev, path] : [...prev]
-    }, []),
-    defaultSelectedKeys: [findObj[0]],
-  }
+    setMenuProp({
+      openKeys: select.reduce((prev, [path], index, self) => {
+        return self.length - 1 !== index ? [...prev, path] : [...prev]
+      }, []),
+      selectedKeys: [findObj[0]],
+    })
+  }, [pathname])
+
+  return [menuProp, setMenuProp]
 }
 
 export const NavMenu = ({ history, location }) => {
@@ -106,9 +119,7 @@ export const NavMenu = ({ history, location }) => {
     return getNavMenuByUserRole(navMenuConfig)
   })
 
-  const [menuProp, setMenuProp] = useState(() => {
-    return getDefaultOpen(location)
-  })
+  const [menuProp, setMenuProp] = useMenu(location.pathname)
 
   const handleClick = useCallback(({ key }) => {
     if (/\^.*\$/.test(key)) {
