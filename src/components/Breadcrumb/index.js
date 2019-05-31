@@ -10,6 +10,8 @@ import { flatConfig } from '@/router/config'
 
 import { pages } from '@/config'
 
+import * as imgs from './imgs'
+
 import styles from './index.module.less'
 
 // 根据路由找出需要显示的内容
@@ -67,12 +69,7 @@ export default withRouter(({ location }) => {
         <Breadcrumb.Item key={index}>
           {[
             index === 0 && (
-              <img
-                src={`/static/img/layout/${meta.icon}.black.png`}
-                className={styles['img-icon']}
-                alt={meta.name}
-                key="1"
-              />
+              <img src={imgs[meta.icon]} className={styles['img-icon']} alt={meta.name} key="1" />
             ),
             self.length - 1 !== index ? (
               <Link to={path} key="2">

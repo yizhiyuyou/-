@@ -7,6 +7,8 @@ import pathToRegexp from 'path-to-regexp'
 
 import { navMenuConfig, flatConfig } from '@/router/config'
 
+import * as imgs from './imgs'
+
 import styles from './index.module.less'
 
 const { SubMenu, Item } = Menu
@@ -34,16 +36,14 @@ function getNavMenuByUserRole(navMenuConfig) {
 // 根据用户能够访问的导航配置，获取 jsx
 function getNavMenuByConfig(config) {
   return config.reduce((prev, item) => {
+    const imgSrc = imgs[item.meta.icon]
+
     if (!item.children) {
       return [
         ...prev,
         <Item key={item.meta.path || item.path}>
           {item.meta.icon && (
-            <img
-              src={`/static/img/layout/${item.meta.icon}.png`}
-              alt={item.meta.name}
-              className={styles['img-icon']}
-            />
+            <img src={imgSrc} alt={item.meta.name} className={styles['img-icon']} />
           )}
           <span>{item.meta.name}</span>
         </Item>,
@@ -56,11 +56,7 @@ function getNavMenuByConfig(config) {
         key={item.path}
         title={
           <span>
-            <img
-              src={`/static/img/layout/${item.meta.icon}.png`}
-              alt={item.meta.name}
-              className={styles['img-icon']}
-            />
+            <img src={imgSrc} alt={item.meta.name} className={styles['img-icon']} />
             <span>{item.meta.name}</span>
           </span>
         }
