@@ -1,26 +1,45 @@
-function routeMerge(routes) {
-  return routes.reduce((prev, item) => {
-    const { component, children } = item
+/*
+ * @Description: 将有相同布局的路由配置合并 path => string|string[]
+ * 解决问题：循环生成路由配置后，会因为 key 不同,造成整个路由刷新
+ * 解决思路：将具有相同布局的配置，合并
+ * 解决方法：react-router-dom  path 属性可以为 string 也可以为 string[]
+ * 只考虑外层，暂不考虑内层，我实在没找到这种场景（你想一下会有吗？）
+ * 如果想，递归一下就行了（也就再添加三四行代码）
+ * @Author: Duan Yu (949267840@qq.com)
+ * @Date: 2019-05-29 15:39:09
+ * @LastEditors: Duan Yu (949267840@qq.com)
+ * @LastEditTime: 2019-05-31 17:20:51
+ */
 
-    // 有名字，切有子组件说明这是一个布局组件
-    if (!component || !component.name || !Array.isArray(children)) {
+/**
+ * @description              将有相同布局的路由配置合并
+ * @param  {Array}           路由配置
+ * @return {Array}           格式化后的路由配置
+ */
+function routeMerge(routes = []) {
+  return routes.reduce((prev, item) => {
+    const { component } = item
+
+    if (!isLayoutCompontent(item)) {
       return [...prev, { ...item }]
     }
 
+    // 是布局组件就需要查找 prev 是否有相同布局，如果有就合并，否则就添加进去
     const findIndex = prev.findIndex(item => {
-      const { component: com, children } = item
-
-      if (!com || !com.name || !Array.isArray(children)) {
+      if (!isLayoutCompontent(item)) {
         return false
       }
 
-      return com.name === component.name
+      // 通过对比引用来判断是否相同
+      return component === item.component
     })
 
+    // 没有相同布局，就添加进去
     if (findIndex === -1) {
       return [...prev, { ...item, path: [item.path] }]
     }
 
+    // 有相同布局，就合并
     return prev.map((curr, index) => {
       if (findIndex === index) {
         return {
@@ -33,6 +52,11 @@ function routeMerge(routes) {
       return curr
     })
   }, [])
+}
+
+// 有 component 且有 children 说明是布局组件(不要故意弄个空数组骗我)
+function isLayoutCompontent({ component, children }) {
+  return component && Array.isArray(children)
 }
 
 export default routeMerge

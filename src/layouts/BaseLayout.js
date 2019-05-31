@@ -5,7 +5,7 @@ import NavMenu from '../components/NavMenu'
 
 import styles from './BaseLayout.module.less'
 
-function BaseLayout({ children }) {
+export default ({ children }) => {
   return (
     <div className={styles['home-layout']}>
       <div className={styles['layout-left']}>
@@ -22,5 +22,3 @@ function BaseLayout({ children }) {
     </div>
   )
 }
-
-export default BaseLayout
