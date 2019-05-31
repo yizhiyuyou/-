@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { pages } from '@/config'
 
 import {
@@ -7,36 +9,38 @@ import {
   getFlatData,
 } from '@/utils/router'
 
-import BaseLayout from '../layouts/BaseLayout'
+import BaseLayout from '@/layouts/BaseLayout'
+import { WaitingComponent } from '@/components/PageLoading'
 
-import HomePage from '@/views/HomePage'
-
-import EventList from '@/views/EventList'
-import MyTask from '@/views/MyTask'
-
-import UserMana from '@/views/UserMana'
-import DeptMana from '@/views/DeptMana'
-import RoleMana from '@/views/RoleMana'
-import UserAdd from '@/views/UserAdd'
-import DeptAdd from '@/views/DeptAdd'
-import DictionaryMana from '@/views/DictionaryMana'
-import SystemLog from '@/views/SystemLog'
-
-import NoticeList from '@/views/NoticeList'
-import FeedBack from '@/views/FeedBack'
-import MessageBorad from '@/views/MessageBorad'
-import NoticeAdd from '@/views/NoticeAdd'
-
-import EnergyAnalysis from '@/views/EnergyAnalysis'
-import EnergyDetail from '@/views/EnergyDetail'
-
-import SparePartStock from '@/views/SparePartStock'
-
-import UniteMonitor from '@/views/UniteMonitor'
-
-import LoginPage from '@/views/LoginPage'
 import NoPermission from '@/components/NoPermission'
 import NoFind from '@/components/NoFind'
+
+const HomePage = WaitingComponent(React.lazy(() => import('../views/HomePage')))
+
+const EventList = WaitingComponent(React.lazy(() => import('../views/EventList')))
+const MyTask = WaitingComponent(React.lazy(() => import('../views/MyTask')))
+
+const UserMana = WaitingComponent(React.lazy(() => import('../views/UserMana')))
+const DeptMana = WaitingComponent(React.lazy(() => import('../views/DeptMana')))
+const RoleMana = WaitingComponent(React.lazy(() => import('../views/RoleMana')))
+const UserAdd = WaitingComponent(React.lazy(() => import('../views/UserAdd')))
+const DeptAdd = WaitingComponent(React.lazy(() => import('../views/DeptAdd')))
+const DictionaryMana = WaitingComponent(React.lazy(() => import('../views/DictionaryMana')))
+const SystemLog = WaitingComponent(React.lazy(() => import('../views/SystemLog')))
+
+const NoticeList = WaitingComponent(React.lazy(() => import('../views/NoticeList')))
+const FeedBack = WaitingComponent(React.lazy(() => import('../views/FeedBack')))
+const MessageBorad = WaitingComponent(React.lazy(() => import('../views/MessageBorad')))
+const NoticeAdd = WaitingComponent(React.lazy(() => import('../views/NoticeAdd')))
+
+const EnergyAnalysis = WaitingComponent(React.lazy(() => import('../views/EnergyAnalysis')))
+const EnergyDetail = WaitingComponent(React.lazy(() => import('../views/EnergyDetail')))
+
+const SparePartStock = WaitingComponent(React.lazy(() => import('../views/SparePartStock')))
+
+const UniteMonitor = WaitingComponent(React.lazy(() => import('../views/UniteMonitor')))
+
+const LoginPage = WaitingComponent(React.lazy(() => import('../views/LoginPage')))
 
 const routes = [
   {

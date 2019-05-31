@@ -7,7 +7,7 @@ export const Loading = props => (
   </div>
 )
 
-export default props => {
+const DefaultLoading = props => {
   const [tip, setTip] = useState(props.tip || '加载中...')
 
   const { delay, delayTip, ...rest } = props
@@ -23,7 +23,9 @@ export default props => {
   return <Loading {...rest} tip={tip} />
 }
 
-export function WaitingComponent(Component, fallback) {
+export default DefaultLoading
+
+export function WaitingComponent(Component, fallback = <DefaultLoading />) {
   return props => (
     <Suspense fallback={fallback || <Spin size="large" />}>
       <Component {...props} />
