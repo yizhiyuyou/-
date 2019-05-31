@@ -7,7 +7,7 @@ import pathToRegexp from 'path-to-regexp'
 
 import { navMenuConfig, flatConfig } from '@/router/config'
 
-import styles from './NavMenu.module.less'
+import styles from './index.module.less'
 
 const { SubMenu, Item } = Menu
 

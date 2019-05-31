@@ -6,9 +6,9 @@ import { Badge, Menu, Dropdown, Icon } from 'antd'
 
 import { StoreContext } from '@/stores'
 
-import Breadcrumb from './Breadcrumb'
+import Breadcrumb from '../Breadcrumb'
 
-import styles from './Head.module.less'
+import styles from './index.module.less'
 
 export const Head = () => {
   const store = useContext(StoreContext)

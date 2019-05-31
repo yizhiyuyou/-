@@ -10,7 +10,7 @@ import { flatConfig } from '@/router/config'
 
 import { pages } from '@/config'
 
-import styles from './Breadcrumb.module.less'
+import styles from './index.module.less'
 
 // 根据路由找出需要显示的内容
 function useBreadcrumb(pathname) {
@@ -23,6 +23,7 @@ function useBreadcrumb(pathname) {
       if (!match) {
         return false
       }
+
       // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
       // /a 按着顺序会先匹配到/a，会造成缺失显示默认下层内容
       if (index === self.length - 1) {
@@ -63,16 +64,24 @@ export default withRouter(({ location }) => {
       const { name } = config.meta
 
       return (
-        // 处理key相同时，里面内容不同时报错
-        <Breadcrumb.Item key={Date.now()}>
-          {index === 0 && (
-            <img
-              src={`/static/img/layout/${meta.icon}.black.png`}
-              className={styles['img-icon']}
-              alt={meta.name}
-            />
-          )}
-          {self.length - 1 !== index ? <Link to={path}>{name}</Link> : name}
+        <Breadcrumb.Item key={index}>
+          {[
+            index === 0 && (
+              <img
+                src={`/static/img/layout/${meta.icon}.black.png`}
+                className={styles['img-icon']}
+                alt={meta.name}
+                key="1"
+              />
+            ),
+            self.length - 1 !== index ? (
+              <Link to={path} key="2">
+                {name}
+              </Link>
+            ) : (
+              name
+            ),
+          ]}
         </Breadcrumb.Item>
       )
     })
