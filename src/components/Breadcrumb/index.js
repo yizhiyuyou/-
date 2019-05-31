@@ -58,31 +58,42 @@ function useBreadcrumb(pathname) {
 export default withRouter(({ location }) => {
   const BreadcrumbItmes = useBreadcrumb(location.pathname)
 
-  const BreadcrumbItmesJsx = useMemo(() => {
+  if (!BreadcrumbItmes) {
+    return null
+  }
+
+  return useMemo(() => {
     const meta =
       BreadcrumbItmes.length === 1 ? BreadcrumbItmes[0][1].meta : BreadcrumbItmes[1][1].meta
 
-    return BreadcrumbItmes.map(([path, config], index, self) => {
-      const { name } = config.meta
+    return (
+      <Breadcrumb separator=">">
+        {BreadcrumbItmes.map(([path, config], index, self) => {
+          const { name } = config.meta
 
-      return (
-        <Breadcrumb.Item key={index}>
-          {[
-            index === 0 && (
-              <img src={imgs[meta.icon]} className={styles['img-icon']} alt={meta.name} key="1" />
-            ),
-            self.length - 1 !== index ? (
-              <Link to={path} key="2">
-                {name}
-              </Link>
-            ) : (
-              name
-            ),
-          ]}
-        </Breadcrumb.Item>
-      )
-    })
+          return (
+            <Breadcrumb.Item key={index}>
+              {[
+                index === 0 && (
+                  <img
+                    src={imgs[meta.icon]}
+                    className={styles['img-icon']}
+                    alt={meta.name}
+                    key="1"
+                  />
+                ),
+                self.length - 1 !== index ? (
+                  <Link to={path} key="2">
+                    {name}
+                  </Link>
+                ) : (
+                  name
+                ),
+              ]}
+            </Breadcrumb.Item>
+          )
+        })}
+      </Breadcrumb>
+    )
   }, [BreadcrumbItmes])
-
-  return <Breadcrumb separator=">">{BreadcrumbItmesJsx}</Breadcrumb>
 })

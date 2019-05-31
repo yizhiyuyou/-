@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
@@ -34,9 +34,9 @@ function getNavMenuByUserRole(navMenuConfig) {
 }
 
 // 根据用户能够访问的导航配置，获取 jsx
-function getNavMenuByConfig(config) {
+function getNavMenuByConfig(config, activePath) {
   return config.reduce((prev, item) => {
-    const imgSrc = imgs[item.meta.icon]
+    const imgSrc = item.path === activePath ? imgs[item.meta.icon] : imgs[`${item.meta.icon}Black`]
 
     if (!item.children) {
       return [
@@ -67,36 +67,39 @@ function getNavMenuByConfig(config) {
   }, [])
 }
 
+// 通过 pathname 找到深度优先配置
+function getConfigByPathname(pathname) {
+  const reg = pathToRegexp(pathname)
+
+  return flatConfig.find(([path], index, self) => {
+    const match = reg.test(path)
+
+    if (!match) {
+      return false
+    }
+    // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+    // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
+    if (index === self.length - 1) {
+      return true
+    }
+
+    if (reg.test(self[index + 1][0])) {
+      return false
+    }
+
+    return true
+  })
+}
+
 // 设置 menu 显示内容
-function useMenu(pathname) {
+function useMenu(matchPath) {
   const [menuProp, setMenuProp] = useState({
     openKeys: [],
     defaultSelectedKeys: [],
   })
 
   useEffect(() => {
-    const reg = pathToRegexp(pathname)
-
-    const findObj = flatConfig.find(([path], index, self) => {
-      const match = reg.test(path)
-
-      if (!match) {
-        return false
-      }
-      // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
-      // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
-      if (index === self.length - 1) {
-        return true
-      }
-
-      if (reg.test(self[index + 1][0])) {
-        return false
-      }
-
-      return true
-    })
-
-    if (!findObj) {
+    if (!matchPath) {
       setMenuProp({
         openKeys: [],
         selectedKeys: [],
@@ -105,12 +108,12 @@ function useMenu(pathname) {
       return
     }
 
-    const select = findObj[1]
+    const select = matchPath[1]
 
     if (select.length === 1) {
       setMenuProp({
         openKeys: [],
-        selectedKeys: [findObj[0]],
+        selectedKeys: [matchPath[0]],
       })
 
       return
@@ -120,9 +123,9 @@ function useMenu(pathname) {
       openKeys: select.reduce((prev, [path], index, self) => {
         return self.length - 1 !== index ? [...prev, path] : [...prev]
       }, []),
-      selectedKeys: [findObj[0]],
+      selectedKeys: [matchPath[0]],
     })
-  }, [pathname])
+  }, [matchPath])
 
   return [menuProp, setMenuProp]
 }
@@ -132,7 +135,11 @@ export const NavMenu = ({ history, location }) => {
     return getNavMenuByUserRole(navMenuConfig)
   })
 
-  const [menuProp, setMenuProp] = useMenu(location.pathname)
+  const matchPath = useMemo(() => {
+    return getConfigByPathname(location.pathname)
+  }, [location.pathname])
+
+  const [menuProp, setMenuProp] = useMenu(matchPath)
 
   const handleClick = useCallback(({ key }) => {
     if (/\^.*\$/.test(key)) {
@@ -153,18 +160,20 @@ export const NavMenu = ({ history, location }) => {
     })
   }, [])
 
-  return (
-    <Menu
-      onClick={handleClick}
-      onOpenChange={handleOpenChange}
-      mode="inline"
-      theme="dark"
-      className={styles['menu-container']}
-      {...menuProp}
-    >
-      {getNavMenuByConfig(config)}
-    </Menu>
-  )
+  return useMemo(() => {
+    return (
+      <Menu
+        onClick={handleClick}
+        onOpenChange={handleOpenChange}
+        mode="inline"
+        theme="dark"
+        className={styles['menu-container']}
+        {...menuProp}
+      >
+        {getNavMenuByConfig(config, matchPath && matchPath[1][0][0])}
+      </Menu>
+    )
+  }, [menuProp, config])
 }
 
 export default withRouter(NavMenu)
