@@ -10,6 +10,8 @@ import { flatConfig } from '@/router/config'
 
 import { pages } from '@/config'
 
+import styles from './Breadcrumb.module.less'
+
 function useBreadcrumb(pathname) {
   return useMemo(() => {
     const reg = pathToRegexp(pathname)
@@ -45,18 +47,36 @@ function useBreadcrumb(pathname) {
           ...findObj[1],
         ]
 
-    const BreadcrumbItmes = arr.map(([path, config], index, self) => {
-      const { name } = config.meta
-
-      return (
-        <Breadcrumb.Item key={index}>
-          {self.length - 1 !== index ? <Link to={path}>{name}</Link> : name}
-        </Breadcrumb.Item>
-      )
-    })
-
-    return <Breadcrumb separator=">">{BreadcrumbItmes}</Breadcrumb>
+    return arr
   }, [pathname])
 }
 
-export default withRouter(({ location }) => useBreadcrumb(location.pathname))
+export default withRouter(({ location }) => {
+  const BreadcrumbItmes = useBreadcrumb(location.pathname)
+
+  return useMemo(() => {
+    const meta =
+      BreadcrumbItmes.length === 1 ? BreadcrumbItmes[0][1].meta : BreadcrumbItmes[1][1].meta
+
+    return (
+      <div className={styles['breadcrumb-container']}>
+        <img
+          src={`/static/img/layout/${meta.icon}.black.png`}
+          className={styles['img-icon']}
+          alt={meta.name}
+        />
+        <Breadcrumb separator=">">
+          {BreadcrumbItmes.map(([path, config], index, self) => {
+            const { name } = config.meta
+
+            return (
+              <Breadcrumb.Item key={index}>
+                {self.length - 1 !== index ? <Link to={path}>{name}</Link> : name}
+              </Breadcrumb.Item>
+            )
+          })}
+        </Breadcrumb>
+      </div>
+    )
+  }, [BreadcrumbItmes])
+})
