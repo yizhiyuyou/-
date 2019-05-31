@@ -12,6 +12,7 @@ import { pages } from '@/config'
 
 import styles from './Breadcrumb.module.less'
 
+// 根据路由找出需要显示的内容
 function useBreadcrumb(pathname) {
   return useMemo(() => {
     const reg = pathToRegexp(pathname)
@@ -54,29 +55,28 @@ function useBreadcrumb(pathname) {
 export default withRouter(({ location }) => {
   const BreadcrumbItmes = useBreadcrumb(location.pathname)
 
-  return useMemo(() => {
+  const BreadcrumbItmesJsx = useMemo(() => {
     const meta =
       BreadcrumbItmes.length === 1 ? BreadcrumbItmes[0][1].meta : BreadcrumbItmes[1][1].meta
 
-    return (
-      <div className={styles['breadcrumb-container']}>
-        <img
-          src={`/static/img/layout/${meta.icon}.black.png`}
-          className={styles['img-icon']}
-          alt={meta.name}
-        />
-        <Breadcrumb separator=">">
-          {BreadcrumbItmes.map(([path, config], index, self) => {
-            const { name } = config.meta
+    return BreadcrumbItmes.map(([path, config], index, self) => {
+      const { name } = config.meta
 
-            return (
-              <Breadcrumb.Item key={index}>
-                {self.length - 1 !== index ? <Link to={path}>{name}</Link> : name}
-              </Breadcrumb.Item>
-            )
-          })}
-        </Breadcrumb>
-      </div>
-    )
+      return (
+        // 处理key相同时，里面内容不同时报错
+        <Breadcrumb.Item key={Date.now()}>
+          {index === 0 && (
+            <img
+              src={`/static/img/layout/${meta.icon}.black.png`}
+              className={styles['img-icon']}
+              alt={meta.name}
+            />
+          )}
+          {self.length - 1 !== index ? <Link to={path}>{name}</Link> : name}
+        </Breadcrumb.Item>
+      )
+    })
   }, [BreadcrumbItmes])
+
+  return <Breadcrumb separator=">">{BreadcrumbItmesJsx}</Breadcrumb>
 })
