@@ -9,38 +9,38 @@ import {
   getFlatData,
 } from '@/utils/router'
 
+// 布局类的不要使用异步加载，因为在合并布局时会依赖于组件内部状态
 import BaseLayout from '@/layouts/BaseLayout'
-import { WaitingComponent } from '@/components/PageLoading'
 
 import NoPermission from '@/components/NoPermission'
 import NoFind from '@/components/NoFind'
 
-const HomePage = WaitingComponent(React.lazy(() => import('../views/HomePage')))
+const HomePage = React.lazy(() => import('../views/HomePage'))
 
-const EventList = WaitingComponent(React.lazy(() => import('../views/EventList')))
-const MyTask = WaitingComponent(React.lazy(() => import('../views/MyTask')))
+const EventList = React.lazy(() => import('../views/EventList'))
+const MyTask = React.lazy(() => import('../views/MyTask'))
 
-const UserMana = WaitingComponent(React.lazy(() => import('../views/UserMana')))
-const DeptMana = WaitingComponent(React.lazy(() => import('../views/DeptMana')))
-const RoleMana = WaitingComponent(React.lazy(() => import('../views/RoleMana')))
-const UserAdd = WaitingComponent(React.lazy(() => import('../views/UserAdd')))
-const DeptAdd = WaitingComponent(React.lazy(() => import('../views/DeptAdd')))
-const DictionaryMana = WaitingComponent(React.lazy(() => import('../views/DictionaryMana')))
-const SystemLog = WaitingComponent(React.lazy(() => import('../views/SystemLog')))
+const UserMana = React.lazy(() => import('../views/UserMana'))
+const DeptMana = React.lazy(() => import('../views/DeptMana'))
+const RoleMana = React.lazy(() => import('../views/RoleMana'))
+const UserAdd = React.lazy(() => import('../views/UserAdd'))
+const DeptAdd = React.lazy(() => import('../views/DeptAdd'))
+const DictionaryMana = React.lazy(() => import('../views/DictionaryMana'))
+const SystemLog = React.lazy(() => import('../views/SystemLog'))
 
-const NoticeList = WaitingComponent(React.lazy(() => import('../views/NoticeList')))
-const FeedBack = WaitingComponent(React.lazy(() => import('../views/FeedBack')))
-const MessageBorad = WaitingComponent(React.lazy(() => import('../views/MessageBorad')))
-const NoticeAdd = WaitingComponent(React.lazy(() => import('../views/NoticeAdd')))
+const NoticeList = React.lazy(() => import('../views/NoticeList'))
+const FeedBack = React.lazy(() => import('../views/FeedBack'))
+const MessageBorad = React.lazy(() => import('../views/MessageBorad'))
+const NoticeAdd = React.lazy(() => import('../views/NoticeAdd'))
 
-const EnergyAnalysis = WaitingComponent(React.lazy(() => import('../views/EnergyAnalysis')))
-const EnergyDetail = WaitingComponent(React.lazy(() => import('../views/EnergyDetail')))
+const EnergyAnalysis = React.lazy(() => import('../views/EnergyAnalysis'))
+const EnergyDetail = React.lazy(() => import('../views/EnergyDetail'))
 
-const SparePartStock = WaitingComponent(React.lazy(() => import('../views/SparePartStock')))
+const SparePartStock = React.lazy(() => import('../views/SparePartStock'))
 
-const UniteMonitor = WaitingComponent(React.lazy(() => import('../views/UniteMonitor')))
+const UniteMonitor = React.lazy(() => import('../views/UniteMonitor'))
 
-const LoginPage = WaitingComponent(React.lazy(() => import('../views/LoginPage')))
+const LoginPage = React.lazy(() => import('../views/LoginPage'))
 
 const routes = [
   {

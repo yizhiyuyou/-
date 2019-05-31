@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Authorized from '@/components/Authorized'
 
+import { WaitingComponent } from '@/components/PageLoading'
+
 const RouteWithProps = ({ path, exact, strict, render, location, sensitive, ...rest }) => (
   <Route
     path={path}
@@ -41,15 +43,17 @@ export default function renderRoutes(routes) {
               const childRoutes = renderRoutes(route.children)
 
               if (route.component) {
+                const Component = WaitingComponent(route.component)
+
                 if (route.meta.authority) {
                   return (
                     <Authorized {...props}>
-                      <route.component {...props}>{childRoutes}</route.component>
+                      <Component {...props}>{childRoutes}</Component>
                     </Authorized>
                   )
                 }
 
-                return <route.component {...props}>{childRoutes}</route.component>
+                return <Component {...props}>{childRoutes}</Component>
               } else {
                 return childRoutes
               }
