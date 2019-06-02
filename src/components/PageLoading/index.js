@@ -25,10 +25,10 @@ const DefaultLoading = props => {
 
 export default DefaultLoading
 
-export function WaitingComponent(Component, fallback = <DefaultLoading />) {
+export function withWaiting(WrappedComponent, fallback = <DefaultLoading />) {
   return props => (
-    <Suspense fallback={fallback || <Spin size="large" />}>
-      <Component {...props} />
+    <Suspense fallback={fallback}>
+      <WrappedComponent {...props} />
     </Suspense>
   )
 }
