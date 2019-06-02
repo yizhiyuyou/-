@@ -23,7 +23,7 @@ export const Authorized = props => {
       } = props
 
       if (!hasRoute(path)) {
-        return <Redirect to="/login" />
+        return <Redirect to="/403" />
       }
 
       return props.children
