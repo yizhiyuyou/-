@@ -115,7 +115,7 @@ export function initRoutesMeta(routes) {
  * @param  {boolean|Array} authority 权限信息
  * @return {Function}                校验函数
  */
-function hasPermission(authority) {
+export function hasPermission(authority) {
   let cache = new Map()
   let timestamp = null
 
@@ -162,7 +162,7 @@ function hasPermission(authority) {
  * @param  {boolean|Array} authority 权限信息
  * @return {Function}                校验函数
  */
-function hasRoute(authority) {
+export function hasRoute(authority) {
   let has = null
   let timestamp = null
 

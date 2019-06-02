@@ -48,7 +48,7 @@ export default function renderRoutes(routes) {
 
               if (route.meta.authority) {
                 return (
-                  <Authorized {...props}>
+                  <Authorized {...props} meta={route.meta}>
                     <Component {...props} meta={route.meta} children={childRoutes} />
                   </Authorized>
                 )

@@ -366,5 +366,5 @@ const reduceRoute = downToUpReduceMetaAuthority(initRoutesMeta(routes))
 export const navMenuConfig = getNavMenuConfig(reduceRoute, 'path')
 
 export const flatConfig = getFlatData(navMenuConfig)
-console.log(222, flatConfig)
+
 export default reduceRoute

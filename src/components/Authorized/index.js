@@ -17,6 +17,15 @@ export const Authorized = props => {
     const { loginStatus, appLogin } = store.rootStore
 
     if (loginStatus === USER_STATUS.get('已登录').status) {
+      const {
+        match: { path },
+        meta: { hasRoute },
+      } = props
+
+      if (!hasRoute(path)) {
+        return <Redirect to="/login" />
+      }
+
       return props.children
     }
 
@@ -28,6 +37,7 @@ export const Authorized = props => {
       appLogin()
     }
 
+    // 未登录 | 登陆中
     return <PageLoading />
   })
 }

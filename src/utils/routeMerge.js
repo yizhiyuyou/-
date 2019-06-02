@@ -8,8 +8,9 @@
  * @Author: Duan Yu (949267840@qq.com)
  * @Date: 2019-05-29 15:39:09
  * @LastEditors: Duan Yu (949267840@qq.com)
- * @LastEditTime: 2019-05-31 17:20:51
+ * @LastEditTime: 2019-06-02 18:33:06
  */
+import pathToRegexp from 'path-to-regexp'
 
 /**
  * @description              将有相同布局的路由配置合并
@@ -17,7 +18,7 @@
  * @return {Array}           格式化后的路由配置
  */
 function routeMerge(routes = []) {
-  return routes.reduce((prev, item) => {
+  const config = routes.reduce((prev, item) => {
     const { component } = item
 
     if (!isLayoutCompontent(item)) {
@@ -36,7 +37,15 @@ function routeMerge(routes = []) {
 
     // 没有相同布局，就添加进去
     if (findIndex === -1) {
-      return [...prev, { ...item, path: [item.path] }]
+      return [
+        ...prev,
+        {
+          ...item,
+          path: [item.path],
+          pathToHasRoute: [[item.path, item.meta.hasRoute]],
+          pathToHas: [[item.path, item.meta.has]],
+        },
+      ]
     }
 
     // 有相同布局，就合并
@@ -46,12 +55,36 @@ function routeMerge(routes = []) {
           ...curr,
           path: [...curr.path, item.path],
           children: [...curr.children, ...item.children],
+          pathToHasRoute: [...curr.pathToHasRoute, [item.path, item.meta.hasRoute]],
+          pathToHas: [...curr.pathToHas, [item.path, item.meta.has]],
         }
       }
 
       return curr
     })
   }, [])
+  console.log(121212, config)
+
+  return config.map(({ pathToHasRoute, pathToHas, ...rest }) => ({
+    ...rest,
+    hasRoute: getNewFn(pathToHasRoute),
+    has: getNewFn(pathToHas),
+  }))
+}
+
+function getNewFn(pathToFn = []) {
+  return pathname => {
+    console.log(321, pathToFn, pathname)
+    const reg = pathToRegexp(pathname)
+
+    const findObj = pathToFn.find(([path]) => reg.test(path))
+
+    if (!findObj) {
+      return false
+    }
+
+    return findObj[1]()
+  }
 }
 
 // 有 component 且有 children 说明是布局组件(不要故意弄个空数组骗我)
