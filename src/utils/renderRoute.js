@@ -1,9 +1,11 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
+import { compose } from 'ramda'
+
 import { withMetaProvider } from '@/utils/MetaContext'
 
-import Authorized from '@/components/Authorized'
+import { withAuthorized } from '@/components/Authorized'
 
 import { withWaiting } from '@/components/PageLoading'
 
@@ -44,15 +46,20 @@ export default function renderRoutes(routes) {
             render={props => {
               const childRoutes = renderRoutes(route.children)
 
-              const Component = withMetaProvider(withWaiting(route.component))
-
               if (route.meta.authority) {
-                return (
-                  <Authorized {...props} meta={route.meta}>
-                    <Component {...props} meta={route.meta} children={childRoutes} />
-                  </Authorized>
-                )
+                const Component = compose(
+                  withMetaProvider,
+                  withAuthorized,
+                  withWaiting
+                )(route.component)
+
+                return <Component {...props} meta={route.meta} children={childRoutes} />
               }
+
+              const Component = compose(
+                withMetaProvider,
+                withWaiting
+              )(route.component)
 
               return <Component {...props} meta={route.meta} children={childRoutes} />
             }}

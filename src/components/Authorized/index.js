@@ -6,6 +6,8 @@ import { useObserver } from 'mobx-react-lite'
 
 import { StoreContext } from '@/stores'
 
+import context from '@/utils/MetaContext'
+
 import PageLoading from '@/components/PageLoading'
 
 import { USER_STATUS } from '@/const'
@@ -15,14 +17,14 @@ export const Authorized = props => {
 
   return useObserver(() => {
     const { loginStatus, appLogin } = store.rootStore
+    const meta = useContext(context)
 
     if (loginStatus === USER_STATUS.get('已登录').status) {
       const {
         match: { path },
-        meta: { hasRoute },
       } = props
 
-      if (!hasRoute(path)) {
+      if (!meta.hasRoute(path)) {
         return <Redirect to="/403" />
       }
 
@@ -40,6 +42,10 @@ export const Authorized = props => {
     // 未登录 | 登陆中
     return <PageLoading />
   })
+}
+
+export function withAuthorized(WrappedComponent) {
+  return props => <Authorized {...props} children={<WrappedComponent {...props} />} />
 }
 
 export default Authorized
