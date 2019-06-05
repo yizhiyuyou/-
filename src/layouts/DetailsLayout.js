@@ -1,10 +1,14 @@
 import React from 'react'
 
+import styles from './DetailsLayout.module.less'
+
 export default ({ children }) => {
   return (
-    <div>
-      我是一个详情页布局
-      {children}
+    <div className={styles.details}>
+      <div className={styles['detail-header']}>
+        <span>查看详情</span>
+      </div>
+      <div className={styles.main}>{children}</div>
     </div>
   )
 }

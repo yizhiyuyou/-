@@ -39,8 +39,12 @@ function getDicFn() {
 }
 
 class DicStore {
+  // 事件类型
   @observable eventType = []
+  // 事件状态
   @observable eventState = []
+  // 过程类型
+  @observable processType = []
 
   @action
   getDictionaryByType = getDicFn()

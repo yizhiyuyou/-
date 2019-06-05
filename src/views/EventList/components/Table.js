@@ -41,17 +41,17 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
             return (
               <span>
                 <Button
-                  // onClick={() => window.open(`/#/detail/event/${id}`, '_blank')}
-                  onClick={() =>
-                    history.push({
-                      pathname: `/detail/event/${id}`,
-                      search: '?a=1&b=2',
-                      state: {
-                        h: 1,
-                        c: 2,
-                      },
-                    })
-                  }
+                  onClick={() => window.open(`/detail/event/${id}`, '_blank')}
+                  // onClick={() =>
+                  //   history.push({
+                  //     pathname: `/detail/event/${id}`,
+                  //     search: '?a=1&b=2',
+                  //     state: {
+                  //       h: 1,
+                  //       c: 2,
+                  //     },
+                  //   })
+                  // }
                   type="primary"
                   className={styles['m-r-35']}
                 >

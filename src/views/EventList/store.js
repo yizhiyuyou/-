@@ -12,7 +12,7 @@ class EventListStore {
   @computed get listCtd() {
     return this.list.map(({ state, eventType, ...rest }) => {
       const findObjType = dicStore.eventType.find(({ value }) => value === eventType)
-      const findObjState = dicStore.eventState.find(({ value }) => value === state)
+      const findObjState = dicStore.eventState.find(({ value }) => +value === +state)
       const hasState = STATUS_MAPPING_INFO.has(state)
 
       return {

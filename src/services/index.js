@@ -23,7 +23,7 @@ export async function getDicData({ type }) {
   const res = await request.get(restData.dictUrl)
 
   if (res.code === 0) {
-    res.data = res.data[type].map(({ value, code }) => ({ text: value, value: +code }))
+    res.data = res.data[type].map(({ value, code }) => ({ text: value, value: code }))
   }
 
   return res

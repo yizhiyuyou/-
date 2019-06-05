@@ -8,7 +8,7 @@
  * @Author: Duan Yu (949267840@qq.com)
  * @Date: 2019-05-29 15:39:09
  * @LastEditors: Duan Yu (949267840@qq.com)
- * @LastEditTime: 2019-06-02 18:33:06
+ * @LastEditTime: 2019-06-05 10:10:58
  */
 import pathToRegexp from 'path-to-regexp'
 
@@ -63,7 +63,6 @@ function routeMerge(routes = []) {
       return curr
     })
   }, [])
-  console.log(121212, config)
 
   return config.map(({ pathToHasRoute, pathToHas, ...rest }) => ({
     ...rest,

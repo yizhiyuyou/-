@@ -1,0 +1,39 @@
+.real-result {
+  font-size: 15px;
+  color: #333;
+  padding: 0px 30px;
+  border-radius: 2px;
+  background-color: #fff;
+  margin-top: 10px;
+
+  .header {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+
+    .header-right {
+      color: #666;
+    }
+  }
+
+  .main {
+    margin-top: 15px;
+
+    :global {
+      .ant-descriptions-item-label,
+      .ant-descriptions-item-content {
+        font-size: 15px;
+      }
+    }
+
+    img {
+      width: 81px;
+      height: 81px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+  }
+}

@@ -9,8 +9,8 @@ import {
   getFlatData,
 } from '@/utils/router'
 
-// 布局类的不要使用异步加载，因为在合并布局时会依赖于组件内部状态
 import BaseLayout from '@/layouts/BaseLayout'
+import DetailsLayout from '@/layouts/DetailsLayout'
 
 import NoPermission from '@/components/NoPermission'
 import NoFind from '@/components/NoFind'
@@ -37,6 +37,8 @@ const EnergyAnalysis = React.lazy(() => import('../views/EnergyAnalysis'))
 const EnergyDetail = React.lazy(() => import('../views/EnergyDetail'))
 
 const SparePartStock = React.lazy(() => import('../views/SparePartStock'))
+
+const EventDetails = React.lazy(() => import('../views/EventDetails'))
 
 const UniteMonitor = React.lazy(() => import('../views/UniteMonitor'))
 
@@ -312,7 +314,7 @@ const routes = [
   },
   {
     path: '/detail',
-    component: BaseLayout,
+    component: DetailsLayout,
     meta: {
       title: '查看详情',
       hideInMenu: true,
@@ -322,7 +324,10 @@ const routes = [
       {
         path: '/detail/event/:id',
         exact: true,
-        component: EnergyAnalysis,
+        component: EventDetails,
+        meta: {
+          authority: true,
+        },
       },
     ],
   },
