@@ -2,6 +2,8 @@ import React, { useEffect, useContext } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
+import { Skeleton } from 'antd'
+
 import { useFetch } from '@/utils/use'
 
 import { StoreContext } from '@/stores'
@@ -15,7 +17,7 @@ import styles from './index.module.less'
 export default ({ match }) => {
   const store = useContext(StoreContext)
 
-  const { setParams } = useFetch(store.EventDetailsStore.getBaseEventInfoById)
+  const { setParams, isLoading } = useFetch(store.EventDetailsStore.getBaseEventInfoById)
 
   useEffect(() => {
     setParams(match.params.id)
@@ -35,13 +37,25 @@ export default ({ match }) => {
     return (
       <div className={styles['event-details']}>
         <div className={styles.left}>
-          <BaseInfo {...baseInfoCtd} />
+          {isLoading ? (
+            <div className={styles.skeleton}>
+              <Skeleton active paragraph={{ rows: 10 }} />
+            </div>
+          ) : (
+            <BaseInfo {...baseInfoCtd} />
+          )}
           <div className={styles.result}>
             {processListCtd.map((item, index) => <DealResult key={index} {...item} />).reverse()}
           </div>
         </div>
         <div className={styles.right}>
-          <TimeLine state={stateCtd} timeUsage={timeUsage} list={processListCtd} />
+          {isLoading ? (
+            <div className={styles.skeleton}>
+              <Skeleton active paragraph={{ rows: 20 }} />
+            </div>
+          ) : (
+            <TimeLine state={stateCtd} timeUsage={timeUsage} list={processListCtd} />
+          )}
         </div>
       </div>
     )

@@ -24,9 +24,8 @@ export default ({ url, onClose }) => {
       onCancel={onClose}
       afterClose={afterClose}
       bodyStyle={bodyStyle}
-      centered={true}
     >
-      <img width="100%" src={innerUrl} alt="预览照片" />
+      <img width="100%" src={innerUrl} alt="预览照片" draggable="false" />
     </Modal>
   )
 }

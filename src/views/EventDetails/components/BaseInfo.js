@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react'
 
 import { Descriptions } from 'antd'
 
+import PreviewImage from '@/components/PreviewImage'
 import HeaderTitle from './HeaderTitle'
-import PreviewImage from './PreviewImage'
 
 import styles from './BaseInfo.module.less'
 
@@ -43,7 +43,13 @@ export default props => {
           <Item label="照&emsp;&emsp;片" span={3}>
             {imgList.length
               ? imgList.map(url => (
-                  <img key={url} src={url} alt="照片" onClick={() => setUrl(url)} />
+                  <img
+                    key={url}
+                    src={url}
+                    onClick={() => setUrl(url)}
+                    alt="照片"
+                    draggable="false"
+                  />
                 ))
               : '未录入照片'}
           </Item>
