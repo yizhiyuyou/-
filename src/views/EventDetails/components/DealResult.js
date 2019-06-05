@@ -1,4 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
+
+import classnames from 'classnames'
 
 import { Descriptions } from 'antd'
 
@@ -19,8 +21,12 @@ export default props => {
     setUrl('')
   }, [])
 
+  const topClassName = useMemo(() => {
+    return classnames(styles['real-result'], props.className)
+  }, [styles['real-result'], props.className])
+
   return (
-    <div className={styles['real-result']}>
+    <div className={topClassName}>
       <div className={styles.header}>
         <HeaderTitle title={props.title} />
         <span className={styles['header-right']}>{props.handleTime}</span>

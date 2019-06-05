@@ -45,7 +45,17 @@ export default ({ match }) => {
             <BaseInfo {...baseInfoCtd} />
           )}
           <div className={styles.result}>
-            {processListCtd.map((item, index) => <DealResult key={index} {...item} />).reverse()}
+            {isLoading ? (
+              <div className={styles.skeleton}>
+                <Skeleton active paragraph={{ rows: 8 }} />
+              </div>
+            ) : (
+              processListCtd
+                .map((item, index) => (
+                  <DealResult key={index} className={styles['m-t-10']} {...item} />
+                ))
+                .reverse()
+            )}
           </div>
         </div>
         <div className={styles.right}>
