@@ -1,16 +1,33 @@
-import { observable, action, runInAction } from 'mobx'
+import { observable, action, flow } from 'mobx'
+
 // computed
 import { getDicData } from '@/services'
 
-function getDicFn() {
-  const map = new Map()
+class DicStore {
+  map = new Map()
 
-  return async function(type, isUpload) {
+  // 事件类型
+  @observable eventType = []
+  // 事件状态
+  @observable eventState = []
+  // 过程类型
+  @observable processType = []
+  // 备件类型
+  @observable sparepartType = []
+
+  @observable loading = {}
+
+  @action.bound
+  getDictionaryByType = flow(function*(type, isUpload) {
+    const map = this.map
+
     const dic = map.get(type)
+
+    this.loading[type] = true
 
     // Promise 处理同时加载相同的字典
     if (dic && dic.then) {
-      await dic
+      yield dic
 
       map.delete(type)
 
@@ -26,28 +43,16 @@ function getDicFn() {
 
     map.set(type, fetchPro)
 
-    const res = await fetchPro
+    const res = yield fetchPro
 
     if (res.code === 0) {
-      runInAction(() => {
-        this[type] = res.data
-      })
+      this[type] = res.data
     }
 
+    this.loading[type] = false
+
     return this[type]
-  }
-}
-
-class DicStore {
-  // 事件类型
-  @observable eventType = []
-  // 事件状态
-  @observable eventState = []
-  // 过程类型
-  @observable processType = []
-
-  @action
-  getDictionaryByType = getDicFn()
+  })
 }
 
 export default new DicStore()
