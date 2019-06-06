@@ -1,8 +1,10 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useContext } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { Form, Input, Button, Select } from 'antd'
+
+import { useFetch } from '@/utils/use'
 
 import { StoreContext } from '@/stores'
 
@@ -11,7 +13,7 @@ import styles from './SearchForm.module.less'
 const { Option } = Select
 
 function SearchForm({ form, onSubmit }) {
-  const { loading, sparepartType, getDictionaryByType } = useContext(StoreContext).dicStore
+  const { sparepartType, getDictionaryByType } = useContext(StoreContext).dicStore
 
   const { getFieldDecorator, getFieldsValue } = form
 
@@ -21,9 +23,7 @@ function SearchForm({ form, onSubmit }) {
     onSubmit(getFieldsValue())
   }, [])
 
-  useEffect(() => {
-    getDictionaryByType('sparepartType')
-  }, [])
+  const { isLoading } = useFetch(getDictionaryByType, () => {}, null, 'sparepartType')
 
   return useObserver(() => (
     <Form className={styles['form-container']} onSubmit={handleSubmit} layout="inline">
@@ -33,7 +33,7 @@ function SearchForm({ form, onSubmit }) {
             allowClear
             placeholder="请选择备件类型"
             style={{ width: 140 }}
-            loading={loading.sparepartType}
+            loading={isLoading}
           >
             {sparepartType.map(({ text, value }) => (
               <Option key={value} value={value}>
