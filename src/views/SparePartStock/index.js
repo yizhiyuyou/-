@@ -23,7 +23,7 @@ export default () => {
     pagination,
     setPagination,
     getList,
-    deleteEventById,
+    deleteItemById,
   } = SparePartStockStore
 
   const handleSubmit = useCallback(() => {
@@ -38,7 +38,7 @@ export default () => {
     getList()
   }, [])
 
-  const { setParams: handleDelete } = useFetch(deleteEventById, res => {
+  const { setParams: handleDelete } = useFetch(deleteItemById, res => {
     if (res.code === 0) {
       notification.success({ duration: 2, message: '删除成功' })
 

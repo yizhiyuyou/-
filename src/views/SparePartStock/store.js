@@ -21,19 +21,14 @@ class SparePartStockStore {
   @observable list = []
 
   @computed get listCtd() {
-    return this.list
-    // return this.list.map(({ state, eventType, ...rest }) => {
-    //   const findObjType = dicStore.eventType.find(({ value }) => value === eventType)
-    //   const findObjState = dicStore.eventState.find(({ value }) => +value === +state)
-    //   const hasState = STATUS_MAPPING_INFO.has(state)
+    return this.list.map(({ type, ...rest }) => {
+      const findObj = dicStore.sparepartType.find(({ value }) => value === type)
 
-    //   return {
-    //     ...rest,
-    //     eventTypeText: findObjType ? findObjType.text : '',
-    //     stateText: findObjState ? findObjState.text : '',
-    //     color: hasState ? STATUS_MAPPING_INFO.get(state).color : '',
-    //   }
-    // })
+      return {
+        ...rest,
+        typeText: findObj ? findObj.text : '',
+      }
+    })
   }
 
   @action.bound

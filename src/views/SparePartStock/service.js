@@ -1,16 +1,19 @@
 import request from '@/utils/request'
 
 // 列表
-export async function getList(params) {
-  const res = await request.get('/rest/event/eventinfo/list', params)
+export function getList(params) {
+  const filterParams = Object.entries(params).reduce((prev, [key, value]) => {
+    if (!value) {
+      return { ...prev }
+    }
 
-  if (res.code === 0) {
-  }
+    return { ...prev, [key]: value }
+  }, {})
 
-  return res
+  return request.get('/rest/sparepart/sparepartmanagement/list', filterParams)
 }
 
 // 删除
-export async function deleteItemById(params) {
-  return request.post('/rest/event/eventinfo/delete', params)
+export function deleteItemById(params) {
+  return request.post('/rest/sparepart/sparepartmanagement/delete', params)
 }

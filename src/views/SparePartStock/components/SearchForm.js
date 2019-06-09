@@ -62,7 +62,7 @@ const WrappedSearchForm = Form.create({
     const { type, name } = props.value
 
     return {
-      type: Form.createFormField({ value: type === '' && undefined }),
+      type: Form.createFormField({ value: type === '' ? undefined : type }),
       name: Form.createFormField({ value: name }),
     }
   },
