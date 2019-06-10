@@ -8,7 +8,7 @@ import styles from './Table.module.less'
 
 const { Column } = Table
 
-export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
+export default ({ onEdit, onDelete, onChange, ...rest }) => {
   // 过滤掉一些多余数据
   const handleChange = useCallback(
     pagination => {
@@ -30,17 +30,16 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
           title="操作"
           key="action"
           align="center"
-          render={({ id }) => {
+          render={row => {
             return (
               <span>
-                <Button
-                  onClick={() => window.open(`/detail/event/${id}`, '_blank')}
-                  type="primary"
-                  className={styles['m-r-35']}
-                >
+                <Button onClick={() => onEdit(row)} type="primary" className={styles['m-r-35']}>
                   编辑
                 </Button>
-                <Popconfirm title="是否要删除该条备件信息?" onConfirm={() => onDelete({ id })}>
+                <Popconfirm
+                  title="是否要删除该条备件信息?"
+                  onConfirm={() => onDelete({ id: row.id })}
+                >
                   <Button type="danger">删除</Button>
                 </Popconfirm>
               </span>

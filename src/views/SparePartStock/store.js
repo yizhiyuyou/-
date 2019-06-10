@@ -2,7 +2,7 @@ import { observable, computed, action, flow } from 'mobx'
 
 import dicStore from '@/stores/dicStore'
 
-import { getList, deleteItemById } from './service'
+import { getList, deleteItemById, saveData } from './service'
 
 class SparePartStockStore {
   @observable isLoading = false
@@ -26,6 +26,7 @@ class SparePartStockStore {
 
       return {
         ...rest,
+        type,
         typeText: findObj ? findObj.text : '',
       }
     })
@@ -68,6 +69,11 @@ class SparePartStockStore {
     this.isLoading = false
 
     return res
+  })
+
+  @action.bound
+  saveData = flow(function*(params) {
+    return yield saveData(params)
   })
 
   @action.bound
