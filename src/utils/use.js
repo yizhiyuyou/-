@@ -118,7 +118,7 @@ export function useFetch(fetchFn, cb, initialData, params) {
     } = state
 
     if (cb && typeof cb === 'function' && code !== -1) {
-      return cb(res)
+      return cb(res, innerParams || params)
     }
   }, [state.res])
 

@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 // 列表
 export function getList(params) {
+  // 理应对用户未填写或未选择的数据过滤掉，不用传给后端
   // const filterParams = Object.entries(params).reduce((prev, [key, value]) => {
   //   if (!value) {
   //     return { ...prev }

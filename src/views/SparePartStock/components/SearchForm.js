@@ -66,8 +66,8 @@ const WrappedSearchForm = Form.create({
       name: Form.createFormField({ value: name }),
     }
   },
-  onValuesChange(props, changedValues, allValues) {
-    props.onChange(allValues)
+  onValuesChange({ onChange }, changedValues, { type = '', ...rest }) {
+    onChange({ ...rest, type })
   },
 })(SearchForm)
 
