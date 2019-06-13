@@ -19,6 +19,10 @@ const formItemCol = {
   wrapperCol: { span: 14 },
 }
 
+const btnProps = {
+  size: 'large',
+}
+
 function SparePartModal({ form, onOk, value, ...rest }) {
   const { sparepartType, getDictionaryByType } = useContext(StoreContext).dicStore
 
@@ -37,7 +41,14 @@ function SparePartModal({ form, onOk, value, ...rest }) {
   }, [onOk, value])
 
   return useObserver(() => (
-    <Modal title="Title" width="960px" onOk={handleOk} {...rest}>
+    <Modal
+      title={value.id ? '编辑' : '设备入库'}
+      width="960px"
+      okButtonProps={btnProps}
+      cancelButtonProps={btnProps}
+      onOk={handleOk}
+      {...rest}
+    >
       <Form className={styles['form-container']} {...formItemCol}>
         <Row>
           <Col span={10} offset={2}>
