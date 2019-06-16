@@ -1,15 +1,15 @@
 import React from 'react'
 
-const val = {
+export const defaultMeta = {
   hasRoute() {},
   has() {},
 }
 
-const context = React.createContext(val)
+const context = React.createContext(defaultMeta)
 
 export function withMetaProvider(WrappedComponent) {
   return ({ meta, ...rest }) => (
-    <context.Provider value={meta || val} children={<WrappedComponent {...rest} />} />
+    <context.Provider value={meta || defaultMeta} children={<WrappedComponent {...rest} />} />
   )
 }
 
