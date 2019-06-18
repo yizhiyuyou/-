@@ -1,9 +1,11 @@
 import { observable, action, flow } from 'mobx'
 
+import moment from 'moment'
+
 import { getConsumeData } from './service'
 
 class EnergyAnalysisStore {
-  @observable search = { rangePicker: [null, null] }
+  @observable search = { rangePicker: [moment().subtract(1, 'years'), moment()] }
 
   @observable lineChart = []
 

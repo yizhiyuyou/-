@@ -61,7 +61,10 @@ function getOption(lineChart = []) {
   )
 
   return {
-    tooltip: {},
+    grid: { bottom: 50 },
+    tooltip: {
+      trigger: 'axis',
+    },
     xAxis: {
       data: xAxisData,
       axisLine: {
@@ -190,7 +193,7 @@ function useEchart() {
   return domRef
 }
 
-export default props => {
+export default () => {
   const { energyAnalysisStore } = useContext(StoreContext)
 
   const { setSearch, getConsumeData } = energyAnalysisStore
