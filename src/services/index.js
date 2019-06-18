@@ -1,13 +1,13 @@
 import md5 from 'md5'
 
-import request from '@/utils/request'
+import { get, post } from '@/utils/request'
 import { restData } from '@/config'
 
 // 用于页面登录
 export function pageLogin(params) {
   const { username, password } = params
 
-  return request.post(restData.checkLoginUrl, {
+  return post(restData.checkLoginUrl, {
     username,
     password: params.md5 ? password : md5(password),
   })
@@ -15,12 +15,12 @@ export function pageLogin(params) {
 
 // 用于页面注销
 export function pageLogout() {
-  return request.post(restData.logoutUrl)
+  return post(restData.logoutUrl)
 }
 
 // 获取字典数据
 export async function getDicData({ type }) {
-  const res = await request.get(restData.dictUrl)
+  const res = await get(restData.dictUrl)
 
   if (res.code === 0) {
     res.data = res.data[type].map(({ value, code }) => ({ text: value, value: code }))
@@ -31,5 +31,10 @@ export async function getDicData({ type }) {
 
 // session登录
 export function appSessionLogin() {
-  return request.get(restData.checkUserInfoUrl)
+  return get(restData.checkUserInfoUrl)
+}
+
+// 我的代办信息
+export function getMyTaskNum() {
+  return get('/rest/statistic/event/myunfinishedevents')
 }

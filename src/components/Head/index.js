@@ -1,8 +1,10 @@
-import React, { useContext, useCallback, useRef } from 'react'
+import React, { useContext, useCallback, useRef, useEffect } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { Badge, Menu, Dropdown, Icon } from 'antd'
+
+import history from '@/utils/history'
 
 import { StoreContext } from '@/stores'
 
@@ -11,16 +13,21 @@ import Breadcrumb from '../Breadcrumb'
 import styles from './index.module.less'
 
 export const Head = () => {
-  const store = useContext(StoreContext)
+  const { rootStore } = useContext(StoreContext)
 
   const fnsRef = useRef({
-    logout: store.rootStore.pageLogout,
+    logout: rootStore.pageLogout,
+    go: () => history.push('/eventMana/myTask'),
   })
 
   const handleClick = useCallback(({ key }) => {
     const fn = fnsRef.current[key]
 
     fn && fn()
+  }, [])
+
+  useEffect(() => {
+    rootStore.getMyTaskNum()
   }, [])
 
   const WithMenu = (
@@ -37,11 +44,11 @@ export const Head = () => {
         <Breadcrumb />
       </div>
       <div className={styles['head-right']}>
-        <Badge count={0} overflowCount={99}>
+        <Badge count={rootStore.myTaskNum} overflowCount={99} onClick={fnsRef.current.go}>
           <img
             src="/static/img/layout/info.png"
-            alt="信息"
-            title="信息"
+            alt="待办数量"
+            title="我的待办"
             className={styles.pointer}
           />
         </Badge>
@@ -49,7 +56,7 @@ export const Head = () => {
         <img src="/static/img/layout/user.png" className={styles['user-icon']} alt="头像" />
         <Dropdown overlay={WithMenu} className={styles['the-dropdown']}>
           <div className={styles.pointer}>
-            {store.rootStore.username}
+            {rootStore.username}
             <Icon type="down" />
           </div>
         </Dropdown>

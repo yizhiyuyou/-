@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import { get, post } from '@/utils/request'
 
 // 列表
 export function getList(params) {
@@ -11,12 +11,12 @@ export function getList(params) {
   //   return { ...prev, [key]: value }
   // }, {})
 
-  return request.get('/rest/sparepart/sparepartmanagement/list', params)
+  return get('/rest/sparepart/sparepartmanagement/list', params)
 }
 
 // 删除
 export function deleteItemById(params) {
-  return request.post('/rest/sparepart/sparepartmanagement/delete', params)
+  return post('/rest/sparepart/sparepartmanagement/delete', params)
 }
 
 // 保存 or 编辑
@@ -25,5 +25,5 @@ export function saveData(params) {
     ? '/rest/sparepart/sparepartmanagement/update'
     : '/rest/sparepart/sparepartmanagement/save'
 
-  return request.post(url, params)
+  return post(url, params)
 }

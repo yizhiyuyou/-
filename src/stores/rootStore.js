@@ -1,8 +1,8 @@
-import { observable, action } from 'mobx'
+import { observable, action, flow } from 'mobx'
 
 import { message } from 'antd'
 
-import { pageLogin, pageLogout, appSessionLogin } from '@/services'
+import { pageLogin, pageLogout, appSessionLogin, getMyTaskNum } from '@/services'
 
 import injectUser from '@/utils/injectUser'
 
@@ -17,6 +17,9 @@ class RootStore {
   @observable roles = []
   @observable loginStatus = USER_STATUS.get('未登录').status
   @observable timestamp = `${Date.now()}`
+
+  // 我的代办数量
+  @observable myTaskNum = 0
 
   @action
   setUser(user) {
@@ -132,6 +135,17 @@ class RootStore {
       msg: res.msg || '登录失败了',
     }
   }
+
+  @action.bound
+  getMyTaskNum = flow(function*() {
+    const res = yield getMyTaskNum()
+
+    if (res.code === 0) {
+      this.myTaskNum = res.data.myCount
+    }
+
+    return res
+  })
 }
 
 export default new RootStore()

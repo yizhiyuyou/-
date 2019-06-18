@@ -46,7 +46,7 @@ export default () => {
 
         const pagination = { total, current: params.pageIndex }
 
-        if (params.pageIndex > pageCount) {
+        if (pageCount !== 0 && params.pageIndex > pageCount) {
           Object.assign(pagination, { current: pageCount })
         }
 

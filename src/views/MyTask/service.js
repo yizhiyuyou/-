@@ -1,7 +1,7 @@
-import { get, post } from '@/utils/request'
+import { get } from '@/utils/request'
 
 // 列表
-export async function getEventList(params) {
+export async function getList(params) {
   const filterParams = Object.entries(params).reduce((prev, [key, value]) => {
     if (key === 'timePicker') {
       if (value && value.length) {
@@ -20,7 +20,7 @@ export async function getEventList(params) {
     return value ? { ...prev, [key]: value } : prev
   }, {})
 
-  const res = await get('/rest/event/eventinfo/list', filterParams)
+  const res = await get('/rest/event/eventinfo/todo-list', filterParams)
 
   if (res.code === 0) {
     res.list = res.list.map(
@@ -37,11 +37,4 @@ export async function getEventList(params) {
   }
 
   return res
-}
-
-// 删除
-export async function deleteEventById(params) {
-  const filterParams = { ids: JSON.stringify([params.id]) }
-
-  return post('/rest/event/eventinfo/delete', filterParams)
 }
