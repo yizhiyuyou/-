@@ -23,17 +23,14 @@ export async function getList(params) {
   const res = await get('/rest/event/eventinfo/todo-list', filterParams)
 
   if (res.code === 0) {
-    res.list = res.list.map(
-      ({ id, eventNum, eventType, creator, state, createTime, recentProcess: { handler } }) => ({
-        id,
-        eventNum,
-        eventType,
-        creator,
-        state,
-        createTime,
-        handler,
-      })
-    )
+    res.list = res.list.map(({ id, eventNum, eventType, creator, state, createTime }) => ({
+      id,
+      eventNum,
+      eventType,
+      creator,
+      state,
+      createTime,
+    }))
   }
 
   return res

@@ -6,6 +6,7 @@ import myTaskStore from '@/views/MyTask/store'
 import eventListStore from '@/views/EventList/store'
 import EventDetailsStore from '@/views/EventDetails/store'
 import SparePartStockStore from '@/views/SparePartStock/store'
+import energyAnalysisStore from '@/views/EnergyAnalysis/store'
 
 export const stores = {
   dicStore,
@@ -14,6 +15,7 @@ export const stores = {
   eventListStore,
   EventDetailsStore,
   SparePartStockStore,
+  energyAnalysisStore,
 }
 
 export const StoreContext = React.createContext(stores)

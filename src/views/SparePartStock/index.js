@@ -129,7 +129,7 @@ export default () => {
   } = useModal()
 
   return useObserver(() => (
-    <div className={styles['event-list']}>
+    <div className={styles['spare-part-stock']}>
       <WrappedSearchForm value={search} onChange={setSearch} onSubmit={handleSubmit} />
       <div className={styles.title}>
         <span>备件库存</span>

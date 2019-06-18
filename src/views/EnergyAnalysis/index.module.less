@@ -1,0 +1,48 @@
+@import '../../assets/static/style/common';
+
+.energy-analysis {
+  margin-top: 5px;
+  background-color: #fff;
+  min-height: calc(~'100% - 60px');
+  display: flex;
+  flex-direction: column;
+
+  .main {
+    flex-grow: 1;
+    max-height: 900px;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+
+    .chart {
+      height: 300px;
+      flex-grow: 1;
+      // background-color: red;
+    }
+
+    .line {
+      height: 5px;
+      background-color: @ec-color-bg-main;
+    }
+
+    .table {
+      box-sizing: border-box;
+      padding-top: 30px;
+      width: 74%;
+      margin-left: 13%;
+      flex-grow: 1;
+      // background-color: green;
+    }
+
+    .type {
+      display: inline-flex;
+      align-items: center;
+
+      .icon {
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

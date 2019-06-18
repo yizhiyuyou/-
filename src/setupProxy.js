@@ -7,8 +7,8 @@ const apiUrl = 'http://192.168.10.113:20080/zhfwq' // 113测试
 module.exports = function(app) {
   app.use(
     proxy('/rest', {
-      // target: 'https://fuwuqu.trial.hndfsj.net',
-      target: apiUrl,
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: apiUrl,
       changeOrigin: true,
       onProxyRes: cookiePathRewriter,
       pathRewrite: {
@@ -19,8 +19,8 @@ module.exports = function(app) {
 
   app.use(
     proxy('/resource', {
-      // target: 'https://fuwuqu.trial.hndfsj.net',
-      target: apiUrl,
+      target: 'https://fuwuqu.trial.hndfsj.net',
+      // target: apiUrl,
       changeOrigin: true,
       onProxyRes: cookiePathRewriter,
       pathRewrite: {
