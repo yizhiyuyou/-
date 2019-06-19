@@ -2,7 +2,7 @@ import { get } from '@/utils/request'
 
 const TYPE_MAPPING_COLOR = new Map([['min', { color: '#ffac53' }], ['max', { color: '#eb3333' }]])
 
-export async function getConsumeData(params) {
+export async function getData(params) {
   const res = await get('/rest/energy/energyconsu/energy-statistics', params)
 
   if (res.code === 0) {

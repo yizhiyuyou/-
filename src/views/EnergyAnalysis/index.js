@@ -4,7 +4,7 @@ import { autorun } from 'mobx'
 
 import { useObserver } from 'mobx-react-lite'
 
-import { Table } from 'antd'
+import { Table, Spin } from 'antd'
 
 import echarts from 'echarts'
 
@@ -196,10 +196,10 @@ function useEchart() {
 export default () => {
   const { energyAnalysisStore } = useContext(StoreContext)
 
-  const { setSearch, getConsumeData } = energyAnalysisStore
+  const { setSearch, getData } = energyAnalysisStore
 
   useEffect(() => {
-    getConsumeData()
+    getData()
   }, [])
 
   const domRef = useEchart()
@@ -209,15 +209,18 @@ export default () => {
       <WrappedSearchForm
         value={energyAnalysisStore.search}
         onChange={setSearch}
-        onSubmit={getConsumeData}
+        onSubmit={getData}
       />
       <div className={styles.main}>
-        <div className={styles.chart} ref={domRef} />
+        <Spin spinning={energyAnalysisStore.isLoading}>
+          <div className={styles.chart} ref={domRef} />
+        </Spin>
         <div className={styles.line} />
         <Table
           dataSource={energyAnalysisStore.maxMinData}
           columns={columns}
           pagination={false}
+          loading={energyAnalysisStore.isLoading}
           className={styles.table}
           bordered={true}
           rowKey="text"

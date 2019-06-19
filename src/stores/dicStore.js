@@ -14,6 +14,12 @@ class DicStore {
   @observable processType = []
   // 备件类型
   @observable sparepartType = []
+  // 能耗类型
+  @observable energyType = []
+  // 电表位置
+  @observable elecMeter = []
+  // 水表位置
+  @observable waterMeter = []
 
   @observable loading = {}
 

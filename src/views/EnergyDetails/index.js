@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
-import { notification, Button } from 'antd'
+import { notification } from 'antd'
 
 import { useFetch } from '@/utils/use'
 
@@ -16,25 +16,15 @@ import styles from './index.module.less'
 
 function useModal() {
   const {
-    SparePartStockStore: { saveData, getList, setPagination },
+    EnergyDetailsStore: { saveData, getList, setPagination },
   } = useContext(StoreContext)
 
   const [visible, setVisible] = useState(false)
 
   const [modalFormData, setModalFormData] = useState({})
 
-  const handleEdit = useCallback(({ id, name, type, brand, count, model, markNote } = {}) => {
-    const params = { name, type, brand, count, model, markNote }
-
-    id && Object.assign(params, { id })
-
-    setModalFormData(params)
-
-    setVisible(true)
-  }, [])
-
-  const handleAdd = useCallback(() => {
-    setModalFormData({})
+  const handleLookDetails = useCallback(row => {
+    setModalFormData(row)
 
     setVisible(true)
   }, [])
@@ -65,9 +55,8 @@ function useModal() {
   return {
     visible,
     isLoading,
-    handleEdit,
+    handleLookDetails,
     handleOk: setParams,
-    handleAdd,
     handleCancel: close,
     modalFormData,
     afterClose,
@@ -75,9 +64,9 @@ function useModal() {
 }
 
 export default () => {
-  const { dicStore, SparePartStockStore } = useContext(StoreContext)
+  const { dicStore, EnergyDetailsStore } = useContext(StoreContext)
 
-  const { setSearch, pagination, setPagination, getList, deleteItemById } = SparePartStockStore
+  const { setSearch, pagination, setPagination, getList, deleteItemById } = EnergyDetailsStore
 
   const handleSubmit = useCallback(() => {
     setPagination({ current: 1 })
@@ -102,7 +91,7 @@ export default () => {
   })
 
   useEffect(() => {
-    dicStore.getDictionaryByType('sparepartType')
+    dicStore.getDictionaryByType('energyType')
 
     getList()
   }, [])
@@ -112,34 +101,30 @@ export default () => {
   const {
     visible,
     isLoading,
-    handleEdit,
+    handleLookDetails,
     handleOk,
-    handleAdd,
     handleCancel,
     modalFormData,
     afterClose,
   } = useModal()
 
   return useObserver(() => (
-    <div className={styles['spare-part-stock']}>
+    <div className={styles['energy-details']}>
       <WrappedSearchForm
-        value={SparePartStockStore.search}
+        value={EnergyDetailsStore.search}
         onChange={setSearch}
         onSubmit={handleSubmit}
       />
       <div className={styles.title}>
-        <span>备件库存</span>
-        <Button onClick={handleAdd} type="primary" size="large" icon="plus-circle">
-          设备入库
-        </Button>
+        <span>能耗明细列表</span>
       </div>
       <Table
-        onEdit={handleEdit}
+        onEdit={handleLookDetails}
         onDelete={handleDelete}
         onChange={handleChange}
         pagination={pagin}
-        dataSource={SparePartStockStore.listCtd}
-        loading={SparePartStockStore.isLoading}
+        dataSource={EnergyDetailsStore.listCtd}
+        loading={EnergyDetailsStore.isLoading}
         rowKey="id"
       />
       <Modal

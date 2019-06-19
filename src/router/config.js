@@ -34,7 +34,7 @@ const MessageBorad = React.lazy(() => import('../views/MessageBorad'))
 const NoticeAdd = React.lazy(() => import('../views/NoticeAdd'))
 
 const EnergyAnalysis = React.lazy(() => import('../views/EnergyAnalysis'))
-const EnergyDetail = React.lazy(() => import('../views/EnergyDetail'))
+const EnergyDetails = React.lazy(() => import('../views/EnergyDetails'))
 
 const SparePartStock = React.lazy(() => import('../views/SparePartStock'))
 
@@ -240,9 +240,9 @@ const routes = [
         },
       },
       {
-        path: '/energyAnalysis/energyDetail',
+        path: '/energyAnalysis/EnergyDetails',
         exact: true,
-        component: EnergyDetail,
+        component: EnergyDetails,
         meta: {
           name: '能耗明细',
           title: '能耗明细',

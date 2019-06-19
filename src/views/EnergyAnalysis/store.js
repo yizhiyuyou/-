@@ -2,9 +2,11 @@ import { observable, action, flow } from 'mobx'
 
 import moment from 'moment'
 
-import { getConsumeData } from './service'
+import { getData } from './service'
 
 class EnergyAnalysisStore {
+  @observable isLoading = false
+
   @observable search = { rangePicker: [moment().subtract(1, 'years'), moment()] }
 
   @observable lineChart = []
@@ -12,16 +14,20 @@ class EnergyAnalysisStore {
   @observable maxMinData = []
 
   @action.bound
-  getConsumeData = flow(function*() {
+  getData = flow(function*() {
+    this.isLoading = true
+
     const params = this.getParams()
 
-    const res = yield getConsumeData(params)
+    const res = yield getData(params)
 
     if (res.code === 0) {
       const { lineChart, maxMinData } = res.data
 
       Object.assign(this, { lineChart, maxMinData })
     }
+
+    this.isLoading = false
 
     return res
   })
