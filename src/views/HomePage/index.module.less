@@ -1,0 +1,22 @@
+.home {
+  min-height: calc(~'100% - 55px');
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+  box-sizing: border-box;
+
+  .card-box {
+    display: flex;
+
+    .card-item {
+      width: 24%;
+      margin-right: 1%;
+      flex-grow: 1;
+      background-color: #fff;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

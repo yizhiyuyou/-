@@ -1,0 +1,39 @@
+@import '../../../../assets/static/style/common.less';
+
+.skeleton {
+  padding: 20px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @ec-font-size-main;
+  color: @ec-color-text-less;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    border-color: rgba(0, 0, 0, 0.09);
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 20px;
+    margin-top: 8px;
+
+    .count {
+      color: @ec-color-text-main;
+      font-size: 35px;
+    }
+  }
+}
