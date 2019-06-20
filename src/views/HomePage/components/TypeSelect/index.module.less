@@ -1,0 +1,20 @@
+@import '../../../../assets/static/style/common.less';
+
+.select {
+  color: @ec-color-text-less;
+  cursor: pointer;
+  z-index: 10;
+  border-bottom: 1px solid #ededed;
+  text-align: center;
+
+  span {
+    display: inline-block;
+    padding: 0 8px 10px;
+    text-align: right;
+
+    &.active {
+      color: @ec-color-primary;
+      border-bottom: 3px solid @ec-color-primary;
+    }
+  }
+}

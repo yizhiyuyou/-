@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import echarts from 'echarts'
 
-export function useEchart() {
+function useEchart() {
   const myChartRef = useRef(null)
   const domRef = useRef(null)
 
@@ -21,51 +21,15 @@ export function useEchart() {
   return { domRef, myChartRef }
 }
 
-export function useLine({ data, xAxisName }) {
-  const { domRef, myChartRef } = useEchart()
-
-  useEffect(() => {
-    myChartRef.current.setOption(getOption(data, xAxisName))
-  }, [data, xAxisName])
-
-  return { domRef, myChartRef }
-}
-
-export function getOption() {
+function getLineOption({ xAxisData, yAxisName, series: [first, secode], axisLabelRotate }) {
   return {
     tooltip: { trigger: 'axis' },
     legend: {
       top: 0,
       left: 110,
-      data: ['进客人数', '离客人数'],
     },
     xAxis: {
-      data: [
-        '0:00',
-        '1:00',
-        '2:00',
-        '3:00',
-        '4:00',
-        '5:00',
-        '6:00',
-        '7:00',
-        '8:00',
-        '9:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-        '16:00',
-        '17:00',
-        '18:00',
-        '19:00',
-        '20:00',
-        '21:00',
-        '22:00',
-        '23:00',
-      ],
+      data: xAxisData,
       axisLine: {
         lineStyle: {
           color: '#999',
@@ -78,13 +42,13 @@ export function getOption() {
         show: true,
       },
       axisLabel: {
-        rotate: 0,
+        rotate: axisLabelRotate,
       },
     },
     yAxis: {
       type: 'value',
       position: 'left',
-      name: '人数',
+      name: yAxisName,
       nameLocation: 'end',
       splitLine: {
         show: false,
@@ -106,33 +70,8 @@ export function getOption() {
     },
     series: [
       {
-        data: [
-          75,
-          73,
-          60,
-          65,
-          80,
-          81,
-          120,
-          128,
-          225,
-          231,
-          345,
-          355,
-          561,
-          545,
-          610,
-          625,
-          340,
-          319,
-          260,
-          225,
-          190,
-          121,
-          60,
-          55,
-        ],
-        name: '进客人数',
+        data: first.data,
+        name: first.name,
         type: 'line',
         symbol: 'circle',
         symbolSize: 10,
@@ -145,33 +84,8 @@ export function getOption() {
         },
       },
       {
-        data: [
-          55,
-          52,
-          80,
-          80,
-          79,
-          79,
-          109,
-          102,
-          155,
-          133,
-          225,
-          241,
-          390,
-          352,
-          650,
-          618,
-          310,
-          310,
-          280,
-          220,
-          120,
-          116,
-          60,
-          47,
-        ],
-        name: '离客人数',
+        data: secode.data,
+        name: secode.name,
         type: 'line',
         symbol: 'circle',
         symbolSize: 10,
@@ -185,4 +99,169 @@ export function getOption() {
       },
     ],
   }
+}
+
+export function useEchartWithOption(data, getOption) {
+  const { domRef, myChartRef } = useEchart()
+
+  useEffect(() => {
+    myChartRef.current.setOption(getOption(data))
+  }, [data, getOption])
+
+  return { domRef, myChartRef }
+}
+
+// 男女比例饼图-配置模板
+function getSexPieOption() {
+  return {
+    color: ['#ff7426', '#529efb'],
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {d}%',
+      // formatter: '{a} <br/>{b} : {c} ({d}%)',
+    },
+    legend: {
+      show: true,
+      orient: 'vertical',
+      itemWidth: 18,
+      itemHeight: 35,
+      data: [
+        {
+          name: '男',
+          icon: 'image://https://fuwuqu.trial.hndfsj.net/static/img/man.png',
+        },
+        {
+          name: '女',
+          icon: 'image://https://fuwuqu.trial.hndfsj.net/static/img/woman.png',
+        },
+      ],
+      top: '35%',
+      left: '70%',
+      itemGap: 30,
+    },
+    series: [
+      {
+        name: '男女比例',
+        startAngle: 135,
+        type: 'pie',
+        radius: '55%',
+        center: ['34%', '50%'],
+        data: [{ value: 310, name: '女' }, { value: 690, name: '男' }],
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: '{d}%',
+        },
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
+  }
+}
+
+export function useLine(data) {
+  return useEchartWithOption(data, getLineOption)
+}
+
+export function usePie(data) {
+  return useEchartWithOption(data, getSexPieOption)
+}
+
+// 年龄分柱状图-布配置模板
+function getAgeBarOption() {
+  return {
+    tooltip: { trigger: 'axis' },
+    legend: {
+      show: false,
+      itemWidth: 4,
+      itemHeight: 18,
+      textStyle: { color: '#666666', fontStyle: 15 },
+      data: ['年龄分布'],
+    },
+    xAxis: {
+      axisLine: {
+        lineStyle: {
+          color: '#d3d3d3',
+        },
+      },
+      axisLabel: { color: '#999', fontSize: 14 },
+      data: ['19岁以下', '20-29岁', '30-39岁', '40-49岁', '50-59岁', '60岁以上'],
+    },
+    yAxis: {
+      name: '数量',
+      nameTextStyle: { color: '#999' },
+      splitLine: { show: false },
+      axisLabel: { color: '#999' },
+      axisLine: {
+        lineStyle: {
+          color: '#d3d3d3',
+        },
+      },
+    },
+    series: [
+      {
+        name: '年龄分布',
+        type: 'bar',
+        itemStyle: {
+          color: '#4c98e9',
+          barBorderRadius: 2,
+        },
+        barWidth: 25,
+        data: [342, 616, 2741, 2055, 753, 364],
+      },
+    ],
+  }
+}
+
+export function useBar(data) {
+  return useEchartWithOption(data, getAgeBarOption)
+}
+
+// 客车货车比例
+function getCarRingOption({ title, series }) {
+  console.log(123123, title)
+  return {
+    title: {
+      text: title,
+      top: '36%',
+      left: '42%',
+      textStyle: {
+        color: '#666',
+        fontSize: 18,
+      },
+    },
+    color: ['#529efb', '#ff7426'],
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {d}%',
+    },
+    legend: {
+      bottom: 50,
+    },
+    series: [
+      {
+        name: title,
+        type: 'pie',
+        radius: ['40%', '55%'],
+        center: ['50%', '40%'],
+        label: {
+          formatter: '{b} : {d}%',
+        },
+        labelLine: {
+          length: 8,
+          length2: 8,
+        },
+        data: series,
+      },
+    ],
+  }
+}
+
+export function useRing(data) {
+  return useEchartWithOption(data, getCarRingOption)
 }

@@ -1,0 +1,29 @@
+@import '../../../../assets/static/style/common.less';
+
+.person-type {
+  height: 100%;
+  display: flex;
+
+  .item {
+    width: 50%;
+    position: relative;
+
+    .title {
+      position: absolute;
+      font-size: 15px;
+      color: #666;
+      left: 50%;
+      transform: translateX(-50%);
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 16px;
+        background-color: @ec-color-primary;
+        vertical-align: -2px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

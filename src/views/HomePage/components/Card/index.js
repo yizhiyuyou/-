@@ -13,7 +13,7 @@ const paragraphProps = {
 export default ({ loading, icon, src, title, count, skeleton }) => {
   return (
     <Skeleton
-      loading={!loading}
+      loading={loading}
       avatar={true}
       active={true}
       className={styles.skeleton}

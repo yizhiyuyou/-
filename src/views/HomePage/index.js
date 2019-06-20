@@ -1,28 +1,21 @@
 import React from 'react'
 
-import Card from './components/Card/index'
+import classnames from 'classnames/bind'
+
+import TopCard from './components/TopCard/index'
 import ChartPerson from './components/ChartPerson/index'
+import ChartCar from './components/ChartCar/index'
 
 import styles from './index.module.less'
+
+const cx = classnames.bind(styles)
 
 export default () => {
   return (
     <div className={styles.home}>
-      <div className={styles['card-box']}>
-        <div className={styles['card-item']}>
-          <Card icon="carNum" title="车流量" count="10" />
-        </div>
-        <div className={styles['card-item']}>
-          <Card icon="personNum" title="客流量" count="199" />
-        </div>
-        <div className={styles['card-item']}>
-          <Card icon="saleNum" title="销售额" count="990" />
-        </div>
-        <div className={styles['card-item']}>
-          <Card icon="eventNum" title="事件上报数" count="1200" />
-        </div>
-      </div>
-      <ChartPerson />
+      <TopCard />
+      <ChartPerson className={styles['m-t-10']} />
+      <ChartCar className={cx('m-t-10', 'm-b-10')} />
     </div>
   )
 }
