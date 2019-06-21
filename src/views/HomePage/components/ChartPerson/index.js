@@ -19,7 +19,7 @@ import styles from './index.module.less'
 
 export default ({ className }) => {
   const { HomePageStore } = useContext(StoreContext)
-  const { changeActiveByPersonType, changeTimeType, getPersonData } = HomePageStore
+  const { changeActiveByPersonType, changePersonTimeType, getPersonData } = HomePageStore
 
   const handleChange = useCallback(e => {
     changeActiveByPersonType(e.target.value)
@@ -53,7 +53,7 @@ export default ({ className }) => {
           ) : (
             <ChartLineWithSelect
               value={HomePageStore.personSelect.get('客流量趋势').timeType}
-              onChange={changeTimeType}
+              onChange={changePersonTimeType}
               data={HomePageStore.passengerFlowTrend}
             />
           )}

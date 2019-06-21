@@ -10,12 +10,14 @@ import styles from './index.module.less'
 
 const cx = classnames.bind(styles)
 
+const classNames = cx('m-t-10', 'f-g-1')
+
 export default () => {
   return (
     <div className={styles.home}>
       <TopCard />
-      <ChartPerson className={styles['m-t-10']} />
-      <ChartCar className={cx('m-t-10', 'm-b-10')} />
+      <ChartPerson className={classNames} />
+      <ChartCar className={classNames} />
     </div>
   )
 }

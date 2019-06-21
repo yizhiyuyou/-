@@ -236,7 +236,6 @@ export function useBar(data) {
 
 // 客车货车比例
 function getCarRingOption({ title, series }) {
-  console.log(123123, title)
   return {
     title: {
       text: title,

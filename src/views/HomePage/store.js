@@ -60,6 +60,46 @@ class HomePageStore {
   }
 
   @action.bound
+  setState(state) {
+    Object.assign(this, state)
+  }
+
+  changeTimeType(prop, timeType) {
+    const [key, value] = [...this[prop]].find(([key, { active }]) => active)
+
+    this[prop].set(key, { ...value, timeType })
+  }
+
+  @action.bound
+  changePersonTimeType(timeType) {
+    this.changeTimeType('personSelect', timeType)
+  }
+
+  @action.bound
+  changeCarTimeType(timeType) {
+    this.changeTimeType('carSelect', timeType)
+  }
+
+  changeActiveByType(prop, type) {
+    const newData = [...this[prop]].reduce(
+      (prev, [itemType, item]) => [...prev, [itemType, { ...item, active: type === itemType }]],
+      []
+    )
+
+    this[prop] = new Map(newData)
+  }
+
+  @action.bound
+  changeActiveByCarType(carType) {
+    this.changeActiveByType('carSelect', carType)
+  }
+
+  @action.bound
+  changeActiveByPersonType(personType) {
+    this.changeActiveByType('personSelect', personType)
+  }
+
+  @action.bound
   getTopData = flow(function*() {
     this.isLoading = true
 
@@ -112,43 +152,6 @@ class HomePageStore {
 
     return res
   })
-
-  @action.bound
-  setState(state) {
-    Object.assign(this, state)
-  }
-
-  @action.bound
-  changeActiveByPersonType(personType) {
-    const newPersonSelect = [...this.personSelect].reduce(
-      (prev, [perType, item]) => [...prev, [perType, { ...item, active: personType === perType }]],
-      []
-    )
-
-    this.personSelect = new Map(newPersonSelect)
-  }
-
-  @action.bound
-  changeTimeType(timeType) {
-    this.personSelect.set('客流量趋势', { ...this.personSelect.get('客流量趋势'), timeType })
-  }
-
-  @action.bound
-  changeActiveByCarType(personType) {
-    const newCarSelect = [...this.carSelect].reduce(
-      (prev, [perType, item]) => [...prev, [perType, { ...item, active: personType === perType }]],
-      []
-    )
-
-    this.carSelect = new Map(newCarSelect)
-  }
-
-  @action.bound
-  changeCarTimeType(timeType) {
-    const [key, value] = [...this.carSelect].find(([key, { active }]) => active)
-
-    this.carSelect.set(key, { ...value, timeType })
-  }
 }
 
 export default new HomePageStore()
