@@ -70,7 +70,6 @@ export function debounce(fn, delay = 600, runFirstFn = true) {
   return function(...rest) {
     // 清除定时器
     clearTimeout(timer)
-
     if (runFirstFn) {
       fn.apply(this, rest)
       runFirstFn = false

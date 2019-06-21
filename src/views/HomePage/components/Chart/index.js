@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 
 import echarts from 'echarts'
 
+import { debounce } from '@/utils/objectUtil'
+
 function useEchart() {
   const myChartRef = useRef(null)
   const domRef = useRef(null)
@@ -101,11 +103,21 @@ function getLineOption({ xAxisData, yAxisName, series: [first, secode], axisLabe
   }
 }
 
-export function useEchartWithOption(data, getOption) {
+export function useEchartWithOption(data, getOption, type) {
   const { domRef, myChartRef } = useEchart()
 
+  const setOptionWithDebounceRef = useRef(null)
+
   useEffect(() => {
-    myChartRef.current.setOption(getOption(data))
+    setOptionWithDebounceRef.current = debounce((...rest) => {
+      const { current: myChart } = myChartRef
+
+      myChart.isDisposed() || myChart.setOption(...rest)
+    })
+  }, [])
+
+  useEffect(() => {
+    setOptionWithDebounceRef.current(getOption(data))
   }, [data, getOption])
 
   return { domRef, myChartRef }
@@ -165,7 +177,7 @@ function getSexPieOption() {
 }
 
 export function useLine(data) {
-  return useEchartWithOption(data, getLineOption)
+  return useEchartWithOption(data, getLineOption, 'line')
 }
 
 export function usePie(data) {
