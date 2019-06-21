@@ -9,6 +9,7 @@ import SparePartStockStore from '@/views/SparePartStock/store'
 import energyAnalysisStore from '@/views/EnergyAnalysis/store'
 import EnergyDetailsStore from '@/views/EnergyDetails/store'
 import HomePageStore from '@/views/HomePage/store'
+import UserManaStore from '@/views/UserMana/store'
 
 export const stores = {
   dicStore,
@@ -20,6 +21,7 @@ export const stores = {
   energyAnalysisStore,
   EnergyDetailsStore,
   HomePageStore,
+  UserManaStore,
 }
 
 export const StoreContext = React.createContext(stores)

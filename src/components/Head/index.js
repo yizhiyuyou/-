@@ -44,7 +44,12 @@ export const Head = () => {
         <Breadcrumb />
       </div>
       <div className={styles['head-right']}>
-        <Badge count={rootStore.myTaskNum} overflowCount={99} onClick={fnsRef.current.go}>
+        <Badge
+          count={rootStore.myTaskNum}
+          overflowCount={99}
+          onClick={fnsRef.current.go}
+          style={{ cursor: 'pointer' }}
+        >
           <img
             src="/static/img/layout/info.png"
             alt="待办数量"
