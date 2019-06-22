@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd'
 
-import pathToRegexp from 'path-to-regexp'
+import { navMenuConfig, flatConfigToNavMenu } from '@/router/config'
 
-import { navMenuConfig, flatConfig } from '@/router/config'
+import { matchRoutes } from '@/utils/router'
 
 import * as imgs from './imgs'
 
@@ -67,30 +67,6 @@ function getNavMenuByConfig(config, activePath) {
   }, [])
 }
 
-// 通过 pathname 找到深度优先配置
-function getConfigByPathname(pathname) {
-  const reg = pathToRegexp(pathname)
-
-  return flatConfig.find(([path], index, self) => {
-    const match = reg.test(path)
-
-    if (!match) {
-      return false
-    }
-    // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
-    // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
-    if (index === self.length - 1) {
-      return true
-    }
-
-    if (reg.test(self[index + 1][0])) {
-      return false
-    }
-
-    return true
-  })
-}
-
 // 设置 menu 显示内容
 function useMenu(matchPath) {
   const [menuProp, setMenuProp] = useState({
@@ -99,14 +75,20 @@ function useMenu(matchPath) {
   })
 
   useEffect(() => {
+    // 处理还在相同的布局，但是在导航栏中不显示时。
     if (!matchPath) {
-      setMenuProp({
-        openKeys: [],
-        selectedKeys: [],
-      })
-
       return
     }
+
+    // 只要没匹配到，就取消任何选中状态
+    // if (!matchPath) {
+    //   setMenuProp({
+    //     openKeys: [],
+    //     selectedKeys: [],
+    //   })
+
+    //   return
+    // }
 
     const select = matchPath[1]
 
@@ -130,15 +112,12 @@ function useMenu(matchPath) {
   return [menuProp, setMenuProp]
 }
 
-export const NavMenu = ({ history, location }) => {
+export const NavMenu = ({ history, location: { pathname } }) => {
   const [config] = useState(() => {
     return getNavMenuByUserRole(navMenuConfig)
   })
 
-  const matchPath = useMemo(() => {
-    return getConfigByPathname(location.pathname)
-  }, [location.pathname])
-
+  const matchPath = useMemo(() => matchRoutes(flatConfigToNavMenu, pathname), [pathname])
   const [menuProp, setMenuProp] = useMenu(matchPath)
 
   const handleClick = useCallback(({ key }) => {

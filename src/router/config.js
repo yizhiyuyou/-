@@ -369,8 +369,10 @@ const routes = [
 
 const reduceRoute = downToUpReduceMetaAuthority(initRoutesMeta(routes))
 
-export const navMenuConfig = getNavMenuConfig(reduceRoute, 'path')
+export const navMenuConfig = getNavMenuConfig(reduceRoute)
 
-export const flatConfig = getFlatData(navMenuConfig)
+export const flatConfigToNavMenu = getFlatData(navMenuConfig)
+
+export const flatConfigToBreadcrumb = getFlatData(reduceRoute)
 
 export default reduceRoute

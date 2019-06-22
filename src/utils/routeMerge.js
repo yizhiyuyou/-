@@ -73,7 +73,6 @@ function routeMerge(routes = []) {
 
 function getNewFn(pathToFn = []) {
   return pathname => {
-    console.log(321, pathToFn, pathname)
     const reg = pathToRegexp(pathname)
 
     const findObj = pathToFn.find(([path]) => reg.test(path))

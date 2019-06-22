@@ -47,14 +47,8 @@ export default ({ history }) => {
   const pagin = Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
   const pushRoute = useCallback(({ id = '' } = {}) => {
-    history.push('/systemMana/deptMana')
+    history.push('/systemMana/userAdd')
   }, [])
-
-  useEffect(() => {
-    return () => {
-      console.log(123123, '销毁')
-    }
-  })
 
   return useObserver(() => (
     <div className={styles['spare-part-stock']}>

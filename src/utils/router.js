@@ -1,5 +1,7 @@
 import { stores } from '@/stores'
 
+import pathToRegexp from 'path-to-regexp'
+
 /**
  * @description                              为每一个层级路由添加 404 和 403 路由
  * @param  {RouteConfig[]}  routes           路由对象
@@ -46,7 +48,7 @@ export function addNotFindAndNotPermission(routes, notPermissionComponent, notFi
  * @param  {Array}         routes   路由
  * @return {Array}                  导航栏配置
  */
-export function getNavMenuConfig(routes, prop = 'name') {
+export function getNavMenuConfig(routes, prop = 'path') {
   return routes.reduce((prevAll, route) => {
     const {
       [prop]: val = '',
@@ -291,6 +293,30 @@ export function getFlatData(config, before = []) {
 
     return [...prev, line, ...getFlatData(children, [...before, [item.path, item]])]
   }, [])
+}
+
+// 通过 pathname 找到深度优先配置
+export function matchRoutes(config, pathname) {
+  const reg = pathToRegexp(pathname)
+
+  return config.find(([path], index, self) => {
+    const match = reg.test(path)
+
+    if (!match) {
+      return false
+    }
+    // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+    // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
+    if (index === self.length - 1) {
+      return true
+    }
+
+    if (reg.test(self[index + 1][0])) {
+      return false
+    }
+
+    return true
+  })
 }
 
 export default {

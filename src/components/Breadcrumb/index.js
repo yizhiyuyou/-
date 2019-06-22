@@ -6,7 +6,9 @@ import { Breadcrumb } from 'antd'
 
 import pathToRegexp from 'path-to-regexp'
 
-import { flatConfig } from '@/router/config'
+import { flatConfigToBreadcrumb } from '@/router/config'
+
+import { matchRoutes } from '@/utils/router'
 
 import { pages } from '@/config'
 
@@ -14,55 +16,49 @@ import * as imgs from './imgs'
 
 import styles from './index.module.less'
 
+// 获得能够整个链路中显示的路由项
+function getConfigByHideInMenu(config) {
+  return config.filter(
+    ([
+      path,
+      {
+        meta: { hideInMenu },
+      },
+    ]) => !hideInMenu
+  )
+}
+
 // 根据路由找出需要显示的内容
 function useBreadcrumb(pathname) {
   return useMemo(() => {
-    const reg = pathToRegexp(pathname)
-
-    const findObj = flatConfig.find(([path], index, self) => {
-      const match = reg.test(path)
-
-      if (!match) {
-        return false
-      }
-
-      // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
-      // /a 按着顺序会先匹配到/a，会造成缺失显示默认下层内容
-      if (index === self.length - 1) {
-        return true
-      }
-
-      if (reg.test(self[index + 1][0])) {
-        return false
-      }
-
-      return true
-    })
+    const findObj = matchRoutes(flatConfigToBreadcrumb, pathname)
 
     if (!findObj) {
       return null
     }
 
-    // 处理非首页内容添加首页
-    const arr = reg.test(`${pages.home.path}/`)
-      ? [...findObj[1]]
-      : [
-          ...[flatConfig.find(([path]) => pathToRegexp(path).test(`${pages.home.path}/`))[1][0]], // 首页配置信息
-          ...findObj[1],
-        ]
+    // 过滤掉不需要显示的部分
+    const filterRoutes = getConfigByHideInMenu(findObj[1])
 
-    return arr
+    // 处理非首页内容添加首页
+    return pathToRegexp(pathname).test(pages.home.path) ||
+      pathToRegexp(pages.home.path).test(pathname)
+      ? [...filterRoutes]
+      : [
+          ...getConfigByHideInMenu(matchRoutes(flatConfigToBreadcrumb, pages.home.path)[1]), // 首页配置信息
+          ...filterRoutes,
+        ]
   }, [pathname])
 }
 
 export default withRouter(({ location }) => {
   const BreadcrumbItmes = useBreadcrumb(location.pathname)
 
-  if (!BreadcrumbItmes) {
-    return null
-  }
-
   return useMemo(() => {
+    if (!BreadcrumbItmes) {
+      return null
+    }
+
     const meta =
       BreadcrumbItmes.length === 1 ? BreadcrumbItmes[0][1].meta : BreadcrumbItmes[1][1].meta
 
