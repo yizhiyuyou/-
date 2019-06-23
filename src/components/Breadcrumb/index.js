@@ -31,12 +31,13 @@ function getConfigByHideInMenu(config) {
 
 // 获取该路由项 meta 中的 name
 function getRouteMetaName({ meta: { name }, ...rest }, pathname) {
-  if (typeof name === 'string') {
-    return name
+  const type = typeof name
+
+  if (type === 'function') {
+    return name(matchPath(pathname, rest))
   }
 
-  // 是函数
-  return name(matchPath(pathname, rest))
+  return name
 }
 
 // 根据路由找出需要显示的内容
