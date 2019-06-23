@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { matchPath } from 'react-router'
 import { withRouter, Link } from 'react-router-dom'
 
 import { Breadcrumb } from 'antd'
@@ -18,14 +19,24 @@ import styles from './index.module.less'
 
 // 获得能够整个链路中显示的路由项
 function getConfigByHideInMenu(config) {
-  return config.filter(
-    ([
-      path,
-      {
-        meta: { hideInMenu },
-      },
-    ]) => !hideInMenu
-  )
+  return config.filter(([path, { meta: { hideInMenu } }], index, self) => {
+    // 最后一项一定需要显示
+    if (self.length - 1 === index) {
+      return true
+    }
+
+    return !hideInMenu
+  })
+}
+
+// 获取该路由项 meta 中的 name
+function getRouteMetaName({ meta: { name }, ...rest }, pathname) {
+  if (typeof name === 'string') {
+    return name
+  }
+
+  // 是函数
+  return name(matchPath(pathname, rest))
 }
 
 // 根据路由找出需要显示的内容
@@ -65,7 +76,7 @@ export default withRouter(({ location }) => {
     return (
       <Breadcrumb separator=">">
         {BreadcrumbItmes.map(([path, config], index, self) => {
-          const { name } = config.meta
+          const name = getRouteMetaName(config, location.pathname)
 
           return (
             <Breadcrumb.Item key={index}>

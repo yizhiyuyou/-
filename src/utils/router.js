@@ -297,27 +297,44 @@ export function getFlatData(config, before = []) {
 
 // 通过 pathname 找到深度优先配置
 export function matchRoutes(config, pathname) {
-  const reg = pathToRegexp(pathname)
+  const findIndex = config.findIndex(([path]) => pathToRegexp(path).test(pathname))
 
-  return config.find(([path], index, self) => {
-    const match = reg.test(path)
+  if (findIndex === -1) {
+    return
+  }
 
-    if (!match) {
-      return false
-    }
-    // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
-    // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
-    if (index === self.length - 1) {
-      return true
-    }
+  // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+  // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
+  if (config.length - 1 === findIndex || config[findIndex + 1][0] !== `${config[findIndex][0]}/`) {
+    return config[findIndex]
+  }
 
-    if (reg.test(self[index + 1][0])) {
-      return false
-    }
-
-    return true
-  })
+  return config[findIndex + 1]
 }
+
+// export function matchRoutes(config, pathname) {
+//   const reg = pathToRegexp(pathname)
+
+//   return config.find(([path], index, self) => {
+//     const match = reg.test(path)
+
+//     if (!match) {
+//       return false
+//     }
+
+//     // 以下的处理都是为了处理 如/a 能够匹配 /a 和 /a/
+//     // /a 按着顺序会先匹配到/a，但是导航栏上的是/a ，就会造成/a不会激活
+//     if (index === self.length - 1) {
+//       return true
+//     }
+
+//     if (reg.test(self[index + 1][0])) {
+//       return false
+//     }
+
+//     return true
+//   })
+// }
 
 export default {
   initRoutesMeta,

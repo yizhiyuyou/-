@@ -103,12 +103,14 @@ const routes = [
         },
       },
       {
-        path: '/systemMana/userAdd',
+        path: '/systemMana/userAdd/:id?',
         component: UserAdd,
         exact: true,
         meta: {
           hideInMenu: true,
-          name: '新增用户',
+          name({ params: { id } }) {
+            return id ? '编辑用户' : '新增用户'
+          },
           title: '新增用户',
           authority: ['1'],
         },
