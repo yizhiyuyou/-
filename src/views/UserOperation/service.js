@@ -59,5 +59,16 @@ export function saveUserInfo({ id, password, ...rest }) {
 
 // 校验用户名
 export function validateUserName(params) {
-  return get('/rest/sys/user/isexist', params)
+  return get('/rest/sys/user/isexist', params).then(
+    res => {
+      if (res.code === 0) {
+        return
+      } else {
+        return Promise.reject(new Error(res.msg || '用户名校验失败'))
+      }
+    },
+    () => {
+      return Promise.reject(new Error('用户名校验失败'))
+    }
+  )
 }

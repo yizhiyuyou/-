@@ -73,20 +73,13 @@ function SearchForm({ form, onSubmit, className, isEdit, isLoading }) {
             { required: true, message: '用户名不能为空' },
             {
               validator(rule, value, cb, source, options) {
-                value || cb()
+                if (!value || isEdit) {
+                  cb()
 
-                validateUserName({ username: value }).then(
-                  res => {
-                    if (res.code === 0) {
-                      cb()
-                    } else {
-                      cb(new Error(res.msg || '用户名校验失败'))
-                    }
-                  },
-                  () => {
-                    cb(new Error('用户名校验失败'))
-                  }
-                )
+                  return
+                }
+
+                return validateUserName({ username: value })
               },
             },
           ],
