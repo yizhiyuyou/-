@@ -23,7 +23,7 @@ const MyTask = React.lazy(() => import('../views/MyTask'))
 const UserMana = React.lazy(() => import('../views/UserMana'))
 const DeptMana = React.lazy(() => import('../views/DeptMana'))
 const RoleMana = React.lazy(() => import('../views/RoleMana'))
-const UserAdd = React.lazy(() => import('../views/UserAdd'))
+const UserOperation = React.lazy(() => import('../views/UserOperation'))
 const DeptAdd = React.lazy(() => import('../views/DeptAdd'))
 const DictionaryMana = React.lazy(() => import('../views/DictionaryMana'))
 const SystemLog = React.lazy(() => import('../views/SystemLog'))
@@ -103,8 +103,8 @@ const routes = [
         },
       },
       {
-        path: '/systemMana/userAdd/:id?',
-        component: UserAdd,
+        path: '/systemMana/userOperation/:id?',
+        component: UserOperation,
         exact: true,
         meta: {
           hideInMenu: true,

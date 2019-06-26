@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from 'react'
+import { useReducer, useEffect, useState, useCallback } from 'react'
 
 import { isUndefinedOrNull } from '@/utils/objectUtil'
 
@@ -41,6 +41,10 @@ const dataFetchReducer = (state, action) => {
 export function useFetch(fetchFn, cb, initialData, params) {
   const [innerParams, setParams] = useState(null)
 
+  const wrapSetParams = useCallback(data => {
+    setParams(isUndefinedOrNull(data) ? {} : data)
+  }, [])
+
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
@@ -55,7 +59,7 @@ export function useFetch(fetchFn, cb, initialData, params) {
       total: 0,
       data: {},
     },
-    setParams,
+    setParams: wrapSetParams,
   })
 
   useEffect(() => {

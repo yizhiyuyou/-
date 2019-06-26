@@ -2,7 +2,7 @@ const proxy = require('http-proxy-middleware')
 
 // const apiUrl = 'http://192.168.10.123:8848/zhfwq' // 王震
 // const apiUrl = 'http://192.168.10.120:8848/zhfwq' // 刘焱
-const apiUrl = 'http://192.168.10.113:20080/zhfwq' // 113测试
+// const apiUrl = 'http://192.168.10.113:20080/zhfwq' // 113测试
 
 module.exports = function(app) {
   app.use(

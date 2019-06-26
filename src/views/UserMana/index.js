@@ -47,7 +47,7 @@ export default ({ history }) => {
   const pagin = Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
   const pushRoute = useCallback(({ id = '' } = {}) => {
-    history.push(`/systemMana/userAdd/${id}`)
+    history.push(`/systemMana/userOperation/${id}`)
   }, [])
 
   return useObserver(() => (
