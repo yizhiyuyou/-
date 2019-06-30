@@ -1,0 +1,30 @@
+@import '../../assets/static/style/common';
+
+.container {
+  padding-top: 50px;
+  min-height: calc(~'100% - 55px');
+  background-color: #fff;
+
+  .title {
+    margin-left: 20%;
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: @ec-color-warning;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 17px;
+      background: @ec-color-warning;
+      vertical-align: -2px;
+      margin-right: 7px;
+    }
+  }
+
+  .form {
+    width: 40%;
+    margin-left: 20%;
+  }
+}

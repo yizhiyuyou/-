@@ -24,7 +24,7 @@ const UserMana = React.lazy(() => import('../views/UserMana'))
 const DeptMana = React.lazy(() => import('../views/DeptMana'))
 const RoleMana = React.lazy(() => import('../views/RoleMana'))
 const UserOperation = React.lazy(() => import('../views/UserOperation'))
-const DeptAdd = React.lazy(() => import('../views/DeptAdd'))
+const DeptOperation = React.lazy(() => import('../views/DeptOperation'))
 const DictionaryMana = React.lazy(() => import('../views/DictionaryMana'))
 const SystemLog = React.lazy(() => import('../views/SystemLog'))
 
@@ -116,13 +116,16 @@ const routes = [
         },
       },
       {
-        path: '/systemMana/deptAdd',
-        component: DeptAdd,
+        path: '/systemMana/deptOperation/:id?',
+        component: DeptOperation,
         exact: true,
         meta: {
           hideInMenu: true,
-          name: '新增部门',
+          name({ params: { id } }) {
+            return id ? '编辑部门' : '新增部门'
+          },
           title: '新增部门',
+          authority: ['1'],
         },
       },
       {
