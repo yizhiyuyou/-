@@ -11,6 +11,7 @@ import EnergyDetailsStore from '@/views/EnergyDetails/store'
 import HomePageStore from '@/views/HomePage/store'
 import UserManaStore from '@/views/UserMana/store'
 import DeptManaStore from '@/views/DeptMana/store'
+import RoleManaStore from '@/views/RoleMana/store'
 
 export const stores = {
   dicStore,
@@ -24,6 +25,7 @@ export const stores = {
   HomePageStore,
   UserManaStore,
   DeptManaStore,
+  RoleManaStore,
 }
 
 export const StoreContext = React.createContext(stores)
