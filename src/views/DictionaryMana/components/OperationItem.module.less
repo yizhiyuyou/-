@@ -1,0 +1,33 @@
+.container {
+  display: inline-block;
+  width: 300px;
+}
+
+.content {
+  font-size: 12px;
+  padding: 6px 30px 6px 10px;
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  cursor: default;
+
+  :global {
+    .anticon-close-circle {
+      visibility: hidden;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+    }
+  }
+
+  &:hover {
+    background-color: #e9f0fa;
+
+    :global {
+      .anticon-close-circle {
+        visibility: visible;
+      }
+    }
+  }
+}
