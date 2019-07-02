@@ -51,7 +51,7 @@ export default ({ history }) => {
   }, [])
 
   return useObserver(() => (
-    <div className={styles['spare-part-stock']}>
+    <div className={styles.container}>
       <WrappedSearchForm
         value={UserManaStore.search}
         onChange={setSearch}

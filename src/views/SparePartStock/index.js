@@ -121,7 +121,7 @@ export default () => {
   } = useModal()
 
   return useObserver(() => (
-    <div className={styles['spare-part-stock']}>
+    <div className={styles.container}>
       <WrappedSearchForm
         value={SparePartStockStore.search}
         onChange={setSearch}

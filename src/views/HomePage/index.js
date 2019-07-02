@@ -14,7 +14,7 @@ const classNames = cx('m-t-10', 'f-g-1')
 
 export default () => {
   return (
-    <div className={styles.home}>
+    <div className={styles.container}>
       <TopCard />
       <ChartPerson className={classNames} />
       <ChartCar className={classNames} />

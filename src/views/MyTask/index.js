@@ -73,7 +73,7 @@ export default () => {
   const pagin = Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
   return useObserver(() => (
-    <div className={styles['event-list']}>
+    <div className={styles.container}>
       <WrappedSearchForm onSubmit={handleSubmit} />
       <div className={styles.title}>待办列表</div>
       <Table

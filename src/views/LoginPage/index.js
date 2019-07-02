@@ -10,7 +10,7 @@ import { StoreContext } from '@/stores'
 
 import { USER_STATUS } from '@/const'
 
-import styles from './styles.module.less'
+import styles from './index.module.less'
 
 export const Login = ({ form }) => {
   const store = useContext(StoreContext)
@@ -41,7 +41,7 @@ export const Login = ({ form }) => {
     }
 
     return (
-      <div className={styles['login-container']}>
+      <div className={styles.container}>
         <div className={styles.header}>
           <img src="/static/img/login/logo.png" alt="logo" />
           <span>智慧服务区管理系统</span>

@@ -109,7 +109,7 @@ export default () => {
   } = useModal()
 
   return useObserver(() => (
-    <div className={styles['energy-details']}>
+    <div className={styles.container}>
       <WrappedSearchForm
         value={EnergyDetailsStore.search}
         onChange={setSearch}

@@ -44,7 +44,7 @@ export default ({ history }) => {
   }, [])
 
   return useObserver(() => (
-    <div className={styles['spare-part-stock']}>
+    <div className={styles.container}>
       <div className={styles.title}>
         <span>部门管理列表</span>
         <Button onClick={pushRoute} type="primary" size="large" icon="plus-circle">

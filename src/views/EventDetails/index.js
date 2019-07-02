@@ -35,7 +35,7 @@ export default ({ match }) => {
     const { baseInfoCtd, processListCtd, stateCtd, timeUsage } = store.EventDetailsStore
 
     return (
-      <div className={styles['event-details']}>
+      <div className={styles.container}>
         <div className={styles.left}>
           {isLoading ? (
             <div className={styles.skeleton}>

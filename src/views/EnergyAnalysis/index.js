@@ -205,7 +205,7 @@ export default () => {
   const domRef = useEchart()
 
   return useObserver(() => (
-    <div className={styles['energy-analysis']}>
+    <div className={styles.container}>
       <WrappedSearchForm
         value={energyAnalysisStore.search}
         onChange={setSearch}

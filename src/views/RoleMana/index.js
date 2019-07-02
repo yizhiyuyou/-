@@ -112,7 +112,7 @@ export default () => {
   } = useModal()
 
   return useObserver(() => (
-    <div className={styles['spare-part-stock']}>
+    <div className={styles.container}>
       <div className={styles.title}>
         <span>角色管理列表</span>
         <Button onClick={handleAdd} type="primary" size="large" icon="plus-circle">
