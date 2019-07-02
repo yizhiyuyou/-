@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { notification } from 'antd'
 
-import { useFetch } from '@/utils/use'
+import { useFetch, useModal } from '@/utils/use'
 
 import { StoreContext } from '@/stores'
 
@@ -14,59 +14,17 @@ import Modal from './components/Modal'
 
 import styles from './index.module.less'
 
-function useModal() {
-  const {
-    EnergyDetailsStore: { saveData, getList, setPagination },
-  } = useContext(StoreContext)
-
-  const [visible, setVisible] = useState(false)
-
-  const [modalFormData, setModalFormData] = useState({})
-
-  const handleLookDetails = useCallback(row => {
-    setModalFormData(row)
-
-    setVisible(true)
-  }, [])
-
-  const close = useCallback(() => {
-    setVisible(false)
-  }, [])
-
-  const afterClose = useCallback(() => {
-    setModalFormData({})
-  }, [])
-
-  const { setParams, isLoading } = useFetch(saveData, (res, { id }) => {
-    if (res.code === 0) {
-      notification.success({ duration: 2, message: '保存成功' })
-
-      // id 不存在说明是新增，需要设置为第一页
-      id || setPagination({ current: 1 })
-
-      getList()
-
-      close()
-    } else {
-      notification.error({ duration: 2, message: res.msg || '保存失败' })
-    }
-  })
-
-  return {
-    visible,
-    isLoading,
-    handleLookDetails,
-    handleOk: setParams,
-    handleCancel: close,
-    modalFormData,
-    afterClose,
-  }
-}
-
 export default () => {
   const { dicStore, EnergyDetailsStore } = useContext(StoreContext)
 
-  const { setSearch, pagination, setPagination, getList, deleteItemById } = EnergyDetailsStore
+  const {
+    setSearch,
+    pagination,
+    setPagination,
+    getList,
+    deleteItemById,
+    saveData,
+  } = EnergyDetailsStore
 
   const handleSubmit = useCallback(() => {
     setPagination({ current: 1 })
@@ -101,12 +59,12 @@ export default () => {
   const {
     visible,
     isLoading,
-    handleLookDetails,
+    handleEditAble,
     handleOk,
     handleCancel,
     modalFormData,
     afterClose,
-  } = useModal()
+  } = useModal({ saveData, getList, setPagination })
 
   return useObserver(() => (
     <div className={styles.container}>
@@ -119,7 +77,7 @@ export default () => {
         <span>能耗明细列表</span>
       </div>
       <Table
-        onEdit={handleLookDetails}
+        onEdit={handleEditAble}
         onDelete={handleDelete}
         onChange={handleChange}
         pagination={pagin}

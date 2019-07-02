@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { notification, Button } from 'antd'
 
-import { useFetch } from '@/utils/use'
+import { useFetch, useModal } from '@/utils/use'
 
 import { StoreContext } from '@/stores'
 
@@ -14,70 +14,19 @@ import Modal from './components/Modal'
 
 import styles from './index.module.less'
 
-function useModal() {
-  const {
-    SparePartStockStore: { saveData, getList, setPagination },
-  } = useContext(StoreContext)
-
-  const [visible, setVisible] = useState(false)
-
-  const [modalFormData, setModalFormData] = useState({})
-
-  const handleEdit = useCallback(({ id, name, type, brand, count, model, markNote } = {}) => {
-    const params = { name, type, brand, count, model, markNote }
-
-    id && Object.assign(params, { id })
-
-    setModalFormData(params)
-
-    setVisible(true)
-  }, [])
-
-  const handleAdd = useCallback(() => {
-    setModalFormData({})
-
-    setVisible(true)
-  }, [])
-
-  const close = useCallback(() => {
-    setVisible(false)
-  }, [])
-
-  const afterClose = useCallback(() => {
-    setModalFormData({})
-  }, [])
-
-  const { setParams, isLoading } = useFetch(saveData, (res, { id }) => {
-    if (res.code === 0) {
-      notification.success({ duration: 2, message: '保存成功' })
-
-      // id 不存在说明是新增，需要设置为第一页
-      id || setPagination({ current: 1 })
-
-      getList()
-
-      close()
-    } else {
-      notification.error({ duration: 2, message: res.msg || '保存失败' })
-    }
-  })
-
-  return {
-    visible,
-    isLoading,
-    handleEdit,
-    handleOk: setParams,
-    handleAdd,
-    handleCancel: close,
-    modalFormData,
-    afterClose,
-  }
-}
+const FORM_PROPS = ['name', 'type', 'brand', 'count', 'model', 'markNote']
 
 export default () => {
   const { dicStore, SparePartStockStore } = useContext(StoreContext)
 
-  const { setSearch, pagination, setPagination, getList, deleteItemById } = SparePartStockStore
+  const {
+    setSearch,
+    pagination,
+    setPagination,
+    getList,
+    deleteItemById,
+    saveData,
+  } = SparePartStockStore
 
   const handleSubmit = useCallback(() => {
     setPagination({ current: 1 })
@@ -112,13 +61,13 @@ export default () => {
   const {
     visible,
     isLoading,
-    handleEdit,
+    handleEditAble,
     handleOk,
     handleAdd,
     handleCancel,
     modalFormData,
     afterClose,
-  } = useModal()
+  } = useModal({ saveData, getList, setPagination }, FORM_PROPS)
 
   return useObserver(() => (
     <div className={styles.container}>
@@ -134,7 +83,7 @@ export default () => {
         </Button>
       </div>
       <Table
-        onEdit={handleEdit}
+        onEdit={handleEditAble}
         onDelete={handleDelete}
         onChange={handleChange}
         pagination={pagin}

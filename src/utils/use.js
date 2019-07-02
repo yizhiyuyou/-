@@ -1,4 +1,6 @@
-import { useReducer, useEffect, useState, useCallback } from 'react'
+import { useReducer, useEffect, useState, useCallback, useRef } from 'react'
+
+import { notification } from 'antd'
 
 import { isUndefinedOrNull } from '@/utils/objectUtil'
 
@@ -127,4 +129,75 @@ export function useFetch(fetchFn, cb, initialData, params) {
   }, [state.res])
 
   return state
+}
+
+export function useModal({ saveData, getList, setPagination }, formProps) {
+  const dataRef = useRef(null)
+
+  const [visible, setVisible] = useState(false)
+
+  const [modalFormData, setModalFormData] = useState({})
+
+  const handleEditAble = useCallback((row = {}) => {
+    const params = formProps
+      ? formProps.reduce((prev, prop) => ({ ...prev, [prop]: row[prop] }), {})
+      : row
+
+    dataRef.current = { id: row.id }
+
+    setModalFormData(params)
+
+    setVisible(true)
+  }, [])
+
+  const handleAdd = useCallback((data = {}) => {
+    typeof data.stopPropagation !== 'function' && (dataRef.current = data)
+
+    setModalFormData({})
+
+    setVisible(true)
+  }, [])
+
+  const close = useCallback(() => {
+    setVisible(false)
+  }, [])
+
+  const afterClose = useCallback(() => {
+    setModalFormData({})
+
+    dataRef.current = null
+  }, [])
+
+  const { setParams, isLoading } = useFetch(saveData, (res, { id } = {}) => {
+    if (res.code === 0) {
+      notification.success({ duration: 2, message: '保存成功' })
+
+      // id 不存在说明是新增，需要设置为第一页
+      id || (setPagination && setPagination({ current: 1 }))
+
+      getList()
+
+      close()
+    } else {
+      notification.error({ duration: 2, message: res.msg || '保存失败' })
+    }
+  })
+
+  const handleOk = useCallback(
+    data => {
+      setParams(Object.assign({}, dataRef.current, data))
+    },
+    [setParams]
+  )
+
+  return {
+    visible,
+    isLoading,
+    handleEditAble,
+    handleAdd,
+    handleOk,
+    handleCancel: close,
+    modalFormData,
+    afterClose,
+  }
 }

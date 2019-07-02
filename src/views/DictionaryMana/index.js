@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { useObserver } from 'mobx-react-lite'
 
 import { Collapse, notification } from 'antd'
 
-import { useFetch } from '@/utils/use'
+import { useFetch, useModal } from '@/utils/use'
 
 import { StoreContext } from '@/stores'
 
@@ -18,69 +18,10 @@ import styles from './index.module.less'
 
 const { Panel } = Collapse
 
-function useModal() {
-  const {
-    DictionaryManaStore: { saveData, getList },
-  } = useContext(StoreContext)
-
-  const dataRef = useRef(null)
-
-  const [visible, setVisible] = useState(false)
-
-  const [modalFormData, setModalFormData] = useState({})
-
-  const handleAdd = useCallback(data => {
-    dataRef.current = data
-
-    setModalFormData({})
-
-    setVisible(true)
-  }, [])
-
-  const close = useCallback(() => {
-    setVisible(false)
-  }, [])
-
-  const afterClose = useCallback(() => {
-    setModalFormData({})
-
-    dataRef.current = null
-  }, [])
-
-  const { setParams, isLoading } = useFetch(saveData, res => {
-    if (res.code === 0) {
-      notification.success({ duration: 2, message: '保存成功' })
-
-      getList()
-
-      close()
-    } else {
-      notification.error({ duration: 2, message: res.msg || '保存失败' })
-    }
-  })
-
-  const handleOk = useCallback(
-    data => {
-      setParams(Object.assign({}, dataRef.current, data))
-    },
-    [setParams]
-  )
-
-  return {
-    visible,
-    isLoading,
-    handleOk,
-    handleAdd,
-    handleCancel: close,
-    modalFormData,
-    afterClose,
-  }
-}
-
 export default () => {
   const { DictionaryManaStore } = useContext(StoreContext)
 
-  const { setSearch, getList, deleteItemById, setActiveKey } = DictionaryManaStore
+  const { setSearch, getList, deleteItemById, setActiveKey, saveData } = DictionaryManaStore
 
   const { setParams: handleClickDelte } = useFetch(deleteItemById, res => {
     if (res.code === 0) {
@@ -104,7 +45,7 @@ export default () => {
     handleCancel,
     modalFormData,
     afterClose,
-  } = useModal()
+  } = useModal({ saveData, getList })
 
   return useObserver(() => (
     <div className={styles.container}>
