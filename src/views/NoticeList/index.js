@@ -14,7 +14,7 @@ import Modal from './components/Modal'
 
 import styles from './index.module.less'
 
-const FORM_PROPS = ['name', 'type', 'brand', 'count', 'model', 'markNote']
+const FORM_PROPS = ['noticeTitle', 'createTime', 'creator', 'noticeContent']
 
 export default ({ history }) => {
   const { NoticeListStore } = useContext(StoreContext)
@@ -56,15 +56,10 @@ export default ({ history }) => {
 
   const pagin = Math.floor(pagination.total / pagination.pageSize) ? pagination : false
 
-  const {
-    visible,
-    isLoading,
-    handleEditAble,
-    handleOk,
-    handleCancel,
-    modalFormData,
-    afterClose,
-  } = useModal({ saveData, getList, setPagination }, FORM_PROPS)
+  const { visible, handleEditAble, handleCancel, modalFormData, afterClose } = useModal(
+    { saveData, getList, setPagination },
+    FORM_PROPS
+  )
 
   const pushRoute = useCallback(({ id = '' } = {}) => {
     history.push(`/infoMana/noticeOperation/${id}`)
@@ -95,9 +90,8 @@ export default ({ history }) => {
       />
       <Modal
         visible={visible}
-        confirmLoading={isLoading}
+        footer={null}
         onCancel={handleCancel}
-        onOk={handleOk}
         value={modalFormData}
         afterClose={afterClose}
       />

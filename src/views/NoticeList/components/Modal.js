@@ -1,47 +1,27 @@
-import React, { useMemo, useRef, useCallback } from 'react'
-
-import { useObserver } from 'mobx-react-lite'
+import React, { useMemo } from 'react'
 
 import { Modal } from 'antd'
 
-import Form from './Form'
-
-const btnProps = {
-  size: 'large',
-}
+import styles from './Modal.module.less'
 
 function SparePartModal({ onOk, value, ...rest }) {
-  const formRef = useRef(null)
+  const noticeContent = useMemo(
+    () => ({
+      __html: value.noticeContent,
+    }),
+    [value.noticeContent]
+  )
 
-  const handleOk = useCallback(() => {
-    const {
-      current: { validateFields, getFieldsValue },
-    } = formRef
-
-    validateFields(err => {
-      if (err) {
-        return
-      }
-
-      onOk(Object.assign({}, value, getFieldsValue()))
-    })
-  }, [onOk, value])
-
-  const MemoForm = useMemo(() => <Form value={value} wrappedComponentRef={formRef} />, [value])
-
-  return useObserver(() => (
-    <Modal
-      title={value.id ? '编辑' : '设备入库'}
-      width="960px"
-      destroyOnClose={true}
-      okButtonProps={btnProps}
-      cancelButtonProps={btnProps}
-      onOk={handleOk}
-      {...rest}
-    >
-      {MemoForm}
+  return (
+    <Modal title="查看详情" destroyOnClose={true} {...rest}>
+      <div className={styles.title}>{value.noticeTitle}</div>
+      <div className={styles.info}>
+        <span>发布人：{value.creator}</span>
+        <span>发布时间：{value.createTime}</span>
+      </div>
+      <div dangerouslySetInnerHTML={noticeContent} />
     </Modal>
-  ))
+  )
 }
 
 export default SparePartModal
