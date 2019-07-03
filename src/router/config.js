@@ -31,7 +31,7 @@ const SystemLog = React.lazy(() => import('../views/SystemLog'))
 const NoticeList = React.lazy(() => import('../views/NoticeList'))
 const FeedBack = React.lazy(() => import('../views/FeedBack'))
 const MessageBorad = React.lazy(() => import('../views/MessageBorad'))
-const NoticeAdd = React.lazy(() => import('../views/NoticeAdd'))
+const NoticeOperation = React.lazy(() => import('../views/NoticeOperation'))
 
 const EnergyAnalysis = React.lazy(() => import('../views/EnergyAnalysis'))
 const EnergyDetails = React.lazy(() => import('../views/EnergyDetails'))
@@ -212,11 +212,13 @@ const routes = [
         },
       },
       {
-        path: '/infoMana/noticeAdd',
-        component: NoticeAdd,
+        path: '/infoMana/noticeOperation/:id?',
+        component: NoticeOperation,
         meta: {
           hideInMenu: true,
-          name: '新建通知',
+          name({ params: { id } }) {
+            return id ? '编辑通告' : '新增通告'
+          },
           title: '新建通知',
         },
       },
