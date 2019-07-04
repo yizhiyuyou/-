@@ -38,3 +38,8 @@ export function appSessionLogin() {
 export function getMyTaskNum() {
   return get('/rest/statistic/event/myunfinishedevents')
 }
+
+// 信息管理-信息发布
+export function goInfoRelease() {
+  return get('/rest/v1/token')
+}

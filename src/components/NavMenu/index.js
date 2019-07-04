@@ -7,6 +7,8 @@ import { navMenuConfig, flatConfigToNavMenu } from '@/router/config'
 
 import { matchRoutes } from '@/utils/router'
 
+import { goInfoRelease } from '@/services'
+
 import * as imgs from './imgs'
 
 import styles from './index.module.less'
@@ -120,8 +122,20 @@ export const NavMenu = ({ history, location: { pathname } }) => {
   const matchPath = useMemo(() => matchRoutes(flatConfigToNavMenu, pathname), [pathname])
   const [menuProp, setMenuProp] = useMenu(matchPath)
 
-  const handleClick = useCallback(({ key }) => {
+  const handleClick = useCallback(async ({ key }) => {
+    // 外链的
     if (/\^.*\$/.test(key)) {
+      // 信息发布
+      if (key === '^infoRelease$') {
+        const {
+          data: { urlWithParam },
+        } = await goInfoRelease()
+
+        window.open(urlWithParam, 'infoRelease')
+
+        return
+      }
+
       const url = /\^(.*)\$/.exec(key)[1]
 
       url && window.open(url, '_blank')

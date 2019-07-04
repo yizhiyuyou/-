@@ -227,7 +227,7 @@ const routes = [
         meta: {
           name: '信息发布',
           title: '信息发布',
-          path: '^https://fuwuqu-t.trial.hndfsj.net/zhfwq-touch/rest/default/welcome$',
+          path: '^infoRelease$',
         },
       },
     ],
@@ -301,7 +301,7 @@ const routes = [
     meta: {
       name: '实时定位',
       icon: 'realTimePositioning',
-      path: '^http://www.gsm110.com/mygpsonline/gpsonline/jsp/monitor/main.jsp$',
+      path: `^${process.env.REACT_APP_POSITIONING_URL}$`,
     },
   },
   {
@@ -317,7 +317,7 @@ const routes = [
         'f5a5125103be40719b1da76f79d8381d',
         '8548348fa4f04d25a4f5b58d6072b76f',
       ],
-      path: '^https://datav.aliyun.com/share/29c87af5175fd94e32b15d93de174a32$',
+      path: `^${process.env.REACT_APP_DATAV_URL}$`,
     },
   },
   {

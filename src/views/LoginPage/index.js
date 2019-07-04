@@ -33,7 +33,7 @@ export const Login = ({ form }) => {
     const { loginStatus, appLogin } = store.rootStore
 
     if (loginStatus === USER_STATUS.get('已登录').status) {
-      return <Redirect to="/home" />
+      return <Redirect to="/home/" />
     }
 
     if (loginStatus === USER_STATUS.get('未登录').status) {
