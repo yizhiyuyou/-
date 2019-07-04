@@ -20,12 +20,12 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="名称" dataIndex="name" key="name" align="center" />
-        <Column title="备件类型" dataIndex="typeText" key="typeText" align="center" />
-        <Column title="品牌" dataIndex="brand" key="brand" align="center" />
-        <Column title="库存量" dataIndex="count" key="count" align="center" />
-        <Column title="型号" dataIndex="model" key="model" align="center" />
-        <Column title="备注" dataIndex="markNote" key="markNote" align="center" />
+        <Column title="名称" dataIndex="name" align="center" />
+        <Column title="备件类型" dataIndex="typeText" align="center" />
+        <Column title="品牌" dataIndex="brand" align="center" />
+        <Column title="库存量" dataIndex="count" align="center" />
+        <Column title="型号" dataIndex="model" align="center" />
+        <Column title="备注" dataIndex="markNote" align="center" />
         <Column
           title="操作"
           key="action"

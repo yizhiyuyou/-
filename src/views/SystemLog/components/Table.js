@@ -18,10 +18,10 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="用户名" dataIndex="username" key="username" align="center" />
-        <Column title="用户操作" dataIndex="operation" key="operation" align="center" />
-        <Column title="IP地址" dataIndex="ip" key="ip" align="center" />
-        <Column title="创建时间" dataIndex="createDate" key="createDate" align="center" />
+        <Column title="用户名" dataIndex="username" align="center" />
+        <Column title="用户操作" dataIndex="operation" align="center" />
+        <Column title="IP地址" dataIndex="ip" align="center" />
+        <Column title="创建时间" dataIndex="createDate" align="center" />
       </Table>
     </div>
   )

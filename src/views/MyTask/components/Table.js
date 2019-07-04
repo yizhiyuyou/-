@@ -22,9 +22,9 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="事件编号" dataIndex="eventNum" key="eventNum" align="center" />
-        <Column title="事件类型" dataIndex="eventTypeText" key="eventTypeText" align="center" />
-        <Column title="创建人" dataIndex="creator" key="creator" align="center" />
+        <Column title="事件编号" dataIndex="eventNum" align="center" />
+        <Column title="事件类型" dataIndex="eventTypeText" align="center" />
+        <Column title="创建人" dataIndex="creator" align="center" />
         <Column
           title="当前状态"
           key="state"
@@ -41,16 +41,6 @@ export default ({ onLookDetail, onDelete, onChange, ...rest }) => {
               <span>
                 <Button
                   onClick={() => window.open(`/detail/event/${id}`, '_blank')}
-                  // onClick={() =>
-                  //   history.push({
-                  //     pathname: `/detail/event/${id}`,
-                  //     search: '?a=1&b=2',
-                  //     state: {
-                  //       h: 1,
-                  //       c: 2,
-                  //     },
-                  //   })
-                  // }
                   type="primary"
                   className={styles['m-r-35']}
                 >

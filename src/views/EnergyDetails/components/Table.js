@@ -20,12 +20,12 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="上报时间" dataIndex="createTime" key="createTime" align="center" />
-        <Column title="能耗类型" dataIndex="typeText" key="typeText" align="center" />
-        <Column title="所属区域" dataIndex="position" key="position" align="center" />
-        <Column title="读表数据" dataIndex="meterNumber" key="meterNumber" align="center" />
-        <Column title="用量" dataIndex="meterData" key="meterData" align="center" />
-        <Column title="创建人" dataIndex="creator" key="creator" align="center" />
+        <Column title="上报时间" dataIndex="createTime" align="center" />
+        <Column title="能耗类型" dataIndex="typeText" align="center" />
+        <Column title="所属区域" dataIndex="position" align="center" />
+        <Column title="读表数据" dataIndex="meterNumber" align="center" />
+        <Column title="用量" dataIndex="meterData" align="center" />
+        <Column title="创建人" dataIndex="creator" align="center" />
         <Column
           title="操作"
           key="action"

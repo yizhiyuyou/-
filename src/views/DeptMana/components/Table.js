@@ -20,9 +20,9 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="部门名称" dataIndex="name" key="name" align="center" />
-        <Column title="上级部门" dataIndex="parentName" key="parentName" align="center" />
-        <Column title="排序号" dataIndex="orderNum" key="orderNum" align="center" />
+        <Column title="部门名称" dataIndex="name" align="center" />
+        <Column title="上级部门" dataIndex="parentName" align="center" />
+        <Column title="排序号" dataIndex="orderNum" align="center" />
         <Column
           title="操作"
           key="action"

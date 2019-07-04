@@ -20,10 +20,10 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="角色名称" dataIndex="roleName" key="roleName" align="center" />
-        <Column title="创建时间" dataIndex="createTime" key="createTime" align="center" />
-        <Column title="所属部门" dataIndex="deptName" key="deptName" align="center" />
-        <Column title="备注" dataIndex="remark" key="remark" align="center" />
+        <Column title="角色名称" dataIndex="roleName" align="center" />
+        <Column title="创建时间" dataIndex="createTime" align="center" />
+        <Column title="所属部门" dataIndex="deptName" align="center" />
+        <Column title="备注" dataIndex="remark" align="center" />
         <Column
           title="操作"
           key="action"

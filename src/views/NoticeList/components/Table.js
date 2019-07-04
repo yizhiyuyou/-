@@ -20,11 +20,11 @@ export default ({ onEdit, onLook, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="发布时间" dataIndex="createTime" key="createTime" align="center" />
-        <Column title="标题" dataIndex="noticeTitle" key="noticeTitle" align="center" />
-        <Column title="发布单位" dataIndex="noticeSource" key="noticeSource" align="center" />
-        <Column title="接收人" dataIndex="receive" key="receive" align="center" />
-        <Column title="发布人" dataIndex="creator" key="creator" align="center" />
+        <Column title="发布时间" dataIndex="createTime" align="center" />
+        <Column title="标题" dataIndex="noticeTitle" align="center" />
+        <Column title="发布单位" dataIndex="noticeSource" align="center" />
+        <Column title="接收人" dataIndex="receive" align="center" />
+        <Column title="发布人" dataIndex="creator" align="center" />
         <Column
           title="状态"
           key="status"

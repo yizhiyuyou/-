@@ -20,10 +20,10 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
   return (
     <div className={styles['table-container']}>
       <Table {...rest} onChange={handleChange}>
-        <Column title="真实姓名" dataIndex="realname" key="realname" align="center" />
-        <Column title="用户名" dataIndex="username" key="username" align="center" />
-        <Column title="所属部门" dataIndex="deptName" key="deptName" align="center" />
-        <Column title="手机号" dataIndex="mobile" key="mobile" align="center" />
+        <Column title="真实姓名" dataIndex="realname" align="center" />
+        <Column title="用户名" dataIndex="username" align="center" />
+        <Column title="所属部门" dataIndex="deptName" align="center" />
+        <Column title="手机号" dataIndex="mobile" align="center" />
         <Column
           title="状态"
           key="status"
