@@ -1,0 +1,44 @@
+@import '../../../assets/static/style/common.less';
+
+.container {
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  background-color: #eff0f5;
+  padding: 8px 0;
+
+  .item {
+    width: 50%;
+    position: relative;
+    background-color: #fff;
+
+    &:first-child {
+      margin-right: 10px;
+    }
+
+    .title {
+      position: absolute;
+      font-size: 15px;
+      color: #666;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 12px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 16px;
+        background-color: @ec-color-primary;
+        vertical-align: -2px;
+        margin-right: 10px;
+      }
+    }
+
+    :global {
+      .ant-spin-container {
+        height: 100%;
+      }
+    }
+  }
+}

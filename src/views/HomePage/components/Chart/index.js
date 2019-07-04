@@ -1,27 +1,4 @@
-import { useEffect, useRef } from 'react'
-
-import echarts from 'echarts'
-
-import { debounce } from '@/utils/objectUtil'
-
-function useEchart() {
-  const myChartRef = useRef(null)
-  const domRef = useRef(null)
-
-  useEffect(() => {
-    const myChart = echarts.init(domRef.current)
-
-    myChartRef.current = myChart
-
-    return () => {
-      window.removeEventListener('resize', myChart.resize)
-
-      myChart.dispose()
-    }
-  }, [])
-
-  return { domRef, myChartRef }
-}
+import { useEchartWithOption } from '@/utils/use'
 
 function getLineOption({ xAxisData, yAxisName, series: [first, secode], axisLabelRotate }) {
   return {
@@ -101,26 +78,6 @@ function getLineOption({ xAxisData, yAxisName, series: [first, secode], axisLabe
       },
     ],
   }
-}
-
-export function useEchartWithOption(data, getOption, type) {
-  const { domRef, myChartRef } = useEchart()
-
-  const setOptionWithDebounceRef = useRef(null)
-
-  useEffect(() => {
-    setOptionWithDebounceRef.current = debounce((...rest) => {
-      const { current: myChart } = myChartRef
-
-      myChart.isDisposed() || myChart.setOption(...rest)
-    })
-  }, [])
-
-  useEffect(() => {
-    setOptionWithDebounceRef.current(getOption(data))
-  }, [data, getOption])
-
-  return { domRef, myChartRef }
 }
 
 // 男女比例饼图-配置模板

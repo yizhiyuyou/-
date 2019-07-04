@@ -4,6 +4,10 @@ import { notification } from 'antd'
 
 import { isUndefinedOrNull } from '@/utils/objectUtil'
 
+import echarts from 'echarts'
+
+import { debounce } from '@/utils/objectUtil'
+
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_INIT':
@@ -200,4 +204,43 @@ export function useModal({ saveData, getList, setPagination }, formProps) {
     modalFormData,
     afterClose,
   }
+}
+
+function useEchart() {
+  const myChartRef = useRef(null)
+  const domRef = useRef(null)
+
+  useEffect(() => {
+    const myChart = echarts.init(domRef.current)
+
+    myChartRef.current = myChart
+
+    return () => {
+      window.removeEventListener('resize', myChart.resize)
+
+      myChart.dispose()
+    }
+  }, [])
+
+  return { domRef, myChartRef }
+}
+
+export function useEchartWithOption(data, getOption, type) {
+  const { domRef, myChartRef } = useEchart()
+
+  const setOptionWithDebounceRef = useRef(null)
+
+  useEffect(() => {
+    setOptionWithDebounceRef.current = debounce((...rest) => {
+      const { current: myChart } = myChartRef
+
+      myChart.isDisposed() || myChart.setOption(...rest)
+    })
+  }, [])
+
+  useEffect(() => {
+    setOptionWithDebounceRef.current(getOption(data))
+  }, [data, getOption])
+
+  return { domRef, myChartRef }
 }

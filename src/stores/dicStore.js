@@ -20,6 +20,8 @@ class DicStore {
   @observable elecMeter = []
   // 水表位置
   @observable waterMeter = []
+  // 满意度
+  @observable manyidu = []
 
   @observable loading = {}
 

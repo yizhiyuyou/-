@@ -34,7 +34,7 @@ export default ({ onEdit, onDelete, onChange, ...rest }) => {
             return (
               <span>
                 <Button onClick={() => onEdit(row)} type="primary" className={styles['m-r-35']}>
-                  编辑
+                  查看详情
                 </Button>
                 <Popconfirm
                   title="是否要删除该条信息?"
