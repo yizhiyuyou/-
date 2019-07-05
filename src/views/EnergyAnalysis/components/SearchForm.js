@@ -1,5 +1,6 @@
 import React, { useCallback, forwardRef } from 'react'
 
+import { toJS } from 'mobx'
 import { useObserver } from 'mobx-react-lite'
 
 import { Form, Button } from 'antd'
@@ -37,8 +38,9 @@ const WrappedSearchForm = Form.create({
   mapPropsToFields(props) {
     const { rangePicker } = props.value
 
+    // toJS 为了处理空数组时，antd RangePicker 访问数组 0，1 时，mobx 警告信息的问题
     return {
-      rangePicker: Form.createFormField({ value: rangePicker }),
+      rangePicker: Form.createFormField({ value: toJS(rangePicker) }),
     }
   },
   onValuesChange({ onChange }, changedValues, { ...rest }) {

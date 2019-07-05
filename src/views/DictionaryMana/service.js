@@ -38,8 +38,6 @@ export async function getList(params) {
     })
   }
 
-  console.log(123, res)
-
   return res
 }
 
